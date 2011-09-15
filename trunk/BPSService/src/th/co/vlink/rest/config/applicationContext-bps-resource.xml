@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+ 	
+ 	<bean id="bpsGroupResource"
+		class="th.co.vlink.rest.resource.BpsGroupResource"
+		scope="prototype"> 
+		<property name="bpsGroupService" ref="bpsGroupService"></property>
+		<property name="feed" ref="feed"></property>
+		<property name="xstream" ref="xstream"></property>
+	</bean>  
+	<bean id="bpsTermResource"
+		class="th.co.vlink.rest.resource.BpsTermResource"
+		scope="prototype"> 
+		<property name="bpsTermService" ref="bpsTermService"></property>
+		<property name="feed" ref="feed"></property>
+		<property name="xstream" ref="xstream"></property>
+	</bean>
+	<bean id="bpsAttachFileResource"
+		class="th.co.vlink.rest.resource.BpsAttachFileResource"
+		scope="prototype"> 
+		<property name="bpsAttachFileService" ref="bpsAttachFileService"></property>
+		<property name="feed" ref="feed"></property>
+		<property name="xstream" ref="xstream"></property>
+	</bean>
+</beans>
