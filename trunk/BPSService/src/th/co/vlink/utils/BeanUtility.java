@@ -310,8 +310,8 @@ public class BeanUtility {
 												  boolean result = m.matches();
 												  if(result)
 												  value = Converter.StringToTimestamp(value);
-												  System.out
-														.println("chatchai debug time="+result);
+												/*  System.out
+														.println("chatchai debug time="+result);*/
 											}
 											
 										}else if(cDestType == String.class && cSrcType == Timestamp.class){											 

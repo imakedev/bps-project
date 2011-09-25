@@ -27,8 +27,6 @@ import th.co.vlink.utils.Pagging;
 import th.co.vlink.xstream.common.FeedModel;
 import th.co.vlink.xstream.common.VResultMessage;
 
-import com.sun.syndication.io.FeedException;
-
 /**
  * @author Chatchai Pimtun
  * 
@@ -184,7 +182,6 @@ public abstract class BaseResource extends Resource {
 			com.thoughtworks.xstream.XStream xstream) {
 
 		// TODO Auto-generated method stub
-		// super.acceptRepresentation(entity);
 		logger.debug("into Post FAQs");
 		// com.sun.syndication.io.WireFeedOutput output = new
 		// com.sun.syndication.io.WireFeedOutput();

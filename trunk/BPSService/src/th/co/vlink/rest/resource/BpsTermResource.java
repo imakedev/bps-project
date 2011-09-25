@@ -15,8 +15,6 @@ import org.restlet.resource.Variant;
 
 import th.co.vlink.constant.ServiceConstant;
 import th.co.vlink.hibernate.bean.BpsGroup;
-import th.co.vlink.managers.BpsAttachFileService;
-import th.co.vlink.managers.BpsGroupService;
 import th.co.vlink.managers.BpsTermService;
 import th.co.vlink.utils.BeanUtility;
 import th.co.vlink.utils.Pagging;
@@ -26,7 +24,7 @@ import th.co.vlink.xstream.common.VResultMessage;
 
 public class BpsTermResource extends BaseResource {
 
-	private static final Logger logger = Logger.getLogger("BtsLog");  
+	private static final Logger logger = Logger.getLogger("bpsAppender");  
 	private static final String BPS_TITLE = "BPS Term And Definition Collection";
 	private BpsTermService bpsTermService;
 	private com.sun.syndication.feed.atom.Feed feed;
@@ -73,6 +71,12 @@ public class BpsTermResource extends BaseResource {
 				if (xntcCalendar != null) {
 					th.co.vlink.hibernate.bean.BpsTerm ntcCalendar = new th.co.vlink.hibernate.bean.BpsTerm();
 					BeanUtility.copyProperties(ntcCalendar, xntcCalendar); 
+					if(xntcCalendar.getBpsGroup()!=null && xntcCalendar.getBpsGroup().getBpgId()!=null
+							&&xntcCalendar.getBpsGroup().getBpgId().intValue()!=0){
+						BpsGroup bpsGroup = new BpsGroup();
+						bpsGroup.setBpgId(xntcCalendar.getBptId());
+						ntcCalendar.setBpsGroup(bpsGroup);
+					}
 					if (xntcCalendar.getServiceName() != null
 							&& !xntcCalendar.getServiceName().equals("")) {
 						logger.debug(" BPS servicename = "
@@ -91,6 +95,8 @@ public class BpsTermResource extends BaseResource {
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.BPS_TERM_SAVE)){
+							logger.info("xntcCalendar.getBpsGroup()="+xntcCalendar.getBpsGroup());
+							logger.info("ntcCalendar.getBpsGroup()="+ntcCalendar.getBpsGroup());
 							bpsTermService.saveBpsTerm(ntcCalendar);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_TERM_UPDATE)){
