@@ -12,8 +12,9 @@ public interface BpsAttachFileService {
 	public void updateBpsAttachFile(BpsAttachFile transientInstance) throws DataAccessException ;
 	public void deleteBpsAttachFile(BpsAttachFile persistentInstance) throws DataAccessException ;	
 	public BpsAttachFile findBpsAttachFileById(Long ncId)throws DataAccessException  ;
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public  List searchBpsAttachFile(BpsAttachFile persistentInstance)throws DataAccessException  ;
+	@SuppressWarnings("rawtypes")
 	public List searchBpsAttachFile(BpsAttachFile instance,Map likeExpression ,Map leExpression ,Map geExpression)throws DataAccessException  ;
 
 }

@@ -12,8 +12,9 @@ public interface BpsGroupService {
 	public void updateBpsGroup(BpsGroup transientInstance) throws DataAccessException ;
 	public void deleteBpsGroup(BpsGroup persistentInstance) throws DataAccessException ;	
 	public BpsGroup findBpsGroupById(Long bpgId)throws DataAccessException  ;
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public  List searchBpsGroup(BpsGroup persistentInstance)throws DataAccessException  ;
+	@SuppressWarnings("rawtypes")
 	public List searchBpsGroup(BpsGroup instance,Map likeExpression ,Map leExpression ,Map geExpression)throws DataAccessException  ;
 
 }
