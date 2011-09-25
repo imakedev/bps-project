@@ -1,0 +1,15 @@
+<project>
+
+ 
+	<target name="jar_bps_dto">
+		<jar destfile="../target/BPS_Share.jar">
+			<!-- common -->			 
+			<fileset dir="../WebContent/WEB-INF/classes" includes="th/co/vlink/constant/*.class" />
+			<fileset dir="../WebContent/WEB-INF/classes" includes="th/co/vlink/criteria/*.class" />
+			<fileset dir="../WebContent/WEB-INF/classes" includes="th/co/vlink/utils/*.class" />
+			<fileset dir="../WebContent/WEB-INF/classes" includes="th/co/vlink/utils/properties/*.class" />
+			<fileset dir="../WebContent/WEB-INF/classes" includes="th/co/vlink/xstream/*.class" />
+			<fileset dir="../WebContent/WEB-INF/classes" includes="th/co/vlink/xstream/common/*.class" />			 
+		</jar>
+	</target> 
+</project>
