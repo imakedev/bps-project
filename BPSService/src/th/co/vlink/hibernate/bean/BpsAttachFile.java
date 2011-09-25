@@ -1,14 +1,14 @@
 package th.co.vlink.hibernate.bean;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -17,7 +17,8 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="BANPU_BPS_ATTACH_FILE",schema="DB2INST1")
+//@Table(name="BANPU_BPS_ATTACH_FILE",schema="DB2INST1")
+@Table(name="BANPU_BPS_ATTACH_FILE")
 public class BpsAttachFile  extends VServiceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -32,8 +33,11 @@ public class BpsAttachFile  extends VServiceBean implements Serializable {
 	private String bpafFileName;
 	@Column(name="BPAF_FILE_PATH")
 	private String bpafFilePath;
-	@Column(name="BPT_TERM_ID")
-	private BpsTerm bptId;
+	 
+	@ManyToOne
+	@JoinColumn(name="BPT_TERM_ID")
+	private BpsTerm bpsTerm;
+	
 	public Long getBpafId() {
 		return bpafId;
 	}
@@ -52,11 +56,12 @@ public class BpsAttachFile  extends VServiceBean implements Serializable {
 	public void setBpafFilePath(String bpafFilePath) {
 		this.bpafFilePath = bpafFilePath;
 	}
-	public BpsTerm getBptId() {
-		return bptId;
+	public BpsTerm getBpsTerm() {
+		return bpsTerm;
 	}
-	public void setBptId(BpsTerm bptId) {
-		this.bptId = bptId;
+	public void setBpsTerm(BpsTerm bpsTerm) {
+		this.bpsTerm = bpsTerm;
 	}
+	 
 	
 }
