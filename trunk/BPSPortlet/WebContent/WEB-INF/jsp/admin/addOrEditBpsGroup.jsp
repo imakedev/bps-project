@@ -1,4 +1,5 @@
-<%@include file="../include.jsp" %>
+<%@include file="../include.jsp"%> 
+<%@page contentType="text/html; charset=utf-8" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -12,7 +13,7 @@
 	method="post">
 	<table width="100%">
 		<tr>
-			<td align="left">Group Name:</td>
+			<td align="left">Categoty Name:</td>
 			<td align="left"><form:input path="bpsGroup.bpgGroupName" maxlength="200"/></td>
 		</tr>
 		<tr>
