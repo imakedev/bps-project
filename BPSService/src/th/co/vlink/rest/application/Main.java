@@ -27,11 +27,9 @@
 
 package th.co.vlink.rest.application;
 
-import th.co.vlink.criteria.VCriteria;
-import th.co.vlink.utils.Pagging;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.Dom4JDriver;
+import org.restlet.Component;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Simple demo application that can be run either as a standalone application
@@ -45,24 +43,32 @@ public class Main {
 //    public static void main(String... args) throws Exception {
 	public static void main(String[] args) throws Exception {
         // Load the Spring application context
-       /* final ApplicationContext springContext = new ClassPathXmlApplicationContext(
+        final ApplicationContext springContext = new ClassPathXmlApplicationContext(
                 new String[] {
-                "co/th/vlink/moogle/rest/config/applicationContext-quiz-router.xml" ,
-                "co/th/vlink/moogle/rest/config/applicationContext-server.xml"});
+                		 "th/co/vlink/rest/config/applicationContext-common.xml",
+                		 "th/co/vlink/rest/config/applicationContext-hibernate.xml",
+                		 "th/co/vlink/rest/config/applicationContext-bps-resource.xml",
+                         "th/co/vlink/rest/config/applicationContext-root-router.xml",
+                		 "th/co/vlink/rest/config/applicationContext-server.xml"});   
 
         // Obtain the Restlet component from the Spring context and start it
-        ((Component) springContext.getBean("top")).start();*/
-		testXStream();
+        ((Component) springContext.getBean("top")).start();
+	/*	applicationContext-bps-resource.xml
+        applicationContext-common.xml
+        applicationContext-hibernate.xml
+        applicationContext-root-router.xml
+        applicationContext-server.xml*/
+		//testXStream();
     }
-	public static void testXStream(){
+	/*public static void testXStream(){
 		XStream xstream = new XStream(new Dom4JDriver());
 		
 		//xstream.processAnnotations(RendezvousMessage.class); or xstream.autodetectAnnotations(true); (Auto-detect Annotations)
 		 xstream.autodetectAnnotations(true);
-		/*RendezvousMessage msg = new RendezvousMessage(15);
+		RendezvousMessage msg = new RendezvousMessage(15);
 		RendezvousMessage msg2 = new RendezvousMessage(15,"firstPart","secondPart");  
 		System.out.println(xstream.toXML(msg));
-		System.out.println(xstream.toXML(msg2));*/
+		System.out.println(xstream.toXML(msg2));
 		   Pagging pagging  = new Pagging(1,10,"orderby");
 		   VCriteria vcriteria = new VCriteria("key","value");
 			 
@@ -73,6 +79,6 @@ public class Main {
 //		 vforum.setVfdesc("desc");
 //		 System.out.println(xstream.toXML(vforum));
 
-	}
+	}*/
 
 }
