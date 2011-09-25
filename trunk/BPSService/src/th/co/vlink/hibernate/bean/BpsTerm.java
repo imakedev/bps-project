@@ -2,17 +2,15 @@ package th.co.vlink.hibernate.bean;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -20,7 +18,8 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="BANPU_BPS_TERM",schema="DB2INST1")
+//@Table(name="BANPU_BPS_TERM",schema="DB2INST1")
+@Table(name="BANPU_BPS_TERM")
 public class BpsTerm  extends VServiceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -35,8 +34,12 @@ public class BpsTerm  extends VServiceBean implements Serializable {
 	private String bptTerm;
 	@Column(name="BPT_SHORT_DESC")
 	private String bptShortDesc;
-	@Column(name="BPT_DEFINITION")
+	@Lob()
+	@Column(name="BPT_DEFINITION")	
 	private String bptDefinition;
+	@Lob()
+	@Column(name="BPT_DEFINITION_SEARCH")
+	private String bptDefinitionSearch;
 	@Column(name="BPT_SOURCE_REF")
 	private String bptSourceRef;
 	@Column(name="BPT_SOURCE")
@@ -127,5 +130,11 @@ public class BpsTerm  extends VServiceBean implements Serializable {
 	public void setBpsAttachFiles(Set<BpsAttachFile> bpsAttachFiles) {
 		this.bpsAttachFiles = bpsAttachFiles;
 	}*/
+	public String getBptDefinitionSearch() {
+		return bptDefinitionSearch;
+	}
+	public void setBptDefinitionSearch(String bptDefinitionSearch) {
+		this.bptDefinitionSearch = bptDefinitionSearch;
+	}
 
 }
