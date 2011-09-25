@@ -1,6 +1,5 @@
 package th.co.vlink.hibernate;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,14 +9,9 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.LogicalExpression;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.joda.time.DateTime;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,23 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 import th.co.vlink.hibernate.bean.BpsGroup;
 import th.co.vlink.managers.BpsGroupService;
 import th.co.vlink.utils.Pagging;
-
+@SuppressWarnings("deprecation")
 @Repository
 @Transactional
 public class HibernateBpsGroup extends HibernateCommon implements BpsGroupService{
-	private static final Logger logger = Logger.getLogger("BpsLog");
+	private static final Logger logger = Logger.getLogger("bpsAppender");
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
 	}
 	public void setSessionAnnotationFactory(SessionFactory sessionAnnotationFactory) {
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
-	}
-	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void deleteNtcCalendar(BpsGroup persistentInstance)
-			throws DataAccessException {
-		// TODO Auto-generated method stub
-		delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 	@Transactional(readOnly=true)
 	public BpsGroup findBpsGroupById(Long bpgId)
@@ -60,6 +48,7 @@ public class HibernateBpsGroup extends HibernateCommon implements BpsGroupServic
 		// TODO Auto-generated method stub
 		save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
+	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly=true)
 	public List searchBpsGroup(BpsGroup persistentInstance)
 			throws DataAccessException {
@@ -74,6 +63,7 @@ public class HibernateBpsGroup extends HibernateCommon implements BpsGroupServic
 		}
 		return null;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Transactional(readOnly=true)
 	public List searchBpsGroup(BpsGroup instance, Map likeExpression,
 			Map leExpression, Map geExpression) throws DataAccessException {
@@ -81,13 +71,13 @@ public class HibernateBpsGroup extends HibernateCommon implements BpsGroupServic
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		try {
 			Criteria criteria 	= (Criteria) session.createCriteria(instance.getClass().getName());		 
-			Long bpgId = instance.getBpgId();
+		//	Long bpgId = instance.getBpgId();
 			String bpgGroupName = instance.getBpgGroupName();
 			  
 			 Pagging pagging 	= instance.getPagging();
 			 
 			if(bpgGroupName !=null && bpgGroupName.trim().length() > 0){  
-				 criteria.add(Expression.eq("bpgGroupName", bpgGroupName));	
+				 criteria.add(Expression.like("bpgGroupName", "%"+bpgGroupName.trim()+"%").ignoreCase());	
 				// iscriteria = true;
 			}
 		 
@@ -113,10 +103,10 @@ public class HibernateBpsGroup extends HibernateCommon implements BpsGroupServic
 			try {
 				 
 				Criteria criteria 	= (Criteria) session.createCriteria(instance.getClass().getName());		 
-				Long bpgId = instance.getBpgId();
+			//	Long bpgId = instance.getBpgId();
 				String bpgGroupName = instance.getBpgGroupName();
 				if(bpgGroupName !=null && bpgGroupName.trim().length() > 0){  
-					 criteria.add(Expression.eq("bpgGroupName", bpgGroupName));	
+					criteria.add(Expression.like("bpgGroupName", "%"+bpgGroupName.trim()+"%").ignoreCase());	
 					// iscriteria = true;
 				} 
 				criteria.setProjection(Projections.rowCount()); 
