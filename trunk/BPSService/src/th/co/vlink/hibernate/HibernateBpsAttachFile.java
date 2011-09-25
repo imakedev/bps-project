@@ -1,6 +1,5 @@
 package th.co.vlink.hibernate;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,14 +9,8 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.LogicalExpression;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.joda.time.DateTime;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,23 +20,17 @@ import th.co.vlink.hibernate.bean.BpsAttachFile;
 import th.co.vlink.hibernate.bean.BpsTerm;
 import th.co.vlink.managers.BpsAttachFileService;
 import th.co.vlink.utils.Pagging;
-
+@SuppressWarnings("deprecation")
 @Repository
 @Transactional
 public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttachFileService{
-	private static final Logger logger = Logger.getLogger("CalendarLog");
+	private static final Logger logger = Logger.getLogger("bpsAppender");
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
 	}
 	public void setSessionAnnotationFactory(SessionFactory sessionAnnotationFactory) {
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
-	}
-	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void deleteNtcCalendar(BpsAttachFile persistentInstance)
-			throws DataAccessException {
-		// TODO Auto-generated method stub
-		delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 	@Transactional(readOnly=true)
 	public BpsAttachFile findBpsAttachFileById(Long bpafId)
@@ -61,6 +48,7 @@ public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttach
 		// TODO Auto-generated method stub
 		save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
+	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly=true)
 	public List searchBpsAttachFile(BpsAttachFile persistentInstance)
 			throws DataAccessException {
@@ -75,6 +63,7 @@ public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttach
 		}
 		return null;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Transactional(readOnly=true)
 	public List searchBpsAttachFile(BpsAttachFile instance, Map likeExpression,
 			Map leExpression, Map geExpression) throws DataAccessException {
@@ -85,7 +74,7 @@ public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttach
 			Long bpafId = instance.getBpafId();
 			String bpafFileName = instance.getBpafFileName();
 			String bpafFilePath = instance.getBpafFilePath();
-			BpsTerm bpsTerm = instance.getBptId();
+			BpsTerm bpsTerm = instance.getBpsTerm();
 			  
 			 Pagging pagging 	= instance.getPagging();
 			 
@@ -102,8 +91,8 @@ public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttach
 				 criteria.add(Expression.eq("bpafFilePath", bpafFilePath));	
 				 //iscriteria = true;
 			} 
-			if(bpsTerm !=null && bpsTerm.getBptId() != null && bpsTerm.getBptId() > 0){ 
-				 criteria.add(Expression.eq("bpsTerm", bpsTerm.getBptId()));	
+			if(bpsTerm !=null && bpsTerm.getBptId() != null && bpsTerm.getBptId().intValue()!= 0){ 
+				 criteria.add(Expression.eq("bpsTerm.bptId", bpsTerm.getBptId()));	
 				 //iscriteria = true;
 			} 
 			
@@ -132,10 +121,9 @@ public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttach
 				Long bpafId = instance.getBpafId();
 				String bpafFileName = instance.getBpafFileName();
 				String bpafFilePath = instance.getBpafFilePath();
-				BpsTerm bpsTerm = instance.getBptId();
+				BpsTerm bpsTerm = instance.getBpsTerm();
 				  
-				 Pagging pagging 	= instance.getPagging();
-				 
+			  
 				if(bpafId !=null && bpafId > 0){  
 					 criteria.add(Expression.eq("bpafId", bpafId));	
 					// iscriteria = true;
@@ -149,8 +137,8 @@ public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttach
 					 criteria.add(Expression.eq("bpafFilePath", bpafFilePath));	
 					 //iscriteria = true;
 				} 
-				if(bpsTerm !=null && bpsTerm.getBptId() != null && bpsTerm.getBptId() > 0){ 
-					 criteria.add(Expression.eq("bpsTerm", bpsTerm.getBptId()));	
+				if(bpsTerm !=null && bpsTerm.getBptId() != null && bpsTerm.getBptId().intValue()!= 0){ 
+					 criteria.add(Expression.eq("bpsTerm.bptId", bpsTerm.getBptId()));	
 					 //iscriteria = true;
 				} 
 				criteria.setProjection(Projections.rowCount()); 

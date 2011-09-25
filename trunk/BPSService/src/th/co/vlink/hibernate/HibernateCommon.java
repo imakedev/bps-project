@@ -31,9 +31,11 @@ import th.co.vlink.utils.Pagging;
  * 
  * @author Chatchai Pimtun
  */
+@SuppressWarnings("deprecation")
 @Repository
 @Transactional
 public class HibernateCommon {
+	@SuppressWarnings("rawtypes")
 	private static Class[] NO_ARGS_CLASS = new Class[0];
 	private static Object[] NO_ARGS_OBJECT = new Object[0];
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
@@ -93,12 +95,13 @@ public class HibernateCommon {
 			}
 		}
 	}
+	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
 	public Criteria getCommonCriteria(Session  session ,Object instance,Map likeExpression ,Map leExpression ,Map geExpression) throws DataAccessException {
 
 		// TODO Auto-generated method stub
 	 
-		boolean iscriteria = false;
-		boolean isSelectAll = false;
+		/*boolean iscriteria = false;
+		boolean isSelectAll = false;*/
 		//Pagging pagging = null;
 		try {
 			Class c = instance.getClass();
@@ -122,7 +125,7 @@ public class HibernateCommon {
 										Long valueLong = new Long(obj.toString());
 										if (valueLong.intValue() != 0) {
 											criteria.add(Expression.eq(fieldName, valueLong));
-											iscriteria = true;
+											//iscriteria = true;
 										}
 									}
 									if(cType == String.class){
@@ -151,7 +154,7 @@ public class HibernateCommon {
 											if(!haveExtExpression){
 												criteria.add(Expression.eq(fieldName, obj.toString()));
 											}
-											iscriteria = true;
+											//iscriteria = true;
 										}
 									}
 									if(cType.toString().indexOf("th.or.ntc.hibernate.bean.N")>1){/*
@@ -206,6 +209,7 @@ public class HibernateCommon {
 		return null;
 	
 	}
+	@SuppressWarnings({  "rawtypes", "unchecked" })
 	@Transactional(readOnly = true)
 	public List search(Session  session ,Object instance,Map likeExpression ,Map leExpression ,Map geExpression,Map likeFirstExpression,Map likeEndExpression,Map neExpression) throws DataAccessException {
 		// TODO Auto-generated method stub
@@ -213,8 +217,8 @@ public class HibernateCommon {
 		// TODO Auto-generated method stub
 		 
 		ArrayList transList = new ArrayList();
-		boolean iscriteria = false;
-		boolean isSelectAll = false;
+		/*boolean iscriteria = false;
+		boolean isSelectAll = false;*/
 		Pagging pagging = null;
 		try {
 			Class c = instance.getClass();
@@ -238,7 +242,7 @@ public class HibernateCommon {
 										Long valueLong = new Long(obj.toString());
 										if (valueLong.intValue() != 0) {
 											criteria.add(Expression.eq(fieldName, valueLong));
-											iscriteria = true;
+											//iscriteria = true;
 										}
 									}
 									if(cType == String.class){
@@ -286,7 +290,7 @@ public class HibernateCommon {
 											if(!haveExtExpression){
 												criteria.add(Expression.eq(fieldName, obj.toString()));
 											}
-											iscriteria = true;
+											//iscriteria = true;
 										}
 									}
 									if(cType.toString().indexOf("th.or.ntc.hibernate.bean.N")>1){
@@ -294,7 +298,7 @@ public class HibernateCommon {
 											Object sub = c.getMethod(methods[i].getName(), NO_ARGS_CLASS).invoke(instance, NO_ARGS_OBJECT);
 											if(sub!=null){
 												criteria.add(Expression.eq(fieldName, sub));
-												iscriteria = true;
+												//iscriteria = true;
 											}
 										} catch (SecurityException e) {
 											// TODO Auto-generated catch block
@@ -347,11 +351,12 @@ public class HibernateCommon {
 		return null;
 	
 	}
+	@SuppressWarnings({ "rawtypes","unchecked" })
 	private int getSize(Session session,
 			Object instance,Map likeExpression ,Map leExpression ,Map geExpression,Map likeFirstExpression,Map likeEndExpression,Map neExpression) throws Exception {
 
-		boolean iscriteria = false;
-		boolean isSelectAll = false;
+	/*	boolean iscriteria = false;
+		boolean isSelectAll = false;*/
 		try {
 			 
 				Class c = instance.getClass();
@@ -373,7 +378,7 @@ public class HibernateCommon {
 											Long valueLong = new Long(obj.toString());
 											if (valueLong.intValue() != 0) {
 												criteria.add(Expression.eq(fieldName, valueLong));
-												iscriteria = true;
+											//	iscriteria = true;
 											}
 										}
 										if(cType == String.class){
@@ -419,7 +424,7 @@ public class HibernateCommon {
 												if(!haveExtExpression){
 													criteria.add(Expression.eq(fieldName, obj.toString()));
 												}
-												iscriteria = true;
+												//iscriteria = true;
 											}
 										}
 										if(cType.toString().indexOf("th.or.ntc.hibernate.bean.N")>1){
@@ -427,7 +432,7 @@ public class HibernateCommon {
 												Object sub = c.getMethod(methods[i].getName(), NO_ARGS_CLASS).invoke(instance, NO_ARGS_OBJECT);
 												if(sub!=null){
 													criteria.add(Expression.eq(fieldName, sub));
-													iscriteria = true;
+													//iscriteria = true;
 												}
 											} catch (SecurityException e) {
 												// TODO Auto-generated catch block
@@ -462,11 +467,13 @@ public class HibernateCommon {
 		}
 	
 	}
+	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly = true)
 	public List search(Session  session ,Object instance,Map likeExpression ,Map leExpression ,Map geExpression) throws DataAccessException {
 		return search(session, instance, likeExpression, leExpression, geExpression,null,null,null);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly = true)
 	public List search(Session  session ,Object instance,Map likeExpression ,Map leExpression ,Map geExpression,Map likeFirstExpression,Map likeEndExpression) throws DataAccessException {
 		return search(session, instance, likeExpression, leExpression, geExpression,likeFirstExpression,likeEndExpression,null);
