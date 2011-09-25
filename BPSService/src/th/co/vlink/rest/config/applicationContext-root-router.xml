@@ -20,6 +20,12 @@
 							bean="bpsTermResource" />
 					</bean>
 				</entry>
+				<entry key="/bpsTermVersions">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="createResource"
+							bean="bpsTermVersionResource" />
+					</bean>
+				</entry>
 				<entry key="/bpsAttachFiles">
 					<bean class="org.restlet.ext.spring.SpringFinder">
 						<lookup-method name="createResource"

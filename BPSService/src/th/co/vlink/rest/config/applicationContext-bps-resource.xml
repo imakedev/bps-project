@@ -19,6 +19,13 @@
 		<property name="feed" ref="feed"></property>
 		<property name="xstream" ref="xstream"></property>
 	</bean>
+	<bean id="bpsTermVersionResource"
+		class="th.co.vlink.rest.resource.BpsTermVersionResource"
+		scope="prototype"> 
+		<property name="bpsTermVersionService" ref="bpsTermVersionService"></property>
+		<property name="feed" ref="feed"></property>
+		<property name="xstream" ref="xstream"></property>
+	</bean>	
 	<bean id="bpsAttachFileResource"
 		class="th.co.vlink.rest.resource.BpsAttachFileResource"
 		scope="prototype"> 
