@@ -15,8 +15,8 @@ public class BpsAttachFile extends VServiceXML implements Serializable {
 	private String bpafFileName;
 	@XStreamAlias("bpafFilePath")
 	private String bpafFilePath;
-	@XStreamAlias("bptId")
-	private BpsTerm bptId;
+	@XStreamAlias("bpsTerm")
+	private BpsTerm bpsTerm;
 
 	public Long getBpafId() {
 		return bpafId;
@@ -42,12 +42,13 @@ public class BpsAttachFile extends VServiceXML implements Serializable {
 		this.bpafFilePath = bpafFilePath;
 	}
 
-	public BpsTerm getBptId() {
-		return bptId;
+	public BpsTerm getBpsTerm() {
+		return bpsTerm;
 	}
 
-	public void setBptId(BpsTerm bptId) {
-		this.bptId = bptId;
+	public void setBpsTerm(BpsTerm bpsTerm) {
+		this.bpsTerm = bpsTerm;
 	}
 
+	 
 }

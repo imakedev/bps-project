@@ -14,7 +14,6 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import th.co.vlink.constant.ServiceConstant;
-import th.co.vlink.hibernate.bean.BpsGroup;
 import th.co.vlink.managers.BpsGroupService;
 import th.co.vlink.utils.BeanUtility;
 import th.co.vlink.utils.Pagging;
@@ -23,8 +22,8 @@ import th.co.vlink.xstream.common.VResultMessage;
 
 public class BpsGroupResource extends BaseResource {
 
-	private static final Logger logger = Logger.getLogger("BtsLog");  
-	private static final String BPS_TITLE = "BPS Term And Definition Collection";
+	private static final Logger logger = Logger.getLogger("bpsAppender");  
+	private static final String BPS_TITLE = "BPS Groups Collection";
 	private BpsGroupService bpsGroupService;
 	private com.sun.syndication.feed.atom.Feed feed;
 	private com.thoughtworks.xstream.XStream xstream;
@@ -63,60 +62,60 @@ public class BpsGroupResource extends BaseResource {
 		try {
 			in = entity.getStream();
 			xstream.processAnnotations(th.co.vlink.xstream.BpsGroup.class);// or xstream.autodetectAnnotations(true); (Auto-detect  Annotations)
-			th.co.vlink.xstream.BpsGroup xntcCalendar = new th.co.vlink.xstream.BpsGroup();
-			Object ntcCalendarObj = xstream.fromXML(in);
-			if (ntcCalendarObj != null) {
-				xntcCalendar = (th.co.vlink.xstream.BpsGroup) ntcCalendarObj;
-				if (xntcCalendar != null) {
-					th.co.vlink.hibernate.bean.BpsGroup ntcCalendar = new th.co.vlink.hibernate.bean.BpsGroup();
-					BeanUtility.copyProperties(ntcCalendar, xntcCalendar); 
-					if (xntcCalendar.getServiceName() != null
-							&& !xntcCalendar.getServiceName().equals("")) {
+			th.co.vlink.xstream.BpsGroup xbpsGroup = new th.co.vlink.xstream.BpsGroup();
+			Object bpsGroupObj = xstream.fromXML(in);
+			if (bpsGroupObj != null) {
+				xbpsGroup = (th.co.vlink.xstream.BpsGroup) bpsGroupObj;
+				if (xbpsGroup != null) {
+					th.co.vlink.hibernate.bean.BpsGroup bpsGroup = new th.co.vlink.hibernate.bean.BpsGroup();
+					BeanUtility.copyProperties(bpsGroup, xbpsGroup); 
+					if (xbpsGroup.getServiceName() != null
+							&& !xbpsGroup.getServiceName().equals("")) {
 						logger.debug(" BPS servicename = "
-								+ xntcCalendar.getServiceName());
-						String serviceName = xntcCalendar.getServiceName();
+								+ xbpsGroup.getServiceName());
+						String serviceName = xbpsGroup.getServiceName();
 						if(serviceName.equals(ServiceConstant.BPS_GROUP_FIND_BY_ID)){
-							th.co.vlink.hibernate.bean.BpsGroup ntcCalendarReturn = bpsGroupService.findBpsGroupById(ntcCalendar.getBpgId());
-							if(ntcCalendarReturn!=null){
+							th.co.vlink.hibernate.bean.BpsGroup bpsGroupReturn = bpsGroupService.findBpsGroupById(bpsGroup.getBpgId());
+							if(bpsGroupReturn!=null){
 								VResultMessage vresultMessage = new VResultMessage();
-								List<BpsGroup> xntcCalendars = new ArrayList<BpsGroup>(1);
-								BpsGroup xntcCalendarReturn = new BpsGroup();
-								BeanUtility.copyProperties(xntcCalendarReturn, ntcCalendarReturn);
-								xntcCalendars.add(xntcCalendarReturn);
-								vresultMessage.setResultListObj(xntcCalendars);
+								List<th.co.vlink.xstream.BpsGroup> xbpsGroups = new ArrayList<th.co.vlink.xstream.BpsGroup>(1);
+								th.co.vlink.xstream.BpsGroup xbpsGroupReturn = new th.co.vlink.xstream.BpsGroup();
+								BeanUtility.copyProperties(xbpsGroupReturn, bpsGroupReturn);
+								xbpsGroups.add(xbpsGroupReturn);
+								vresultMessage.setResultListObj(xbpsGroups);
 								export(entity, vresultMessage, xstream);
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.BPS_GROUP_SAVE)){
-							bpsGroupService.saveBpsGroup(ntcCalendar);
+							bpsGroupService.saveBpsGroup(bpsGroup);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_GROUP_UPDATE)){
-							bpsGroupService.updateBpsGroup(ntcCalendar);
+							bpsGroupService.updateBpsGroup(bpsGroup);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_GROUP_DELETE)){
-							bpsGroupService.deleteBpsGroup(ntcCalendar);
+							bpsGroupService.deleteBpsGroup(bpsGroup);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_GROUP_SEARCH)){
-							Pagging page = xntcCalendar.getPagging(); 
-							ntcCalendar.setPagging(page);		 
+							Pagging page = xbpsGroup.getPagging(); 
+							bpsGroup.setPagging(page);		 
 							
-							List result = (List) bpsGroupService.searchBpsGroup(ntcCalendar, xntcCalendar.getLikeExpression(), 
-									xntcCalendar.getLeExpression(), xntcCalendar.getGeExpression());
+							List result = (List) bpsGroupService.searchBpsGroup(bpsGroup, xbpsGroup.getLikeExpression(), 
+									xbpsGroup.getLeExpression(), xbpsGroup.getGeExpression());
 							if (result != null && result.size() == 2) {
-								java.util.List<th.co.vlink.hibernate.bean.BpsGroup> ntcCalendars = (java.util.List<th.co.vlink.hibernate.bean.BpsGroup>) result
+								java.util.List<th.co.vlink.hibernate.bean.BpsGroup> bpsGroups = (java.util.List<th.co.vlink.hibernate.bean.BpsGroup>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
-//								logger.debug("NtcCalendar=" + ntcCalendars + ",faqs_size="
+//								logger.debug("NtcCalendar=" + bpsGroups + ",faqs_size="
 //										+ faqs_size);
 								VResultMessage vresultMessage = new VResultMessage();
 
-								List<th.co.vlink.xstream.BpsGroup> xntcCalendars = new ArrayList<th.co.vlink.xstream.BpsGroup>();
+								List<th.co.vlink.xstream.BpsGroup> xbpsGroups = new ArrayList<th.co.vlink.xstream.BpsGroup>();
 								if (faqs_size != null && !faqs_size.equals(""))
 									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
-									xntcCalendars = getxBpsGroupObject(ntcCalendars);
+								if (bpsGroups != null && bpsGroups.size() > 0) {
+									xbpsGroups = getxBpsGroupObject(bpsGroups);
 								}
-								vresultMessage.setResultListObj(xntcCalendars);
+								vresultMessage.setResultListObj(xbpsGroups);
 								export(entity, vresultMessage, xstream);
 							}
 						}
@@ -165,39 +164,39 @@ public class BpsGroupResource extends BaseResource {
 	@Override
 	public List search(Pagging pagging) {
 		// TODO Auto-generated method stub		
-		th.co.vlink.hibernate.bean.BpsGroup ntcCalendar = new th.co.vlink.hibernate.bean.BpsGroup();
+		th.co.vlink.hibernate.bean.BpsGroup bpsGroup = new th.co.vlink.hibernate.bean.BpsGroup();
 		/*if(this.mpaId!=null)
 			msoPollVote.setMpqId(new Long(this.mpaId));*/
-		ntcCalendar.setPagging(pagging);
-		List result = bpsGroupService.searchBpsGroup(ntcCalendar);
+		bpsGroup.setPagging(pagging);
+		List result = bpsGroupService.searchBpsGroup(bpsGroup);
 		return result;
 	}
 	@Override
-	protected  List<FeedModel>  getFeedMedels(List ntcCalendars) {
+	protected  List<FeedModel>  getFeedMedels(List bpsGroups) {
 		// TODO Auto-generated method stub
 		List<FeedModel> feedModels = new ArrayList<FeedModel>(
-				ntcCalendars.size());
-		int size = ntcCalendars.size();
+				bpsGroups.size());
+		int size = bpsGroups.size();
 		for (int i = 0; i < size; i++) {
-			th.co.vlink.hibernate.bean.BpsGroup ntcCalendar = (th.co.vlink.hibernate.bean.BpsGroup)ntcCalendars.get(i);
+			th.co.vlink.hibernate.bean.BpsGroup bpsGroup = (th.co.vlink.hibernate.bean.BpsGroup)bpsGroups.get(i);
 			FeedModel feedModel = new FeedModel();
-			feedModel.setId(ntcCalendar.getBpgId()+"");
-			feedModel.setTitle(ntcCalendar.getBpgGroupName());
+			feedModel.setId(bpsGroup.getBpgId()+"");
+			feedModel.setTitle(bpsGroup.getBpgGroupName());
 			feedModels.add(feedModel);
 		}
 		return feedModels;
 	}
 
 	private List<th.co.vlink.xstream.BpsGroup> getxBpsGroupObject(
-			java.util.List<th.co.vlink.hibernate.bean.BpsGroup> ntcCalendars) {
-		List<th.co.vlink.xstream.BpsGroup> xntcCalendars = new ArrayList<th.co.vlink.xstream.BpsGroup>(
-				ntcCalendars.size());
-		for (th.co.vlink.hibernate.bean.BpsGroup ntcCalendar : ntcCalendars) {
-			th.co.vlink.xstream.BpsGroup xntcCalendar = new th.co.vlink.xstream.BpsGroup();
-			BeanUtility.copyProperties(xntcCalendar, ntcCalendar); 
-			xntcCalendars.add(xntcCalendar);
+			java.util.List<th.co.vlink.hibernate.bean.BpsGroup> bpsGroups) {
+		List<th.co.vlink.xstream.BpsGroup> xbpsGroups = new ArrayList<th.co.vlink.xstream.BpsGroup>(
+				bpsGroups.size());
+		for (th.co.vlink.hibernate.bean.BpsGroup bpsGroup : bpsGroups) {
+			th.co.vlink.xstream.BpsGroup xbpsGroup = new th.co.vlink.xstream.BpsGroup();
+			BeanUtility.copyProperties(xbpsGroup, bpsGroup); 
+			xbpsGroups.add(xbpsGroup);
 		}
-		return xntcCalendars;
+		return xbpsGroups;
 	} 
  
  

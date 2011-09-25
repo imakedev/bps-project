@@ -14,10 +14,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.resource.Variant;
 
 import th.co.vlink.constant.ServiceConstant;
-import th.co.vlink.hibernate.bean.BpsGroup;
 import th.co.vlink.managers.BpsAttachFileService;
-import th.co.vlink.managers.BpsGroupService;
-import th.co.vlink.managers.BpsTermService;
 import th.co.vlink.utils.BeanUtility;
 import th.co.vlink.utils.Pagging;
 import th.co.vlink.xstream.BpsAttachFile;
@@ -26,7 +23,7 @@ import th.co.vlink.xstream.common.VResultMessage;
 
 public class BpsAttachFileResource extends BaseResource {
 
-	private static final Logger logger = Logger.getLogger("BtsLog");  
+	private static final Logger logger = Logger.getLogger("bpsAppender");  
 	private static final String BPS_TITLE = "BPS Term And Definition Collection";
 	private BpsAttachFileService bpsAttachFileService;
 	private com.sun.syndication.feed.atom.Feed feed;
@@ -73,6 +70,12 @@ public class BpsAttachFileResource extends BaseResource {
 				if (xntcCalendar != null) {
 					th.co.vlink.hibernate.bean.BpsAttachFile ntcCalendar = new th.co.vlink.hibernate.bean.BpsAttachFile();
 					BeanUtility.copyProperties(ntcCalendar, xntcCalendar); 
+					if(xntcCalendar.getBpsTerm()!=null  && xntcCalendar.getBpsTerm().getBptId()!=null
+							&& xntcCalendar.getBpsTerm().getBptId().intValue()!=0){
+						th.co.vlink.hibernate.bean.BpsTerm term=new th.co.vlink.hibernate.bean.BpsTerm();
+						term.setBptId(xntcCalendar.getBpsTerm().getBptId());
+						ntcCalendar.setBpsTerm(term);
+					}
 					if (xntcCalendar.getServiceName() != null
 							&& !xntcCalendar.getServiceName().equals("")) {
 						logger.debug(" BPS servicename = "

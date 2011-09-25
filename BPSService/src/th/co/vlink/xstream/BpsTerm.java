@@ -3,9 +3,9 @@ package th.co.vlink.xstream;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import th.co.vlink.xstream.common.VServiceXML;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("bpsTerm")
 public class BpsTerm extends VServiceXML implements Serializable {
@@ -18,6 +18,7 @@ public class BpsTerm extends VServiceXML implements Serializable {
 	private String bptShortDesc;
 	@XStreamAlias("bptDefinition")
 	private String bptDefinition;
+	private String bptDefinitionSearch;
 	@XStreamAlias("bptSourceRef")
 	private String bptSourceRef;
 	@XStreamAlias("bptSource")
@@ -127,5 +128,13 @@ public class BpsTerm extends VServiceXML implements Serializable {
 	 * public void setBpsAttachFiles(Set<BpsAttachFile> bpsAttachFiles) {
 	 * this.bpsAttachFiles = bpsAttachFiles; }
 	 */
+
+	public String getBptDefinitionSearch() {
+		return bptDefinitionSearch;
+	}
+
+	public void setBptDefinitionSearch(String bptDefinitionSearch) {
+		this.bptDefinitionSearch = bptDefinitionSearch;
+	}
 
 }
