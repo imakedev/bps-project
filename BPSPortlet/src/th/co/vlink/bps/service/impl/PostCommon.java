@@ -19,11 +19,12 @@ import th.co.vlink.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.Dom4JDriver;
-
+ 
 public class PostCommon {
 	public static final int PAGE_SIZE = 5; 
 	public VResultMessage postMessage(VServiceXML vserviceXML,String className,String endPoint,boolean isReturn) {
-		HttpPost httppost = new HttpPost(ServiceConstant.hostReference+endPoint); 
+		//HttpPost httppost = new HttpPost(ServiceConstant.hostReference+endPoint); 
+		HttpPost httppost = new HttpPost("http://localhost:3000/v1/"+endPoint);
 		XStream xstream = new XStream(new Dom4JDriver());
 		Class c  = null;
 		try {
