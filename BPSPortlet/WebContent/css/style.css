@@ -1,0 +1,70 @@
+.team a:link,.team a:visited,.team a:active {
+	color: #004a5d;
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	padding-right: 5px;
+}
+
+.team a:hover {
+	color: #758D39;
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	padding-right: 5px;
+}
+
+#box-table-a {
+	font-size: 12px;
+	margin: 0px;
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+}
+
+#box-table-a th {
+	font-size: 13px;
+	font-weight: bold;
+	padding: 8px;
+	background: #132C00;
+	border-top: 4px solid #859D48;
+	border-bottom: 1px solid #fff;
+	color: #FFF;
+}
+
+#box-table-a td {
+	padding: 8px;
+	background: #e8edff;
+	border-bottom: 1px solid #fff;
+	color: #000;
+	border-top: 1px solid transparent;
+	height: 25px;
+	border: 1px solid #3DB0B5;
+}
+
+#box-table-a tr:hover td {
+	background: #d0dafd;
+}
+
+table#box-table-a a {
+	color: #003399;
+	text-decoration: none;
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+table#box-table-a a:link,table.links a:visited {
+	color: #004a5d;
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+table#box-table-a a:hover {
+	color: #758D39;
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: underline;
+}
