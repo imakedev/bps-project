@@ -125,6 +125,7 @@ public class BpsUserController {
 	@RequestMapping(params = "action=viewBpsTerm")
 	public String viewBpsTerm(Model model, @RequestParam("bptId") String bptId,
 			@RequestParam(value = "mode") String mode) {
+		String pageName = "viewBpsTerm";
 		BpsUserForm bpsUserForm = null;
 		if (!model.containsAttribute("bpsUserForm")) {
 			bpsUserForm = new BpsUserForm();
@@ -133,10 +134,14 @@ public class BpsUserController {
 			bpsUserForm = (BpsUserForm) map.get("bpsUserForm");
 		}
 		BpsTerm bpsTerm = null;
-		if (!mode.equals("add")) {
+		if (mode.equals("edit")) {
 			bpsTerm = bpsUserService.findBpsTermById(bptId);
-		} else {
+			pageName = "addOrEditBpsTerm";
+		} else if(mode.equals("add")) {
 			bpsTerm = new BpsTerm();
+			pageName = "addOrEditBpsTerm";
+		} else {
+			bpsTerm = bpsUserService.findBpsTermById(bptId);
 		}
 		bpsUserForm.setMode(mode);
 		bpsUserForm.setBpsTerm(bpsTerm);
@@ -144,11 +149,12 @@ public class BpsUserController {
 		model.addAttribute("bpsUserForm", bpsUserForm);
 		model.addAttribute("mode", mode);
 
-		return "addOrEditBpsTerm";
+		return pageName;
 	}
 	
 	@RequestMapping(params = "action=searchBpsTerm")
 	public void searchBpsTerm(ActionRequest request, ActionResponse response, Model model) {
+		BpsUserForm bpsUserForm = new BpsUserForm();
 		String bptTerm = request.getParameter("textfield");
 		String bpgId = request.getParameter("select2");
 		String searchBy = request.getParameter("select");
@@ -190,7 +196,8 @@ public class BpsUserController {
 		VResultMessage resultList = bpsUserService.searchBpsTerm(bpsTerm);
 		VResultMessage resultListGroup = bpsUserService
 				.searchBpsGroup(new BpsGroup());
-		model.addAttribute("bpsTerm", bpsTerm);
+		bpsUserForm.setBpsTerm(bpsTerm);
+		model.addAttribute("bpsUserForm", bpsUserForm);
 		model.addAttribute("resultList", resultList);
 		model.addAttribute("resultListGroup", resultListGroup);
 		response.setRenderParameter("action", "viewSearchResult");
