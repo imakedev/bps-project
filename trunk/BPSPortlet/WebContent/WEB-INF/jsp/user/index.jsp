@@ -29,10 +29,10 @@
 			style="color: #030; font-size: 12px;"><strong>You are
 		in:</strong> Home > BPS Term and Difinition</span></td>
 	</tr>
-	<!--   <tr> -->
-	<!--     <td>&nbsp;</td> -->
-	<!--     <td align="right"><a href="BPSTerm_admin_add.html"><img src="images/btn_admin.gif" width="65" height="25"></a></td> -->
-	<!--   </tr> -->
+	  <tr>
+	    <td align="left"><img src="<%=request.getContextPath()%>/images/term.gif"></td>
+	    <td align="right"><a href="#"><img src="<%=request.getContextPath()%>/images/btn_admin.gif" width="65" height="25"></a></td>
+	  </tr>
 	<tr>
 		<td colspan="2" height="30">
 		<div class="team" style="padding-left: 10px;">
@@ -68,7 +68,7 @@
 		</select> <input type="hidden" name="pageNo" id="pageNo" value="1"></form>
 		</div>
 		</td>
-		<td width="50%" height="30" align="right"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="0"/><portlet:param name="mode" value="add"/></portlet:renderURL>'><img src="<%=request.getContextPath()%>/images/New.gif"></a></td>
+<%-- 		<td width="50%" height="30" align="right"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="0"/><portlet:param name="mode" value="add"/></portlet:renderURL>'><img src="<%=request.getContextPath()%>/images/New.gif"></a></td> --%>
 	</tr>
 	<tr>
 		<td colspan="2" height="15"></td>
@@ -90,7 +90,7 @@
 				<th width="17%" align="center" bgcolor="#3DB0B5">Source&nbsp;<img
 					src="<%=request.getContextPath()%>/images/up.png"><img
 					src="<%=request.getContextPath()%>/images/down.png"></th>
-				<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th>
+<!-- 				<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th> -->
 			</tr>
 			<c:if test="${resultList.maxRow != 0}">
 			<c:forEach items="${resultList.resultListObj}" var="item">
@@ -100,8 +100,8 @@
 					<td>${item.bptDefinition}</td>
 					<td>${item.bpsGroup.bpgGroupName}</td>
 					<td>${item.bptSource}</td>
-					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img
-						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td>
+<%-- 					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img --%>
+<%-- 						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td> --%>
 				</tr>
 			</c:forEach>
 			<tr>

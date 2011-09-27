@@ -24,6 +24,7 @@ import th.co.vlink.bps.form.BpsAdminForm;
 import th.co.vlink.bps.form.BpsUserForm;
 import th.co.vlink.bps.service.BpsUserService;
 import th.co.vlink.utils.Pagging;
+import th.co.vlink.xstream.BpsAttachFile;
 import th.co.vlink.xstream.BpsGroup;
 import th.co.vlink.xstream.BpsTerm;
 import th.co.vlink.xstream.common.VResultMessage;
@@ -142,6 +143,10 @@ public class BpsUserController {
 			pageName = "addOrEditBpsTerm";
 		} else {
 			bpsTerm = bpsUserService.findBpsTermById(bptId);
+			BpsAttachFile bpsAttachFile = new BpsAttachFile();
+			bpsAttachFile.setBpsTerm(bpsTerm);
+			VResultMessage resultList = bpsUserService.searchBpsAttachFile(bpsAttachFile);
+			model.addAttribute("resultList", resultList);
 		}
 		bpsUserForm.setMode(mode);
 		bpsUserForm.setBpsTerm(bpsTerm);
