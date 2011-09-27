@@ -68,3 +68,11 @@ table#box-table-a a:hover {
 	font-weight: bold;
 	text-decoration: underline;
 }
+
+.h_achieve {
+	font-family: Tahoma;
+	font-size: 13px;
+	color: #003847;
+	font-weight: bold;
+	padding-bottom: 5px;
+}
