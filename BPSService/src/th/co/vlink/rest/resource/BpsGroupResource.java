@@ -74,11 +74,13 @@ public class BpsGroupResource extends BaseResource {
 						logger.debug(" BPS servicename = "
 								+ xbpsGroup.getServiceName());
 						String serviceName = xbpsGroup.getServiceName();
+						VResultMessage vresultMessage = null;
+						List<th.co.vlink.xstream.BpsGroup> xbpsGroups=null;
 						if(serviceName.equals(ServiceConstant.BPS_GROUP_FIND_BY_ID)){
 							th.co.vlink.hibernate.bean.BpsGroup bpsGroupReturn = bpsGroupService.findBpsGroupById(bpsGroup.getBpgId());
 							if(bpsGroupReturn!=null){
-								VResultMessage vresultMessage = new VResultMessage();
-								List<th.co.vlink.xstream.BpsGroup> xbpsGroups = new ArrayList<th.co.vlink.xstream.BpsGroup>(1);
+								vresultMessage = new VResultMessage();
+								xbpsGroups = new ArrayList<th.co.vlink.xstream.BpsGroup>(1);
 								th.co.vlink.xstream.BpsGroup xbpsGroupReturn = new th.co.vlink.xstream.BpsGroup();
 								BeanUtility.copyProperties(xbpsGroupReturn, bpsGroupReturn);
 								xbpsGroups.add(xbpsGroupReturn);
@@ -86,14 +88,17 @@ public class BpsGroupResource extends BaseResource {
 								export(entity, vresultMessage, xstream);
 							}
 						} 
-						if(serviceName.equals(ServiceConstant.BPS_GROUP_SAVE)){
-							bpsGroupService.saveBpsGroup(bpsGroup);
+						if(serviceName.equals(ServiceConstant.BPS_GROUP_SAVE)){							
+							int updateRecord=(bpsGroupService.saveBpsGroup(bpsGroup)).intValue();
+							returnUpdateRecord(entity,xbpsGroup,updateRecord);
 						}
-						else if(serviceName.equals(ServiceConstant.BPS_GROUP_UPDATE)){
-							bpsGroupService.updateBpsGroup(bpsGroup);
+						else if(serviceName.equals(ServiceConstant.BPS_GROUP_UPDATE)){							
+							int updateRecord=bpsGroupService.updateBpsGroup(bpsGroup);
+							returnUpdateRecord(entity,xbpsGroup,updateRecord); 
 						}
-						else if(serviceName.equals(ServiceConstant.BPS_GROUP_DELETE)){
-							bpsGroupService.deleteBpsGroup(bpsGroup);
+						else if(serviceName.equals(ServiceConstant.BPS_GROUP_DELETE)){							
+							int updateRecord=bpsGroupService.deleteBpsGroup(bpsGroup);
+							returnUpdateRecord(entity,xbpsGroup,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_GROUP_SEARCH)){
 							Pagging page = xbpsGroup.getPagging(); 
@@ -101,15 +106,15 @@ public class BpsGroupResource extends BaseResource {
 							
 							List result = (List) bpsGroupService.searchBpsGroup(bpsGroup, xbpsGroup.getLikeExpression(), 
 									xbpsGroup.getLeExpression(), xbpsGroup.getGeExpression());
+							System.out.println(" xxx = "+result);
 							if (result != null && result.size() == 2) {
 								java.util.List<th.co.vlink.hibernate.bean.BpsGroup> bpsGroups = (java.util.List<th.co.vlink.hibernate.bean.BpsGroup>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
 //								logger.debug("NtcCalendar=" + bpsGroups + ",faqs_size="
 //										+ faqs_size);
-								VResultMessage vresultMessage = new VResultMessage();
-
-								List<th.co.vlink.xstream.BpsGroup> xbpsGroups = new ArrayList<th.co.vlink.xstream.BpsGroup>();
+								vresultMessage = new VResultMessage(); 
+								xbpsGroups = new ArrayList<th.co.vlink.xstream.BpsGroup>();
 								if (faqs_size != null && !faqs_size.equals(""))
 									vresultMessage.setMaxRow(faqs_size);
 								if (bpsGroups != null && bpsGroups.size() > 0) {
@@ -199,7 +204,14 @@ public class BpsGroupResource extends BaseResource {
 		return xbpsGroups;
 	} 
  
- 
+	private void returnUpdateRecord(Representation entity,th.co.vlink.xstream.BpsGroup xbpsGroup,int updateRecord){
+		VResultMessage vresultMessage = new VResultMessage();
+		List<th.co.vlink.xstream.BpsGroup> xbpsGroups = new ArrayList<th.co.vlink.xstream.BpsGroup>(1);
+		xbpsGroup.setUpdateRecord(updateRecord);
+		xbpsGroups.add(xbpsGroup);
+		vresultMessage.setResultListObj(xbpsGroups);
+		export(entity, vresultMessage, xstream);
+	}
 	public BpsGroupService getBpsGroupService() {
 		return bpsGroupService;
 	}
