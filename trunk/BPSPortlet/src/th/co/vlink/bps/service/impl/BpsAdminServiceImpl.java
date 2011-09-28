@@ -10,21 +10,27 @@ import th.co.vlink.xstream.common.VResultMessage;
  
 public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
     // BPS_GROUP
-	public void saveBpsGroup(BpsGroup bpsGroup) {
+	public int saveBpsGroup(BpsGroup bpsGroup) {
 		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_SAVE);
-		postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",false);
+		VResultMessage resultMessage=postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",false);
+		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
+		return bpsGroup.getUpdateRecord();
 	}
 
-	public void updateBpsGroup(BpsGroup bpsGroup) {
+	public int updateBpsGroup(BpsGroup bpsGroup) {
 		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_UPDATE);
-		postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",false);
+		VResultMessage resultMessage =postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
+		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
+		return bpsGroup.getUpdateRecord();
 	}
 
-	public void deleteBpsGroup(String key) {
+	public int deleteBpsGroup(String key) {
 		BpsGroup bpsGroup = new BpsGroup();
 		bpsGroup.setBpgId(Long.parseLong(key));
 		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_DELETE);
-		postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",false);
+		VResultMessage resultMessage =postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
+		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
+		return bpsGroup.getUpdateRecord();
 	}
 
 	public BpsGroup findBpsGroupById(String bpgId) {
@@ -42,21 +48,27 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 
 	}
     // BPS_TERM
-	public void saveBpsTerm(BpsTerm bpsTerm) {
+	public int saveBpsTerm(BpsTerm bpsTerm) {
 		bpsTerm.setServiceName(ServiceConstant.BPS_TERM_SAVE);
-		postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",false);
+		VResultMessage resultMessage =postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",true);
+		bpsTerm = (BpsTerm)resultMessage.getResultListObj().get(0);
+		return bpsTerm.getUpdateRecord();
 	}
 
-	public void updateBpsTerm(BpsTerm bpsTerm) {
+	public int updateBpsTerm(BpsTerm bpsTerm) {
 		bpsTerm.setServiceName(ServiceConstant.BPS_TERM_UPDATE);
-		postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",false);
+		VResultMessage resultMessage =postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",true);
+		bpsTerm = (BpsTerm)resultMessage.getResultListObj().get(0);
+		return bpsTerm.getUpdateRecord();
 	}
 
-	public void deleteBpsTerm(String key) {
+	public int deleteBpsTerm(String key) {
 		BpsTerm bpsTerm = new BpsTerm();
 		bpsTerm.setBptId(Long.parseLong(key));
 		bpsTerm.setServiceName(ServiceConstant.BPS_TERM_DELETE);
-		postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",false);
+		VResultMessage resultMessage =postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",true);
+		bpsTerm = (BpsTerm)resultMessage.getResultListObj().get(0);
+		return bpsTerm.getUpdateRecord();
 	}
 
 	public BpsTerm findBpsTermById(String bpgId) {
@@ -91,17 +103,22 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 
 	}
 	// BPS_FILE
-	public void saveBpsAttachFile(BpsAttachFile bpsAttachFile) {
+	public int saveBpsAttachFile(BpsAttachFile bpsAttachFile) {
 		bpsAttachFile.setServiceName(ServiceConstant.BPS_ATTACH_FILE_SAVE);
-		postMessage(bpsAttachFile,bpsAttachFile.getClass().getName(),"bpsAttachFiles/",false);
+		//postMessage(bpsAttachFile,bpsAttachFile.getClass().getName(),"bpsAttachFiles/",false);
+		VResultMessage resultMessage =postMessage(bpsAttachFile,bpsAttachFile.getClass().getName(),"bpsAttachFiles/",true);
+		bpsAttachFile = (BpsAttachFile)resultMessage.getResultListObj().get(0);
+		return bpsAttachFile.getUpdateRecord();
 	}
  
 
-	public void deleteBpsAttachFile(String key) {
+	public int deleteBpsAttachFile(String key) {
 		BpsAttachFile bpsAttachFile = new BpsAttachFile();
 		bpsAttachFile.setBpafId(Long.parseLong(key));
-		bpsAttachFile.setServiceName(ServiceConstant.BPS_ATTACH_FILE_DELETE);
-		postMessage(bpsAttachFile,bpsAttachFile.getClass().getName(),"bpsAttachFiles/",false);
+		bpsAttachFile.setServiceName(ServiceConstant.BPS_ATTACH_FILE_DELETE); 
+		VResultMessage resultMessage =postMessage(bpsAttachFile,bpsAttachFile.getClass().getName(),"bpsAttachFiles/",true);
+		bpsAttachFile = (BpsAttachFile)resultMessage.getResultListObj().get(0);
+		return bpsAttachFile.getUpdateRecord();
 	}
 
 	public BpsAttachFile findBpsAttachFileById(String bpgId) {
@@ -130,7 +147,7 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 		 System.out.println(vresultMessage);
 		 
 		
-		saveBpsGroup(bpsGroup);
+		//saveBpsGroup(bpsGroup);
 		//  updateBpsGroup(bpsGroup);
 		// BpsGroup group= findBpsGroupById("1");
 		// System.out.println("name="+group.getBpgGroupName());
@@ -206,8 +223,8 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 	}
 	 public static void main(String[] args) {
 		 BpsAdminServiceImpl imp =new BpsAdminServiceImpl();
-		 //imp.testBpsGroup();
+		 imp.testBpsGroup();
 		// imp.testBpsTerm();
-		 imp.testBpsAttachFile();
+		 //imp.testBpsAttachFile();
 	}
 }
