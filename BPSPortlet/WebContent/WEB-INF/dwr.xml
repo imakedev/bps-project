@@ -10,7 +10,8 @@
     </create>
     <convert converter="bean" match="th.co.vlink.xstream.BpsGroup"/>
     <convert converter="bean" match="th.co.vlink.xstream.BpsTerm"/>
-    <convert converter="bean" match="th.co.vlink.xstream.BpsAttachFile"/>
+    <convert converter="bean" match="th.co.vlink.xstream.BpsTermVersion"/>
+    <convert converter="bean" match="th.co.vlink.xstream.BpsAttachFile"/>    
     <convert converter="bean" match="th.co.vlink.criteria.VCriteria"/>
  	<convert converter="bean" match="th.co.vlink.utils.Pagging"/>
   </allow>
