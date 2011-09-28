@@ -24,6 +24,8 @@ public class VServiceXML implements Serializable {
 	@XStreamAlias("fieldId")
 	private String fieldId;
 	
+	private int updateRecord;
+	
 	public String getFieldId() {
 		return fieldId;
 	}
@@ -112,6 +114,12 @@ public class VServiceXML implements Serializable {
 	}
 	public void setNeExpression(Map neExpression) {
 		this.neExpression = neExpression;
+	}
+	public int getUpdateRecord() {
+		return updateRecord;
+	}
+	public void setUpdateRecord(int updateRecord) {
+		this.updateRecord = updateRecord;
 	}
 
 }

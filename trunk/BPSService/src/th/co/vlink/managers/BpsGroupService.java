@@ -8,9 +8,9 @@ import org.springframework.dao.DataAccessException;
 import th.co.vlink.hibernate.bean.BpsGroup;
 
 public interface BpsGroupService {
-	public void saveBpsGroup(BpsGroup transientInstance) throws DataAccessException;
-	public void updateBpsGroup(BpsGroup transientInstance) throws DataAccessException ;
-	public void deleteBpsGroup(BpsGroup persistentInstance) throws DataAccessException ;	
+	public Long saveBpsGroup(BpsGroup transientInstance) throws DataAccessException;
+	public int updateBpsGroup(BpsGroup transientInstance) throws DataAccessException ;
+	public int deleteBpsGroup(BpsGroup persistentInstance) throws DataAccessException ;	
 	public BpsGroup findBpsGroupById(Long bpgId)throws DataAccessException  ;
 	@SuppressWarnings("rawtypes")
 	public  List searchBpsGroup(BpsGroup persistentInstance)throws DataAccessException  ;
