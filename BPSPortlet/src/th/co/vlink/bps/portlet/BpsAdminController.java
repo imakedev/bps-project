@@ -82,7 +82,8 @@ public class BpsAdminController {
 		bpsGroup.getVcriteria().setOrderBy(orderBy);
 		bpsGroup.getVcriteria().setOrderColumn(orderColumn);
 		VResultMessage resultList = bpsAdminService.searchBpsGroup(bpsGroup);
-		model.addAttribute("resultList", resultList);
+		
+		model.addAttribute("bpsGroups", resultList.getResultListObj());
 		model.addAttribute("bpsAdminForm", bpsAdminForm);
 		return "manageBpsGroup";
 	}
@@ -91,6 +92,7 @@ public class BpsAdminController {
 	public String addOrEditBpsGroup(Model model,
 			@RequestParam("bpgId") String bpgId,
 			@RequestParam(value="mode") String mode) {
+	try{
 		BpsAdminForm bpsAdminForm=null; 
 		if(!model.containsAttribute("bpsAdminForm")){
 			bpsAdminForm= new BpsAdminForm();
@@ -109,6 +111,10 @@ public class BpsAdminController {
 		 
 		model.addAttribute("bpsAdminForm", bpsAdminForm);
 		model.addAttribute("mode",mode); 
+	}catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+	}
 		return "addOrEditBpsGroup";
 	}
 	
