@@ -1,5 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="portlet" uri="http://java.sun.com/portlet"%>
+<portlet:defineObjects />
 <html>
 <head></head>
 <body>
@@ -8,7 +10,7 @@
 		<tr>
 			<td height="30" colspan="2"><span
 				style="color: #030; font-size: 12px;"><strong>You
-						are in:</strong> <a href="index.html">Home</a> > <a href="BPSTerm01.html">BPS
+						are in:</strong> <a href="index.html">Home</a> > <a href='<portlet:renderURL><portlet:param name="action" value="list"/></portlet:renderURL>'>BPS
 						Term and Difinition</a> > ${bpsUserForm.bpsTerm.bptTerm}</span>
 			</td>
 		</tr>
@@ -20,6 +22,16 @@
 					src="<%=request.getContextPath()%>/images/btn_comment.gif"
 					width="128" height="25">
 			</a>
+			</td>
+		</tr>
+		<tr>
+			<td height="30" colspan="2"><span
+				style="color: #030; font-size: 12px;">${bpsUserForm.bpsTerm.bptTerm}</span>
+			</td>
+		</tr>
+		<tr>
+			<td height="30" colspan="2"><span
+				style="color: #030; font-size: 12px;"><strong>Category:</strong> ${bpsUserForm.bpsTerm.bpsGroup.bpgGroupName} | <strong>Source:</strong> ${bpsUserForm.bpsTerm.bptSource} | <strong>Update:</strong>${bpsUserForm.bpsTerm.bptCreateDate} by ${bpsUserForm.bpsTerm.bptCreateBy}</span>
 			</td>
 		</tr>
 		<tr>
@@ -53,12 +65,12 @@
 					</tr>
 				</table></td>
 		</tr>
-		<tr>
-			<td width="50%" height="30"><span
-				style="color: #030; font-size: 12px;">< Back to Home</span>
-			</td>
-			<td width="50%">&nbsp;</td>
-		</tr>
+<!-- 		<tr> -->
+<!-- 			<td width="50%" height="30"><span -->
+<!-- 				style="color: #030; font-size: 12px;">< Back to Home</span> -->
+<!-- 			</td> -->
+<!-- 			<td width="50%">&nbsp;</td> -->
+<!-- 		</tr> -->
 	</table>
 </body>
 </html>

@@ -12,6 +12,20 @@
 	href="<%=request.getContextPath()%>/ckeditor/_samples/sample.css" />
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/ckeditor/ckeditor.js"></script>
+	
+<script type="text/javascript">
+	function selectDetail(input) {
+		if(input == 'revisedDiv') {
+			//document.getElementById('proposedDiv').style.display = 'none';
+			//document.getElementById('revisedDiv').style.display = '';
+			document.getElementById('editor1').innerHTML = 'App1';
+		} else {
+			//document.getElementById('revisedDiv').style.display = 'none';
+			//document.getElementById('proposedDiv').style.display = '';
+			document.getElementById('editor1').innerHTML = '';
+		}
+	}
+</script>
 </head>
 <body>
 	<c:if test="${mode eq 'add'}">
@@ -146,15 +160,17 @@
 										</tr>
 										<tr>
 											<td height="25">&nbsp;</td>
-											<td class="h_achieve"><a href="#">Proposed change</a> |
-												<a href="#">Revised version</a>
+											<td class="h_achieve"><a href="javascript: selectDetail('proposedDiv')">Proposed change</a> |
+												<a href="javascript: selectDetail('revisedDiv')">Revised version</a>
 											</td>
 										</tr>
 										<tr>
 											<td class="h_achieve">Detail:</td>
-											<td><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
+											<td><div id="proposedDiv"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
 		CKEDITOR.replace('editor1');
-	</script>
+	</script></div><div id="revisedDiv" style="display: none"><textarea cols="50" id="editor1" name="editor1" rows="10">${bpsUserForm.bpsTerm.bptDefinition}</textarea><script type="text/javascript">
+		CKEDITOR.replace('editor1');
+	</script></div>
 											</td>
 										</tr>
 										<tr>
@@ -171,7 +187,6 @@
 									</table>
 								</form>
 							</td>
-
 						</tr>
 					</table></td>
 			</tr>
