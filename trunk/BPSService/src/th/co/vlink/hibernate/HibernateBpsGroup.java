@@ -43,10 +43,10 @@ public class HibernateBpsGroup extends HibernateCommon implements BpsGroupServic
 		 return bpsGroup;	
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void saveBpsGroup(BpsGroup transientInstance)
+	public Long saveBpsGroup(BpsGroup transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		return save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
 	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly=true)
@@ -120,16 +120,16 @@ public class HibernateBpsGroup extends HibernateCommon implements BpsGroupServic
 			}
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void updateBpsGroup(BpsGroup transientInstance)
+	public int updateBpsGroup(BpsGroup transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void deleteBpsGroup(BpsGroup persistentInstance)
+	public int deleteBpsGroup(BpsGroup persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+		return	delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance); 
 	}
 
 }

@@ -39,14 +39,17 @@ public class HibernateCommon {
 	private static Class[] NO_ARGS_CLASS = new Class[0];
 	private static Object[] NO_ARGS_OBJECT = new Object[0];
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void delete(Session session, Object persistentInstance) {
+	public int delete(Session session, Object persistentInstance) {
+		int canUpdate = 0;
 		try{
 		session.delete(persistentInstance);
+		canUpdate =1;
 		}finally {
 			if (session != null) {
 				session = null;
 			} 
 		}
+		return canUpdate;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int update(Session session, Object persistentInstance) {
