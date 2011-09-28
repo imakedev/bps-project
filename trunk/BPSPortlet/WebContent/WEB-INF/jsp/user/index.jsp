@@ -68,7 +68,7 @@
 		</select> <input type="hidden" name="pageNo" id="pageNo" value="1"></form>
 		</div>
 		</td>
-<%-- 		<td width="50%" height="30" align="right"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="0"/><portlet:param name="mode" value="add"/></portlet:renderURL>'><img src="<%=request.getContextPath()%>/images/New.gif"></a></td> --%>
+		<td width="50%" height="30" align="right"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="0"/><portlet:param name="mode" value="add"/></portlet:renderURL>'><img src="<%=request.getContextPath()%>/images/New.gif"></a></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15"></td>
@@ -90,7 +90,7 @@
 				<th width="17%" align="center" bgcolor="#3DB0B5">Source&nbsp;<img
 					src="<%=request.getContextPath()%>/images/up.png"><img
 					src="<%=request.getContextPath()%>/images/down.png"></th>
-<!-- 				<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th> -->
+				<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th>
 			</tr>
 			<c:if test="${resultList.maxRow != 0}">
 			<c:forEach items="${resultList.resultListObj}" var="item">
@@ -100,14 +100,14 @@
 					<td>${item.bptDefinition}</td>
 					<td>${item.bpsGroup.bpgGroupName}</td>
 					<td>${item.bptSource}</td>
-<%-- 					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img --%>
-<%-- 						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td> --%>
+					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img
+						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td>
 				</tr>
 			</c:forEach>
 			<tr>
-		<td colspan="2" width="50%" height="30"><span
-			style="color: #030; font-size: 12px;">< Back to Home</span></td>
-		<td colspan="3" width="50%" align="right">
+<!-- 		<td colspan="2" width="50%" height="30"><span -->
+<!-- 			style="color: #030; font-size: 12px;">< Back to Home</span></td> -->
+		<td colspan="5" width="100%" align="right">
 		<div class="pagination">
 		<%
 			VResultMessage resultMessage = (VResultMessage)request.getAttribute("resultList"); 
