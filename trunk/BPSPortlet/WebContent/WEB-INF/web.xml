@@ -10,7 +10,10 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/context/common.xml</param-value>
 	</context-param>
-	
+	<context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>BPSPortlet.root</param-value>
+    </context-param> 
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
