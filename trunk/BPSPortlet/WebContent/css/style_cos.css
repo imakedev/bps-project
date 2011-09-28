@@ -1,0 +1,81 @@
+
+
+html, body {height:100%;}
+body {  background: none repeat scroll 0 0 #E3E3E3;}
+#page{  margin: 0px auto;font-family:Tahoma; font-size:12px; 
+				background: url("images/bgw.gif") repeat-y scroll center top #FFFFFF;width:1024px; }
+table,tr,td,div,span{font-family:Tahoma; font-size:12px;}
+
+
+
+/*.top{ color:#000; font-family:Tahoma; font-size:11px; text-decoration:none;}*/
+.top a:link,.top a:visited,.top a:active {color:#000; font-family:Tahoma; font-size:11px; text-decoration:none;}
+.top a:hover {color:#000; font-family:Tahoma; font-size:11px; text-decoration:underline;}
+.top2{ color:#000; font-family:Tahoma; font-size:11px; font-weight:bold;}
+
+.viweall,.viweall a:link,.viweall a:visited,.viweall a:active {
+	color: #004a5d;font-family:Tahoma;font-size:12px;font-weight:bold;} 
+.viweall a:hover {color: #FF00FF;font-family:Tahoma;font-size:12px;font-weight:bold;padding-right:5px;}
+
+a img{ border:0;}
+h1{background: url("images/title_back.gif") repeat-x scroll center bottom transparent;}
+
+.h_team{color: #000;font-family:Tahoma;font-size:14px; font-weight:bold; padding:5px;}
+.t_team{color: #000;font-family:Tahoma;font-size:12px;padding:5px;}
+.team a:link,.team a:visited,.team a:active {
+	color: #004a5d;font-family:Tahoma;font-size:12px;font-weight:bold; padding-right:5px;} 
+.team a:hover {color: #758D39;font-family:Tahoma;font-size:12px;font-weight:bold;padding-right:5px;}
+
+.h_achieve{font-family:Tahoma; font-size:13px; color:#132C00; font-weight:bold; }
+
+
+.pagination{
+padding: 2px;font-family:Tahoma; font-size:12px;
+}
+.pagination ul{
+margin: 0;font-family:Tahoma; font-size:12px;
+padding: 0;
+text-align: right;
+}
+
+.pagination li{
+list-style-type: none;font-family:Tahoma; font-size:12px;
+display: inline;
+padding-bottom: 1px;
+}
+
+.pagination a, .pagination a:visited{
+padding: 0 5px;font-family:Tahoma; font-size:12px;;
+border: 1px solid #9aafe5;
+text-decoration: none;
+color: #2e6ab1;
+}
+
+.pagination a:hover, .pagination a:active{
+border: 1px solid #2b66a5;font-family:Tahoma; font-size:12px;;
+color: #000;
+background-color: #FFFF80;
+}
+
+.pagination a.currentpage{
+background-color: #2e6ab1;
+color: #FFF !important;
+border-color: #2b66a5;
+font-weight: bold;
+cursor: default;
+}
+
+.pagination a.disablelink, .pagination a.disablelink:hover{
+background-color: white;
+cursor: default;
+color: #929292;
+border-color: #929292;
+font-weight: normal !important;
+}
+
+.pagination a.prevnext{
+font-weight: bold;
+}
+
+
+.footer{ color:#004a5d; font-family:Tahoma;font-size:12px;}
