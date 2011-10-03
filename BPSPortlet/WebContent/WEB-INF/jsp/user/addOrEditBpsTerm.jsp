@@ -14,16 +14,30 @@
 	src="<%=request.getContextPath()%>/ckeditor/ckeditor.js"></script>
 	
 <script type="text/javascript">
+
+	function stripHTML() {
+		var textArea = document.getElementById("editor1").value;
+		alert("1 : " + textArea);
+		var re = /(<([^>]+)>)/gi;
+		alert(textArea.replace(re, ""));
+	}
+	
 	function selectDetail(input) {
 		if(input == 'revisedDiv') {
 			//document.getElementById('proposedDiv').style.display = 'none';
 			//document.getElementById('revisedDiv').style.display = '';
-			document.getElementById('editor1').innerHTML = 'App1';
+			CKEDITOR.instances.editor1.setData("App1");
 		} else {
 			//document.getElementById('revisedDiv').style.display = 'none';
 			//document.getElementById('proposedDiv').style.display = '';
-			document.getElementById('editor1').innerHTML = '';
+			CKEDITOR.instances.editor1.setData("");
 		}
+	}
+	
+	function printText() {
+		var txt = CKEDITOR.instances.editor1.getData();
+		alert(txt);
+		return false;
 	}
 </script>
 </head>
@@ -93,7 +107,7 @@
 										<tr>
 											<td>&nbsp;</td>
 											<td><label> <input type="submit" name="button"
-													id="button" value="Send mail"> <input type="submit"
+													id="button" value="Send mail" onclick="printText()"> <input type="submit"
 													name="button2" id="button2" value="Cancel"> </label>
 											</td>
 										</tr>
