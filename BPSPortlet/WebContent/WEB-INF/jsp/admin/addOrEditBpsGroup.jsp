@@ -2,7 +2,10 @@
 <%@page contentType="text/html; charset=utf-8"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<c:url var="url" value="/" />
+<link rel="stylesheet" type="text/css"
+	href="${url}css/style.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <style>
 #box-table-a {
@@ -69,9 +72,9 @@ function <portlet:namespace />doAction(_command,_mode){
 	var agree ;
 	//alert(_urlDelete)
 	if(_mode == 'edit')
-	agree = confirm(" Would you like to edit member? ");
+		agree = confirm(" Would you like to edit Categoty? ");
 	else
-	agree = confirm(" Would you like to add member? ");
+		agree = confirm(" Would you like to add Categoty? ");
 	if (agree){
 	//window.location.href = _urlDelete;
 		return true ;
@@ -101,15 +104,15 @@ function <portlet:namespace />doAction(_command,_mode){
 		<tr>
 			<td height="30" colspan="2"><span
 				style="color: #030; font-size: 12px;"><strong>You
-						are in:</strong> <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(manageBpsGroup)}">BPS
+						are in:</strong> <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(backURL)}">BPS
 						Term and Difinition</a> >
 						<c:if test="${mode=='add'}">Add</c:if>
-						<c:if test="${mode=='add'}">Edit</c:if>  
+						<c:if test="${mode=='edit'}">Edit</c:if>  
 						BPS Term and Difinition</span>
 			</td>
 		</tr>
 		<tr>
-			<td><img src="images/term.gif">
+			<td><img src="${url}images/term.gif">
 			</td>
 			<td align="right">&nbsp;</td>
 		</tr>
@@ -128,19 +131,23 @@ function <portlet:namespace />doAction(_command,_mode){
 						</tr> 
 						<tr>
 						<td width="13%">&nbsp;</td>
-						<td width="87%" align="left" height="20"><input type="submit"
-							name="button_add" id="button_add" value=" Submit " onclick='<portlet:namespace />doAction("${urlAdd}","add")'/>  
+						<td width="87%" align="left" height="20">
+						<c:if test="${mode=='add'}">
+							<input type="submit"
+							name="button_add" id="button_add" value=" Submit "  onclick='return <portlet:namespace />doAction("doSave","add")' />
+							<%--
+							 onclick='<portlet:namespace />doAction("doSave","add")'
+							 --%>
+						</c:if>
+						<c:if test="${mode=='edit'}">
+							<input type="submit"
+							name="button_add" id="button_add" value=" Submit  " onclick='return <portlet:namespace />doAction("doSave","edit")' />
+						</c:if>  						 
 						</td>
 					</tr>
 					</table> 
 				</form>
 			</td>
-		</tr>
-		<tr>
-			<td width="50%" height="30"><span
-				style="color: #030; font-size: 12px;">< Back to Home</span>
-			</td>
-			<td width="50%">&nbsp;</td>
 		</tr>
 	</table>
 </form:form>

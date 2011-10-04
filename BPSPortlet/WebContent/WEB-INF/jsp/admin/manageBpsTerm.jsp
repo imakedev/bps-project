@@ -2,8 +2,12 @@
 <%@page contentType="text/html; charset=utf-8"%>
 <html>
 <head>
+<c:url var="url" value="/" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src='${url}js/jquery-1.6.4.min.js'></script>
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css"
+	href="${url}css/style.css" />
 <script>
 	function <portlet:namespace />doAction(_url, mode) {
 		if (mode == 'delete') {
@@ -19,58 +23,85 @@
 </script>
 </head>
 <body>
-	<table width="950" align="center" border="0" cellspacing="0"
+<portlet:renderURL var="urlAdd">
+    	<portlet:param name="action" value="addOrEditBpsTerm"/>
+    		<portlet:param name="mode" value="add"/>
+    		<portlet:param name="bptId" value="0"/> 
+</portlet:renderURL>
+<portlet:renderURL var="formAction">
+    <portlet:param name="action" value="manageBpsTerm"/>
+</portlet:renderURL> 
+<form:form  modelAttribute="bpsAdminForm" method="post"  action="${formAction}">
+<form:hidden path="command" id="command"/>
+	<table width="100%" align="center" border="0" cellspacing="0"
 		cellpadding="0">
-		<tr>
+		<tr> 
 			<td height="30" colspan="2"><span
 				style="color: #030; font-size: 12px;"><strong>You
 						are in:</strong> Home > BPS Term and Difinition</span>
 			</td>
 		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td align="right"><a href="BPSTerm_admin_add.html"><img
-					src="images/btn_admin.gif" width="65" height="25">
-			</a>
-			</td>
+		<tr> 
+			 <td align="left"><img src="${url}images/term.gif"></td>
+	    	 <td align="right">
+	    	 <%--
+	    	 <a href="#"><img src="${url}images/btn_admin.gif" width="65" height="25">
+	    	  --%></a>
+	    	 </td>
 		</tr>
 
 		<tr>
 			<td colspan="2"><div class="team" style="padding-left: 10px;">
-					<a href="#" class="team">A</a> <a href="#" class="team">B</a><a
-						href="#" class="team"> C </a><a href="#" class="team"> D</a><a
-						href="#" class="team"> E </a><a href="#" class="team">F </a><a
-						href="#" class="team">G</a><a href="#" class="team"> H</a><a
-						href="#" class="team"> I</a><a href="#" class="team"> J</a><a
-						href="#" class="team"> K</a><a href="#" class="team"> L</a><a
-						href="#" class="team"> M</a><a href="#" class="team"> N</a><a
-						href="#" class="team"> O</a><a href="#" class="team"> P</a><a
-						href="#" class="team"> Q</a><a href="#" class="team"> R</a><a
-						href="#" class="team"> S</a><a href="#" class="team"> T</a><a
-						href="#" class="team"> U</a><a href="#" class="team"> V</a><a
-						href="#" class="team"> W</a><a href="#" class="team"> X</a><a
-						href="#" class="team"> Y</a><a href="#" class="team"> Z</a>
+			<%
+				String[] indexChar = { "A", "B", "C", "D", "E", "F", "G", "H", "I",
+					"J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+					"V", "W", "X", "Y", "Z" };
+				for (int i = 0; i < indexChar.length; i++) {
+			%> <a
+				href='<portlet:renderURL><portlet:param name="action" value="list"/><portlet:param name="bptIndexChar" value="<%= indexChar[i]%>"/></portlet:renderURL>'
+				class="team">
+				<%if("B".equals(indexChar[i])){
+				%>
+				<span style="font-style:italic;color: black;text-decoration: none;"><%=indexChar[i]%></span>
+				<%
+				}else{
+				%>
+					<%=indexChar[i]%>
+				<%
+				}%> 
+				</a> <%
+ 				}
+ 			%> 
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<div style="padding-top: 5px;">
-					<form action="" method="get">
-						<strong style="padding-left: 5px;">Search:</strong> <input
-							name="textfield" type="text" id="textfield" size="30"> <select
-							name="select" id="select">
-							<option value="1" selected>By Term</option>
-							<option value="2">By Difinition</option>
-							<option value="3">By All</option>
-						</select> <select name="select2" id="select2">
+			<td width="50%">
+				<div style="padding-top: 5px;"> 
+						<strong style="padding-left: 5px;">Search:</strong> <form:input path="bptTerm" id="bptTerm"/>
+						<form:select path="searchBy" id="searchBy">
+	    					<form:option  label="By Term" value="1"/>
+	    					<form:option  label="By Difinition" value="2"/>
+	    					<form:option  label="By All" value="3"/>
+	    				</form:select>  
+						<form:select path="bpgId" id="bpgId">
+	    					<form:option  label="---Select Category--" value="0"/>
+	    					<form:options items="${listCates}" itemValue="bpgId"  itemLabel="bpgGroupName"/>
+	    				</form:select>  
+	    				<input type="submit" name="button_search" id="button_search" value="Search"/>
+						<%--
+						 <select name="select2" id="select2">
 							<option value="0" selected>--Select Category--</option>
 							<option value="1">Category1</option>
 							<option value="2">Category2</option>
 						</select>
-					</form>
+						 --%> 
 				</div></td>
+				<td width="50%" align="right" height="20"><input type="button"
+							name="button_add" id="button_add" value=" Add " onclick='<portlet:namespace />doAction("${urlAdd}","add")'/>  
+				</td>
 		</tr>
+		 
 		<tr>
 			<td colspan="2" valign="top">
 				<!--//-->
@@ -134,137 +165,70 @@ table#box-table-a a:hover {
 					cellpadding="0" style="border: 1px solid #132C00">
 					<tr>
 						<th width="25%" height="25" align="center" bgcolor="#3DB0B5">Term&nbsp;<img
-							src="images/up.png"><img src="images/down.png">
+							src="${url}images/up.png" style="cursor: pointer;"><img src="${url}images/down.png" style="cursor: pointer;">
 						</th>
 						<th width="26%" align="center" bgcolor="#3DB0B5">Difinition&nbsp;<img
-							src="images/up.png"><img src="images/down.png">
+							src="${url}images/up.png" style="cursor: pointer;"><img src="${url}images/down.png" style="cursor: pointer;">
 						</th>
 						<th width="26%" align="center" bgcolor="#3DB0B5">Categoty&nbsp;<img
-							src="images/up.png"><img src="images/down.png">
+							src="${url}images/up.png" style="cursor: pointer;"><img src="${url}images/down.png" style="cursor: pointer;">
 						</th>
 						<th width="17%" align="center" bgcolor="#3DB0B5">Source&nbsp;<img
-							src="images/up.png"><img src="images/down.png">
+							src="${url}images/up.png" style="cursor: pointer;"><img src="${url}images/down.png" style="cursor: pointer;">
 						</th>
 						<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th>
 					</tr>
+					<c:if test="${bpsTerms.maxRow != 0}">
+						<c:forEach items="${bpsTerms.resultListObj}" var="bpsTerm" varStatus="loop">  
+								  	<tr>  
+								  		<td><a href="BPSTerm02_detail.html" class="team"><c:out value="${bpsTerm.bptTerm}"/></a>
+										</td>
+										<td><c:out value="${bpsTerm.bptDefinition}" escapeXml="false"/></td>
+										<td><c:out value="${bpsTerm.bpsGroup.bpgGroupName}"/></td> 
+										<td><c:out value="${bpsTerm.bptSource}"/></td>
+										<td align="center">
+										<portlet:actionURL var="urlDelete">
+                         						<portlet:param name="action" value="deleteBpsTerm"/>
+                         						<portlet:param name="bptId" value="${bpsTerm.bptId}"/>                            
+                      						</portlet:actionURL>
+                      						<portlet:renderURL var="urlEdit">
+                         						<portlet:param name="action" value="addOrEditBpsTerm"/>
+                         						<portlet:param name="mode" value="edit"/>
+                         						<portlet:param name="bptId" value="${bpsTerm.bptId}"/>                            
+                      						</portlet:renderURL> 
+										<img   style="cursor: pointer;" onclick='return <portlet:namespace />doAction("${urlEdit}","edit")' src="${url}images/edit.png" width="16"
+											height="16" style="cursor: pointer;">
+											<img style="cursor: pointer;" onclick='return <portlet:namespace />doAction("${urlDelete}","delete")' src="${url}images/delete.png" width="16" style="cursor: pointer;"
+											height="16">
+										</td>										
+									</tr>	
+								</c:forEach>
+					</c:if>
+					<c:if test="${bpsTerms.maxRow == 0}">
+						<tr>
+							<td colspan="5" align="center" height="25" class="content">ไม่พบข้อมูล</td>
+						</tr>
+					</c:if>
+					<%--
 					<tr>
 						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
 						</td>
 						<td>xxxx 200 ตัวอักษร</td>
 						<td>xxxx</td>
 						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
+						<td align="center"><img src="${url}images/edit.png" width="16"
+							height="16" style="cursor: pointer;"><img src="${url}images/delete.png" width="16" style="cursor: pointer;"
 							height="16">
 						</td>
 					</tr>
-					<tr>
-						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
-					<tr>
-						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
-					<tr>
-						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
-					<tr>
-						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
-					<tr>
-						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
-					<tr>
-						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
-					<tr>
-						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
-					<tr>
-						<td><a href="BPSTerm02_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
-					<tr>
-						<td><a href="BPSTerm_detail.html" class="team">xxx</a>
-						</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td>xxxx</td>
-						<td align="center"><img src="images/edit.png" width="16"
-							height="16"><img src="images/delete.png" width="16"
-							height="16">
-						</td>
-					</tr>
+					 --%>
+					 
 				</table></td>
 		</tr>
-		<tr>
-			<td width="50%" height="30"><span
-				style="color: #030; font-size: 12px;">< Back to Home</span>
-			</td>
-			<td width="50%">
+		<tr> 
+			<td width="100%" colspan="2">
 				<div class="pagination">
+				<%--
 					<ul>
 						<li><a href="#" class="prevnext disablelink">« previous</a>
 						</li>
@@ -292,9 +256,11 @@ table#box-table-a a:hover {
 						<li><a href="#" class="prevnext">next »</a>
 						</li>
 					</ul>
+					 --%>
 				</div>
 			</td>
 		</tr>
 	</table>
+</form:form>
 </body>
 </html>
