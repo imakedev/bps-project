@@ -41,5 +41,8 @@ public class BpsAdminAjax {
          }
          return result; 
 	}
+	public int deleteBpsAttachFile(String key){ 
+		return bpsAdminService.deleteBpsAttachFile(key);
+	}
 
 }

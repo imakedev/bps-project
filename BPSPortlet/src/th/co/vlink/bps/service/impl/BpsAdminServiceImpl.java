@@ -12,7 +12,7 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
     // BPS_GROUP
 	public int saveBpsGroup(BpsGroup bpsGroup) {
 		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_SAVE);
-		VResultMessage resultMessage=postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",false);
+		VResultMessage resultMessage=postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
 		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
 		return bpsGroup.getUpdateRecord();
 	}
@@ -137,17 +137,17 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 	}
 	public void testBpsGroup(){
 		 BpsGroup bpsGroup=new BpsGroup();
-		 bpsGroup.setBpgId(1L);
-		 bpsGroup.setBpgGroupName("Group A");
-		 VResultMessage vresultMessage =searchBpsGroup(bpsGroup);
+		// bpsGroup.setBpgId(1L);
+		 bpsGroup.setBpgGroupName("Group K");
+		 /*VResultMessage vresultMessage =searchBpsGroup(bpsGroup);
 		 if(vresultMessage!=null && vresultMessage.getResultListObj()!=null){
 			System.out.println("list="+vresultMessage.getResultListObj());
 			System.out.println("max row="+vresultMessage.getMaxRow());
 		 }
 		 System.out.println(vresultMessage);
-		 
+		 */
 		
-		//saveBpsGroup(bpsGroup);
+		saveBpsGroup(bpsGroup);
 		//  updateBpsGroup(bpsGroup);
 		// BpsGroup group= findBpsGroupById("1");
 		// System.out.println("name="+group.getBpgGroupName());
