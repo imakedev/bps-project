@@ -64,53 +64,59 @@ public class BpsTermResource extends BaseResource {
 		try {
 			in = entity.getStream();
 			xstream.processAnnotations(BpsTerm.class);// or xstream.autodetectAnnotations(true); (Auto-detect  Annotations)
-			BpsTerm xntcCalendar = new BpsTerm();
+			BpsTerm xbpsTerm = new BpsTerm();
 			Object ntcCalendarObj = xstream.fromXML(in);
 			if (ntcCalendarObj != null) {
-				xntcCalendar = (BpsTerm) ntcCalendarObj;
-				if (xntcCalendar != null) {
-					th.co.vlink.hibernate.bean.BpsTerm ntcCalendar = new th.co.vlink.hibernate.bean.BpsTerm();
-					BeanUtility.copyProperties(ntcCalendar, xntcCalendar); 
-					if(xntcCalendar.getBpsGroup()!=null && xntcCalendar.getBpsGroup().getBpgId()!=null
-							&&xntcCalendar.getBpsGroup().getBpgId().intValue()!=0){
+				xbpsTerm = (BpsTerm) ntcCalendarObj;
+				if (xbpsTerm != null) {
+					th.co.vlink.hibernate.bean.BpsTerm bpsTerm = new th.co.vlink.hibernate.bean.BpsTerm();
+					BeanUtility.copyProperties(bpsTerm, xbpsTerm); 
+					if(xbpsTerm.getBpsGroup()!=null && xbpsTerm.getBpsGroup().getBpgId()!=null
+							&&xbpsTerm.getBpsGroup().getBpgId().intValue()!=0){
 						BpsGroup bpsGroup = new BpsGroup();
-						bpsGroup.setBpgId(xntcCalendar.getBptId());
-						ntcCalendar.setBpsGroup(bpsGroup);
+						bpsGroup.setBpgId(xbpsTerm.getBpsGroup().getBpgId());
+						bpsTerm.setBpsGroup(bpsGroup);
 					}
-					if (xntcCalendar.getServiceName() != null
-							&& !xntcCalendar.getServiceName().equals("")) {
+					if (xbpsTerm.getServiceName() != null
+							&& !xbpsTerm.getServiceName().equals("")) {
 						logger.debug(" BPS servicename = "
-								+ xntcCalendar.getServiceName());
-						String serviceName = xntcCalendar.getServiceName();
+								+ xbpsTerm.getServiceName());
+						String serviceName = xbpsTerm.getServiceName();
 						if(serviceName.equals(ServiceConstant.BPS_TERM_FIND_BY_ID)){
-							th.co.vlink.hibernate.bean.BpsTerm ntcCalendarReturn = bpsTermService.findBpsTermById(ntcCalendar.getBptId());
+							th.co.vlink.hibernate.bean.BpsTerm ntcCalendarReturn = bpsTermService.findBpsTermById(bpsTerm.getBptId());
 							if(ntcCalendarReturn!=null){
 								VResultMessage vresultMessage = new VResultMessage();
 								List<BpsTerm> xntcCalendars = new ArrayList<BpsTerm>(1);
 								BpsTerm xntcCalendarReturn = new BpsTerm();
-								BeanUtility.copyProperties(xntcCalendarReturn, ntcCalendarReturn);
+								BeanUtility.copyProperties(xntcCalendarReturn, ntcCalendarReturn);								
+								th.co.vlink.xstream.BpsGroup xbpsGroup = new th.co.vlink.xstream.BpsGroup();
+								BeanUtility.copyProperties(xbpsGroup, ntcCalendarReturn.getBpsGroup());
+								xntcCalendarReturn.setBpsGroup(xbpsGroup);
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
 								export(entity, vresultMessage, xstream);
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.BPS_TERM_SAVE)){
-							logger.info("xntcCalendar.getBpsGroup()="+xntcCalendar.getBpsGroup());
-							logger.info("ntcCalendar.getBpsGroup()="+ntcCalendar.getBpsGroup());
-							bpsTermService.saveBpsTerm(ntcCalendar);
+							logger.info("xntcCalendar.getBpsGroup()="+xbpsTerm.getBpsGroup());
+							logger.info("ntcCalendar.getBpsGroup()="+bpsTerm.getBpsGroup());
+							
+							int updateRecord=(bpsTermService.saveBpsTerm(bpsTerm)).intValue();
+							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_TERM_UPDATE)){
-							bpsTermService.updateBpsTerm(ntcCalendar);
+							int updateRecord=bpsTermService.updateBpsTerm(bpsTerm);
+							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_TERM_DELETE)){
-							bpsTermService.deleteBpsTerm(ntcCalendar);
+							int updateRecord=bpsTermService.deleteBpsTerm(bpsTerm);
+							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_TERM_SEARCH)){
-							Pagging page = xntcCalendar.getPagging(); 
-							ntcCalendar.setPagging(page);		 
+							Pagging page = xbpsTerm.getPagging(); 
+							bpsTerm.setPagging(page);		 
 							
-							List result = (List) bpsTermService.searchBpsTerm(ntcCalendar, xntcCalendar.getLikeExpression(), 
-									xntcCalendar.getLeExpression(), xntcCalendar.getGeExpression());
+							List result = (List) bpsTermService.searchBpsTerm(bpsTerm  ,xbpsTerm.getVcriteria().getKey());
 							if (result != null && result.size() == 2) {
 								java.util.List<th.co.vlink.hibernate.bean.BpsTerm> ntcCalendars = (java.util.List<th.co.vlink.hibernate.bean.BpsTerm>) result
 										.get(0);
@@ -178,7 +184,7 @@ public class BpsTermResource extends BaseResource {
 		/*if(this.mpaId!=null)
 			msoPollVote.setMpqId(new Long(this.mpaId));*/
 		ntcCalendar.setPagging(pagging);
-		List result = bpsTermService.searchBpsTerm(ntcCalendar);
+		List result = null;//bpsTermService.searchBpsTerm(ntcCalendar);
 		return result;
 	}
 	@Override
@@ -203,12 +209,22 @@ public class BpsTermResource extends BaseResource {
 				ntcCalendars.size());
 		for (th.co.vlink.hibernate.bean.BpsTerm ntcCalendar : ntcCalendars) {
 			BpsTerm xntcCalendar = new BpsTerm();
-			BeanUtility.copyProperties(xntcCalendar, ntcCalendar); 
+			BeanUtility.copyProperties(xntcCalendar, ntcCalendar); 			
+			th.co.vlink.xstream.BpsGroup xbpsGroup = new th.co.vlink.xstream.BpsGroup();
+			BeanUtility.copyProperties(xbpsGroup, ntcCalendar.getBpsGroup()); 
+			xntcCalendar.setBpsGroup(xbpsGroup);
 			xntcCalendars.add(xntcCalendar);
 		}
 		return xntcCalendars;
 	} 
- 
+	private void returnUpdateRecord(Representation entity,th.co.vlink.xstream.BpsTerm xbpsTerm,int updateRecord){
+		VResultMessage vresultMessage = new VResultMessage();
+		List<th.co.vlink.xstream.BpsTerm> xbpsTerms = new ArrayList<th.co.vlink.xstream.BpsTerm>(1);
+		xbpsTerm.setUpdateRecord(updateRecord);
+		xbpsTerms.add(xbpsTerm);
+		vresultMessage.setResultListObj(xbpsTerms);
+		export(entity, vresultMessage, xstream);
+	}
  
 	public BpsTermService getBpsTermService() {
 		return bpsTermService;

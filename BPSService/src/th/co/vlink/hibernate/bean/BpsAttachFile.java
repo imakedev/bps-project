@@ -33,7 +33,13 @@ public class BpsAttachFile  extends VServiceBean implements Serializable {
 	private String bpafFileName;
 	@Column(name="BPAF_FILE_PATH")
 	private String bpafFilePath;
-	 
+
+	
+	@Column(name="BPAF_FILE_SIZE")
+	private String bpafFileSize;
+	
+	@Column(name="BPAF_HOTLINK")
+	private String bpafHotLink;
 	@ManyToOne
 	@JoinColumn(name="BPT_TERM_ID")
 	private BpsTerm bpsTerm;
@@ -61,6 +67,18 @@ public class BpsAttachFile  extends VServiceBean implements Serializable {
 	}
 	public void setBpsTerm(BpsTerm bpsTerm) {
 		this.bpsTerm = bpsTerm;
+	}
+	public String getBpafFileSize() {
+		return bpafFileSize;
+	}
+	public void setBpafFileSize(String bpafFileSize) {
+		this.bpafFileSize = bpafFileSize;
+	}
+	public String getBpafHotLink() {
+		return bpafHotLink;
+	}
+	public void setBpafHotLink(String bpafHotLink) {
+		this.bpafHotLink = bpafHotLink;
 	}
 	 
 	

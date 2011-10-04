@@ -52,6 +52,10 @@ public class BpsTerm  extends VServiceBean implements Serializable {
 	private Timestamp bptCreateDate;
 	@Column(name="BPT_VERSION_NUMBER")
 	private Integer bptVersionNumber;
+	
+	@Column(name="BBT_STATUS")
+	private String bptStatus;
+	
 	@ManyToOne
 	@JoinColumn(name="BPG_GROUP_ID")
 	private BpsGroup bpsGroup;
@@ -135,6 +139,12 @@ public class BpsTerm  extends VServiceBean implements Serializable {
 	}
 	public void setBptDefinitionSearch(String bptDefinitionSearch) {
 		this.bptDefinitionSearch = bptDefinitionSearch;
+	}
+	public String getBptStatus() {
+		return bptStatus;
+	}
+	public void setBptStatus(String bptStatus) {
+		this.bptStatus = bptStatus;
 	}
 
 }

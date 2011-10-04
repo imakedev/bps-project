@@ -94,13 +94,16 @@ public class BpsAttachFileResource extends BaseResource {
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.BPS_ATTACH_FILE_SAVE)){
-							bpsAttachFileService.saveBpsAttachFile(ntcCalendar);
+							int updateRecord=(bpsAttachFileService.saveBpsAttachFile(ntcCalendar)).intValue();
+							returnUpdateRecord(entity,xntcCalendar,updateRecord);
 						}
-						else if(serviceName.equals(ServiceConstant.BPS_ATTACH_FILE_UPDATE)){
-							bpsAttachFileService.updateBpsAttachFile(ntcCalendar);
+						else if(serviceName.equals(ServiceConstant.BPS_ATTACH_FILE_UPDATE)){ 
+							int updateRecord=bpsAttachFileService.updateBpsAttachFile(ntcCalendar);
+							returnUpdateRecord(entity,xntcCalendar,updateRecord);
 						}
-						else if(serviceName.equals(ServiceConstant.BPS_ATTACH_FILE_DELETE)){
-							bpsAttachFileService.deleteBpsAttachFile(ntcCalendar);
+						else if(serviceName.equals(ServiceConstant.BPS_ATTACH_FILE_DELETE)){ 
+							int updateRecord=bpsAttachFileService.deleteBpsAttachFile(ntcCalendar);
+							returnUpdateRecord(entity,xntcCalendar,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_ATTACH_FILE_SEARCH)){
 							Pagging page = xntcCalendar.getPagging(); 
@@ -229,6 +232,14 @@ public class BpsAttachFileResource extends BaseResource {
 
 	public void setXstream(com.thoughtworks.xstream.XStream xstream) {
 		this.xstream = xstream;
+	}
+	private void returnUpdateRecord(Representation entity,th.co.vlink.xstream.BpsAttachFile xbpsAttachFile,int updateRecord){
+		VResultMessage vresultMessage = new VResultMessage();
+		List<th.co.vlink.xstream.BpsAttachFile> xbpsAttachFiles = new ArrayList<th.co.vlink.xstream.BpsAttachFile>(1);
+		xbpsAttachFile.setUpdateRecord(updateRecord);
+		xbpsAttachFiles.add(xbpsAttachFile);
+		vresultMessage.setResultListObj(xbpsAttachFiles);
+		export(entity, vresultMessage, xstream);
 	}
 
 }
