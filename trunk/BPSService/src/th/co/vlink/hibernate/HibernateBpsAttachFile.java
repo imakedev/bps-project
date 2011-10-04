@@ -43,10 +43,10 @@ public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttach
 		 return bpsAttachFile;	
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void saveBpsAttachFile(BpsAttachFile transientInstance)
+	public Long saveBpsAttachFile(BpsAttachFile transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		return save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
 	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly=true)
@@ -152,16 +152,16 @@ public class HibernateBpsAttachFile extends HibernateCommon implements BpsAttach
 			}
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void updateBpsAttachFile(BpsAttachFile transientInstance)
+	public int updateBpsAttachFile(BpsAttachFile transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void deleteBpsAttachFile(BpsAttachFile persistentInstance)
+	public int deleteBpsAttachFile(BpsAttachFile persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 
 }
