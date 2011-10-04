@@ -12,6 +12,8 @@ public class BpsAdminForm implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String mode;
 	private String command;
+	private String bpgGroupName;
+	private String bptTerm;
 	private BpsGroup bpsGroup;
 	private BpsTerm bpsTerm;
 	private String bpgId;
@@ -58,6 +60,18 @@ public class BpsAdminForm implements Serializable{
 	}
 	public void setSearchBy(String searchBy) {
 		this.searchBy = searchBy;
+	}
+	public String getBpgGroupName() {
+		return bpgGroupName;
+	}
+	public void setBpgGroupName(String bpgGroupName) {
+		this.bpgGroupName = bpgGroupName;
+	}
+	public String getBptTerm() {
+		return bptTerm;
+	}
+	public void setBptTerm(String bptTerm) {
+		this.bptTerm = bptTerm;
 	}
 
 }
