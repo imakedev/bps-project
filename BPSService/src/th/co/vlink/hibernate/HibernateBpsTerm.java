@@ -3,7 +3,6 @@ package th.co.vlink.hibernate;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -44,12 +43,12 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 		 return bpsTerm;	
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void saveBpsTerm(BpsTerm transientInstance)
+	public Long saveBpsTerm(BpsTerm transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		return save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
-	@SuppressWarnings("rawtypes")
+	/*@SuppressWarnings("rawtypes")
 	@Transactional(readOnly=true)
 	public List searchBpsTerm(BpsTerm persistentInstance)
 			throws DataAccessException {
@@ -63,11 +62,10 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 			logger.error("error in finding  \n", re);
 		}
 		return null;
-	}
+	}*/
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Transactional(readOnly=true)
-	public List searchBpsTerm(BpsTerm instance, Map likeExpression,
-			Map leExpression, Map geExpression) throws DataAccessException {
+	public List searchBpsTerm(BpsTerm instance,String searchKey ) throws DataAccessException {
 		ArrayList  transList = new ArrayList ();
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		try {
@@ -85,6 +83,11 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 			Integer bptVersionNumber =instance.getBptVersionNumber();
 			  
 			Pagging pagging 	= instance.getPagging();
+			System.out.println("search key="+searchKey);
+			System.out.println("bptTerm="+bptTerm);
+			if(bpsGroup!=null)
+				System.out.println("bpsGroup="+bpsGroup.getBpgId
+					());
 			 
 			if(bptId !=null && bptId > 0){  
 				 criteria.add(Expression.eq("bptId", bptId));	
@@ -117,7 +120,26 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 				// iscriteria = true;
 			}
 			if(bptTerm !=null && bptTerm.trim().length() > 0){   	
-				 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+				if(searchKey!=null){
+					  //1=by term ,2 =by Difinition , 3 all
+						if(searchKey.equals("1")){ 
+							 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+						}else if(searchKey.equals("2")){
+							//bptDefinitionSearch
+							 criteria.add(Expression.like("bptDefinition", "%"+bptTerm.trim()+"%").ignoreCase());
+						}else if(searchKey.equals("3")){
+							criteria.add(Expression.or
+									 (Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase(),
+									 Expression.like("bptDefinition", "%"+bptTerm.trim()+"%").ignoreCase()));
+							/*
+							 crit.add(Expression.or
+									 (Expression.eq("lngInsuranceId",new Long(3)),
+									  Expression.eq("lngInsuranceId",new Long(6))));*/
+						} 
+				}else{
+					 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+				}
+				
 					// iscriteria = true;
 			}if(bpsGroup !=null && bpsGroup.getBpgId() != null && bpsGroup.getBpgId() > 0){  
 					 criteria.add(Expression.eq("bpsGroup.bpgId", bpsGroup.getBpgId()));	
@@ -136,7 +158,7 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 //				criteria.addOrder(Order.asc("ncStartTime"));
 			 
 			// set pagging.
-			 String size = String.valueOf(getSize(session, instance)); 
+			 String size = String.valueOf(getSize(session, instance,searchKey)); 
 			 
 			 criteria.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 			 criteria.setMaxResults(pagging.getPageSize());
@@ -151,7 +173,7 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 		}
 		return transList;
 	}
-	 private int getSize(Session session, BpsTerm instance) throws Exception{
+	 private int getSize(Session session, BpsTerm instance,String searchKey) throws Exception{
 			try {
 				 
 				Criteria criteria 	= (Criteria) session.createCriteria(instance.getClass().getName());		 
@@ -200,7 +222,25 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 					// iscriteria = true;
 				}
 				if(bptTerm !=null && bptTerm.trim().length() > 0){ 
-					criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+					if(searchKey!=null){
+						  //1=by term ,2 =by Difinition , 3 all
+							if(searchKey.equals("1")){ 
+								 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+							}else if(searchKey.equals("2")){
+								//bptDefinitionSearch
+								 criteria.add(Expression.like("bptDefinition", "%"+bptTerm.trim()+"%").ignoreCase());
+							}else if(searchKey.equals("3")){
+								criteria.add(Expression.or
+										 (Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase(),
+										 Expression.like("bptDefinition", "%"+bptTerm.trim()+"%").ignoreCase()));
+								/*
+								 crit.add(Expression.or
+										 (Expression.eq("lngInsuranceId",new Long(3)),
+										  Expression.eq("lngInsuranceId",new Long(6))));*/
+							} 
+					}else{
+						 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+					}
 						// iscriteria = true;
 				}if(bpsGroup !=null && bpsGroup.getBpgId() != null && bpsGroup.getBpgId() > 0){  
 						 criteria.add(Expression.eq("bpsGroup.bpgId", bpsGroup.getBpgId()));	
@@ -226,16 +266,16 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 			}
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void updateBpsTerm(BpsTerm transientInstance)
+	public int updateBpsTerm(BpsTerm transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public void deleteBpsTerm(BpsTerm persistentInstance)
+	public int deleteBpsTerm(BpsTerm persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 
 }

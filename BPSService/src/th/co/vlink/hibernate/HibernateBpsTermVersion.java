@@ -124,7 +124,7 @@ public class HibernateBpsTermVersion extends HibernateCommon implements BpsTermV
 				 criteria.add(Expression.eq("bptVersionNumber", bptVersionNumber));	
 				 //iscriteria = true;
 			} if(bpsTerm !=null && bpsTerm.getBptId()!=null && bpsTerm.getBptId().intValue()!=0){  
-				 criteria.add(Expression.eq("bpsTerm.pbtId", bpsTerm.getBptId().intValue()));	
+				 criteria.add(Expression.eq("bpsTerm.bptId", bpsTerm.getBptId()));	
 					// iscriteria = true;
 				 
 			}
@@ -195,7 +195,7 @@ public class HibernateBpsTermVersion extends HibernateCommon implements BpsTermV
 					// iscriteria = true;
 				}
 				if(bpsTerm !=null && bpsTerm.getBptId()!=null && bpsTerm.getBptId().intValue()!=0){  
-					 criteria.add(Expression.eq("bpsTerm.pbtId", bpsTerm.getBptId().intValue()));	
+					 criteria.add(Expression.eq("bpsTerm.bptId", bpsTerm.getBptId()));	
 						// iscriteria = true;
 					 
 				}
@@ -213,7 +213,8 @@ public class HibernateBpsTermVersion extends HibernateCommon implements BpsTermV
 					 //iscriteria = true;
 				} 
 					 criteria.setProjection(Projections.rowCount()); 
-					 return ((Integer)criteria.list().get(0)).intValue(); 
+					 System.out.println("criteria.list().get(0)="+criteria.list().get(0).getClass());
+					 return ((java.lang.Integer)criteria.list().get(0)).intValue(); 
 			} catch (HibernateException re) {
 				logger.error("HibernateException",re);
 				throw re;
