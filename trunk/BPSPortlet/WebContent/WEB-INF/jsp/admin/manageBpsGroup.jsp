@@ -6,25 +6,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src='${url}js/jquery-1.6.4.min.js'></script>
 <link rel="stylesheet" type="text/css" href="${url}css/style_cos.css" />
-<script src='${url}dwr/interface/BpsAdminAjax.js'></script>
-<script src='${url}dwr/engine.js'></script>
-<script src='${url}dwr/util.js'></script>
 <title>Insert title here</title>
 <script>
 	$(document).ready(function() {
-	  // Handler for .ready() called.
-	  //	<portlet:namespace />list();
+	  // Handler for .ready() called. 
 	});
-	function <portlet:namespace />list() {
-		var _bpgGroupName=$("#name").val();
-		var bpsGroup={bpgGroupName:_bpgGroupName};
-		BpsAdminAjax.listBpsGroup(bpsGroup,{
-             callback:function(data){
-            	 alert(data);
-             }
-         });
-
-	}
 	function <portlet:namespace />doAction(_url,mode) {		
 		if (mode == 'delete') {
 			var agree = confirm("Would you like to delete ?");
@@ -87,12 +73,12 @@
 					</tr>
 					<tr>
 						<td width="100%" align="left" colspan="3" height="20"><strong>Category :</strong>
-							<label><form:input path="bpsGroup.bpgGroupName"/></label><input type="submit" name="button_search" id="button_search" value="Search">
+							<label><form:input path="bpgGroupName" id="bpgGroupName"/></label><input type="submit" name="button_search" id="button_search" value="Search">
 						</td> 
 					</tr>
 					<tr>
 						<td height="20">&nbsp;</td>
-						<td align="right" height="20" colspan="2"><input type="submit"
+						<td align="right" height="20" colspan="2"><input type="button"
 							name="button_add" id="button_add" value=" Add " onclick='<portlet:namespace />doAction("${urlAdd}","add")'/>  
 						</td>
 					</tr>
@@ -110,10 +96,10 @@
 					<tr>
 						<td valign="top">
 							<table width="100%" id="box-table-a" border="0" cellspacing="2"
-								cellpadding="0"> 
-								 <c:forEach items="${bpsGroups}" var="bpsGroup" varStatus="loop">  
+								cellpadding="0">  
+								 <c:forEach items="${bpsGroups.resultListObj}" var="bpsGroup" varStatus="loop">  
 								  	<tr>  
-										<td width="90%" align="left"><span><c:out value="${bpsGroup.bpgGroupName}"/></span></td>
+										<td width="85%" align="left"><span><c:out value="${bpsGroup.bpgGroupName}"/></span></td>
 										 	<portlet:actionURL var="urlDelete">
                          						<portlet:param name="action" value="deleteBpsGroup"/>
                          						<portlet:param name="bpgId" value="${bpsGroup.bpgId}"/>                            
@@ -123,20 +109,14 @@
                          						<portlet:param name="mode" value="edit"/>
                          						<portlet:param name="bpgId" value="${bpsGroup.bpgId}"/>                            
                       						</portlet:renderURL> 
-										<td width="10%" align="left"><span style="cursor: pointer;" onclick='<portlet:namespace />doAction("${urlEdit}","edit")'>Edit</span> | <span style="cursor: pointer;" onclick='<portlet:namespace />doAction("${urlDelete}","delete")'>Delete</span></td>
+										<td width="15%" align="center"><span style="cursor: pointer;" onclick='<portlet:namespace />doAction("${urlEdit}","edit")'>Edit</span> | <span style="cursor: pointer;" onclick='<portlet:namespace />doAction("${urlDelete}","delete")'>Delete</span></td>
 									</tr>	
 								</c:forEach>				 
 							</table></td>
 					</tr>
 				</table></td>
 		</tr>
-		<tr>
-			<td width="50%" height="30"><span
-				style="color: #030; font-size: 12px;"><a
-					href="CorporateW_admin.html">< Back to Administration of
-						Corporate Work Procedure</a>
-			</span>
-			</td>
+		<tr> 
 			<td width="50%"><div class="pagination">
 			<%--
 					<ul>

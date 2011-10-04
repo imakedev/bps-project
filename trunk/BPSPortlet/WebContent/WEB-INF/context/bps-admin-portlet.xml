@@ -17,7 +17,11 @@
     </property>
   </bean>
   <bean class="th.co.vlink.bps.portlet.BpsAdminController"/> 
-
+  <bean id="portletMultipartResolver" class="org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver">
+    <property name="maxUploadSize">
+      <value>104857600</value>
+    </property>
+  </bean>
 	<!-- Default View Resolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
