@@ -33,9 +33,10 @@ public class BpsTerm extends VServiceXML implements Serializable {
 	private Integer bptVersionNumber;
 	@XStreamAlias("bpsGroup")
 	private BpsGroup bpsGroup;
-
-	// @OneToMany(mappedBy="bpsAttachFile",fetch=FetchType.LAZY)
-	// private Set<BpsAttachFile> bpsAttachFiles;
+ 
+	public BpsTerm(){
+		bpsGroup=new BpsGroup();
+	}
 	public Long getBptId() {
 		return bptId;
 	}
