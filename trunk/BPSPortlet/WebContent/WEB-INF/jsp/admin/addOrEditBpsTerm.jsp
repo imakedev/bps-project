@@ -34,9 +34,27 @@ function <portlet:namespace/>downloadFile(_hotLink){
 		//var _form =document.getElementById('downloadAdminform');
 	 	//_form.submit();
 	} 
-
-function setChoice(_id){
-	
+var _file_index=1;
+function manageMoreFile(_id,_mode){
+	if(_mode=='add'){
+		$("#more_file_element").append("<span id=\"_element_file_"+_file_index+"\"><input type=\"file\" name=\"file"+_file_index+"\"/></span><span id=\"_element_img_"+_file_index+"\"><img src=\"${url}images/delete_file.png\" alt=\"delete file\" style=\"cursor: pointer;\" onclick=\"manageMoreFile('"+_file_index+"','del')\"/><br/></span>");		
+		_file_index++;
+	}
+	else{
+		//alert(_id)
+		$("#_element_file_"+_id).html("");
+		$("#_element_img_"+_id).html("");
+	}
+}
+function setChoice(_id){ 
+	BpsAdminAjax.findBpsTermVersionById(_id,{
+		callback:function(data){ 
+			 if(data!=null){
+				// alert(data.bptVersionNumber);
+				 $("#bptVersionNumber").val(data.bptVersionNumber);
+			 }
+		}
+	}); 
 }
 function clearFile(spanId){
 	//$("#"+elementId).val("");
@@ -55,11 +73,13 @@ function clearFile(spanId){
 function <portlet:namespace />doAction(_command,_mode){
 	//alert(_command+","+_mode);
 	var command = document.getElementById("command");
+	var mode = document.getElementById("mode");
 	//alert(nfaqId.value+","+command.value);
 	command.value=_command;
+	mode.value=_mode;
 	var agree ;
 	//alert(_urlDelete)
-	if(_mode == 'edit')
+	if(_mode == 'edit' || _mode=='updateVersion')
 		agree = confirm(" Would you like to edit Term and Definition? ");
 	else
 		agree = confirm(" Would you like to add Term and Definition? ");
@@ -86,6 +106,8 @@ function <portlet:namespace />doAction(_command,_mode){
 <body>
 <form:form  name="bpsAdminForm" modelAttribute="bpsAdminForm" method="post" action="${formAction}"  enctype="multipart/form-data">
 <form:hidden path="command" id="command"/>
+<form:hidden path="mode" id="mode"/>
+<form:hidden path="bpsTerm.bptVersionNumber" id="bptVersionNumber"/>
 	<table width="100%" align="center" border="0" cellspacing="0"
 		cellpadding="0">
 		<tr>
@@ -203,11 +225,12 @@ Wikis serve different purposes. Some permit control over different functions (le
 							<td align="left"><form:input path="bpsTerm.bptSource" size="45"/>
 							</td>
 						</tr>
-						<tr>
-							<th height="25" align="left">Attachments:</th>
+						<tr valign="top">
+							<th height="25" align="left" valign="top">Attachments:</th>
 							<td align="left">
-							<label> <input type="file" name="file0"/>  <img	src="${url}images/plus.png" alt="Add more file" style="cursor: pointer;" onclick="clearFile('x')" /><br/>
-							<input type="file" name="file1"/> 
+							<label><span id="more_file_element">
+							<input type="file" name="file0"/>&nbsp; &nbsp;<img	src="${url}images/plus.png" alt="Add more file" style="cursor: pointer;" onclick="manageMoreFile('0','add')" /><br/>
+							 </span>
 							</label>
 							</td>
 						</tr>
@@ -221,7 +244,7 @@ Wikis serve different purposes. Some permit control over different functions (le
 							</c:if>
 							<c:if test="${mode=='edit'}">
 								<input type="submit"
-								name="button_add" id="button_add" value="Save &amp; Publish" onclick='return <portlet:namespace />doAction("doSave","edit")' />
+								name="button_add" id="button_add" value="Save &amp; Publish" onclick='return <portlet:namespace />doAction("doSave","updateVersion")' />
 							</c:if>  
 							</span>
 							</td>
@@ -289,15 +312,21 @@ Wikis serve different purposes. Some permit control over different functions (le
 											</tr> 
 												<c:forEach items="${bpsTermVersions.resultListObj}" var="bpsTermVersion" varStatus="loop">   
 													<tr>
-														<td height="20"><form:radiobutton path="bpsTerm.bptVersionNumber" value="1" onclick='setChoice("1")'/>version 2</td>
-														<td>6/08/2011 1:45:30 PM</td>
-														<td>wpsadmin current</td>
+														<td height="20"><form:radiobutton path="version" value="${bpsTermVersion.bptVersionNumber}" onclick='setChoice("${bpsTermVersion.bptvId}")'/> &nbsp;&nbsp;version ${bpsTermVersion.bptVersionNumber}</td>
+														<td><fmt:formatDate pattern="dd/MM/yyyy HH:mm:ss a" value="${bpsTermVersion.bptCreateDate}" /></td>
+														<td>${bpsTermVersion.bptCreateBy} 
+														<c:if test="${bpsTermVersion.bptVersionNumber==bpsAdminForm.bpsTerm.bptVersionNumber}">
+														current
+														</c:if>
+														</td>
 													</tr>												 
 												</c:forEach>  
 											<c:if test="${bpsTermVersions.maxRow!=0}">
 											<tr>
 												<td height="30"><span style="padding-top: 5px;">
-														<input name="input3" type="button" value="Save Version">
+												<input type="submit"
+													name="button_add3" id="button_add3" value="Save Version" onclick='return <portlet:namespace />doAction("doSave","edit")' />
+														 
 												</span>
 												</td>
 												<td>&nbsp;</td>
