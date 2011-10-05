@@ -20,6 +20,7 @@ import javax.persistence.Table;
 @Entity
 //@Table(name="BANPU_BPS_TERM",schema="DB2INST1")
 @Table(name="BANPU_BPS_TERM")
+//@Table(name="BANPU_BPS_TERM",schema="DB2INST4") // pttep
 public class BpsTerm  extends VServiceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
@@ -18,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.vlink.hibernate.bean.BpsGroup;
 import th.co.vlink.hibernate.bean.BpsTerm;
+import th.co.vlink.hibernate.bean.BpsTermVersion;
 import th.co.vlink.managers.BpsTermService;
+import th.co.vlink.utils.BeanUtility;
 import th.co.vlink.utils.Pagging;
 @SuppressWarnings("deprecation")
 @Repository
@@ -46,7 +49,32 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 	public Long saveBpsTerm(BpsTerm transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		return save(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		transientInstance.setBptVersionNumber(1);
+		/*Long id=save(session, transientInstance);
+		BpsTermVersion version = new BpsTermVersion();
+		BeanUtility.copyProperties(version, transientInstance);
+		transientInstance.setBptId(id);
+		version.setBpsTerm(transientInstance);
+		save(session, version);*/
+		Long returnId  = null;
+		try{
+			Object obj = session.save(transientInstance);
+		
+			if(obj!=null){
+				returnId =(Long) obj;
+			}
+			BpsTermVersion version = new BpsTermVersion();
+			BeanUtility.copyProperties(version, transientInstance);
+			transientInstance.setBptId(returnId);
+			version.setBpsTerm(transientInstance);
+			session.save(version);
+			} finally {
+				if (session != null) {
+					session = null;
+				} 
+			}
+			return returnId; 
 	}
 	/*@SuppressWarnings("rawtypes")
 	@Transactional(readOnly=true)
@@ -272,10 +300,49 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 		return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
+	public int updateBpsTermVersion(BpsTerm transientInstance)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session =sessionAnnotationFactory.getCurrentSession();
+		int canUpdate = 0;
+		try{
+			Query query=session.createQuery("select max(bptVersionNumber) from BpsTermVersion bpsTermVersion where bpsTerm.bptId=:bptId");
+			query.setParameter("bptId", transientInstance.getBptId());
+			Object obj  = query.uniqueResult();
+			int max=0;
+			if(obj!=null)
+				max=((Integer)obj).intValue();
+			transientInstance.setBptVersionNumber(max+1);
+			
+			session.update(transientInstance);
+		
+		/*	if(obj!=null){
+				returnId =(Long) obj;
+			}*/
+			BpsTermVersion version = new BpsTermVersion();
+			BeanUtility.copyProperties(version, transientInstance);
+			transientInstance.setBptId(transientInstance.getBptId());
+			version.setBpsTerm(transientInstance);
+			session.save(version);
+			canUpdate=1;
+			}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+				if (session != null) {
+					session = null;
+				} 
+			}
+			return canUpdate; 
+		//return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int deleteBpsTerm(BpsTerm persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
-
+	 
 }

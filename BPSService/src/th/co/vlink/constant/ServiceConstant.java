@@ -16,6 +16,7 @@ public class ServiceConstant {
 	// BANPU_BPS_TERM
 	public static final String BPS_TERM_SAVE = "saveBpsTerm";
 	public static final String BPS_TERM_UPDATE = "updateBpsTerm";
+	public static final String BPS_TERM_UPDATE_VERSION = "updateVersionBpsTerm";
 	public static final String BPS_TERM_DELETE = "deleteBpsTerm";
 	public static final String BPS_TERM_SEARCH = "searchBpsTerm";
 	public static final String BPS_TERM_FIND_BY_ID = "findBpsTermById";
