@@ -44,7 +44,7 @@
 						</th>
 					</tr>
 					<tr>
-						<td width="25%"><span style="padding: 5px;">${bpsUserForm.bpsTerm.bptDefinition}</span>
+						<td width="25%"><span style="padding: 5px;"><c:out value="${bpsUserForm.bpsTerm.bptDefinition}" escapeXml="false" /></span>
 						</td>
 					</tr>
 				</table> <br>
