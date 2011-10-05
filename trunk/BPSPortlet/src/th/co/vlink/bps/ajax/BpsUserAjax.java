@@ -1,6 +1,8 @@
 package th.co.vlink.bps.ajax;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -29,7 +31,15 @@ public class BpsUserAjax {
 	
 	public int saveOrUpdateBpsTerm(BpsTerm bpsTerm,String mode){
 		//if(mode.equals("add"))
-			return bpsUserService.saveBpsTerm(bpsTerm);
+//		System.out.println("******************* Ajax saveOrUpdateBpsTerm ***************");
+//		bpsTerm.setBptId(1l);
+//		System.out.println("Term : "+bpsTerm.getBptTerm());
+//		bpsTerm.setBptStatus("0");
+//		bpsUserService = new BpsUserServiceImpl();
+		String bptIndexChar = bpsTerm.getBptTerm().trim().substring(0, 1);
+		bpsTerm.setBptIndexChar(bptIndexChar);
+		bpsTerm.setBptCreateDate(new Timestamp(new Date().getTime()));
+		return bpsUserService.saveBpsTerm(bpsTerm);
 		//else
 			//return bpsUserService.updateBpsTerm(bpsTerm);
 	}
@@ -42,4 +52,5 @@ public class BpsUserAjax {
 		Thread thread = new Thread(mailRunnable);
 		thread.start();
 	}
+	
 }

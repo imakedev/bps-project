@@ -20,13 +20,10 @@
         src="<%=request.getContextPath()%>/dwr/util.js"></script>	
 <script type="text/javascript">
 
-	function stripHTML() {
-		var textArea = CKEDITOR.instances.editor1.getData();
-		alert("1 : " + textArea);
-		var re = /(<([^>]+)>)/gi;
-		alert(textArea.replace(re, ""));
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g,"");
 	}
-	
+
 	function selectDetail(input) {
 		if(input == 'revisedDiv') {
 			document.getElementById('proposedDiv').style.display = 'none';
@@ -38,10 +35,38 @@
 	}
 	
 	function saveBtsTerm() {
+		var subjectMail = document.getElementById('mailSubject').value;
+		if(subjectMail.trim().length == 0) {
+			alert("Please enter Subject.");
+			return false;
+		}
+		var fromMail = "";
+		var toMail = "";
 		var textArea = CKEDITOR.instances.editor1.getData();
 		var re = /(<([^>]+)>)/gi;
 		var textSearch = textArea.replace(re, "");
-		//BpsUserAjax.saveOrUpdateBpsTerm();
+		var default_value = "0";
+		var bpt_term = document.getElementById('term').value;
+		if(bpt_term.trim().length == 0) {
+			alert("Please enter Term.");
+			return false;
+		}
+		var bpt_source_ref = document.getElementById('sourceRef').value;
+		var bpsTerm = {
+				bptId : default_value,
+				bptStatus : default_value,
+				bptTerm : bpt_term,
+				bptDefinition : textArea,
+				bptDefinitionSearch : textSearch,
+				bptSourceRef : bpt_source_ref
+		};
+		BpsUserAjax.saveOrUpdateBpsTerm(bpsTerm, '${mode}', handle_Complete);
+	}
+	
+	function handle_Complete(result) {
+		if(result != null || result > 0) {
+			alert("Data has been send.");
+		}
 	}
 	
 </script>
@@ -64,21 +89,21 @@
 										</tr>
 										<tr>
 											<td width="19%" height="19" class="h_achieve">To:</td>
-											<td width="81%"><label> <input name="COS Staff"
-													type="text" id="COS Staff" value="COS Staff" size="50"
+											<td width="81%"><label> <input name="mailTo"
+													type="text" id="mailTo" value="COS Staff" size="50"
 													class="readonly" readonly="readonly"> </label>
 											</td>
 										</tr>
 										<tr>
 											<td class="h_achieve">From:</td>
-											<td><input name="textfield2" type="text"
-												class="readonly" id="textfield2" value="name" size="50"
+											<td><input name="mailFrom" type="text"
+												class="readonly" id="mailFrom" value="name" size="50"
 												readonly="readonly">
 											</td>
 										</tr>
 										<tr>
 											<td class="h_achieve">Subject:</td>
-											<td><input name="textfield3" type="text" id="textfield3"
+											<td><input name="mailSubject" type="text" id="textfield3"
 												size="50">
 											</td>
 										</tr>
@@ -88,13 +113,13 @@
 										</tr>
 										<tr>
 											<td class="h_achieve">Term:</td>
-											<td><input name="textfield4" type="text" id="textfield4"
+											<td><input name="term" type="text" id="term"
 												size="50">
 											</td>
 										</tr>
 										<tr>
 											<td class="h_achieve">Source / Referance:</td>
-											<td><input name="textfield5" type="text" id="textfield5"
+											<td><input name="sourceRef" type="text" id="sourceRef"
 												size="50">
 											</td>
 										</tr>
@@ -142,21 +167,21 @@
 										</tr>
 										<tr>
 											<td width="19%" height="19" class="h_achieve">To:</td>
-											<td width="81%"><label> <input name="COS Staff"
-													type="text" id="COS Staff" value="COS Staff" size="50"
+											<td width="81%"><label> <input name="mailTo"
+													type="text" id="mailTo" value="COS Staff" size="50"
 													class="readonly" readonly="readonly"> </label>
 											</td>
 										</tr>
 										<tr>
 											<td class="h_achieve">From:</td>
-											<td><input name="textfield2" type="text"
-												class="readonly" id="textfield2" value="name" size="50"
+											<td><input name="mailFrom" type="text"
+												class="readonly" id="mailFrom" value="name" size="50"
 												readonly="readonly">
 											</td>
 										</tr>
 										<tr>
 											<td class="h_achieve">Subject:</td>
-											<td><input name="textfield3" type="text" id="textfield3"
+											<td><input name="mailSubject" type="text" id="mailSubject"
 												size="50">
 											</td>
 										</tr>
@@ -173,7 +198,7 @@
 										</tr>
 										<tr>
 											<td class="h_achieve">Source / Referance:</td>
-											<td><input name="textfield5" type="text" id="textfield5"
+											<td><input name="sourceRef" type="text" id=""sourceRef""
 												size="50">
 											</td>
 										</tr>
@@ -187,7 +212,7 @@
 											<td class="h_achieve">Detail:</td>
 											<td><div id="proposedDiv"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
 		CKEDITOR.replace('editor1');
-	</script></div><div id="revisedDiv" style="display: none"><textarea cols="50" id="editor2" name="editor2" rows="10"><c:out value="${bpsUserForm.bpsTerm.bptDefinition}" escapeXml="false" /></textarea><script type="text/javascript">
+	</script></div><div id="revisedDiv" style="display: none"><textarea cols="50" id="editor2" name="editor2" rows="10"><c:out value="${bpsUserForm.bpsTerm.bptDefinition}" escapeXml="true" /></textarea><script type="text/javascript">
 		CKEDITOR.replace('editor2');
 	</script></div>
 											</td>

@@ -44,15 +44,28 @@
 		<td colspan="2" height="30">
 		<div class="team" style="padding-left: 10px;">
 		<%
+			BpsUserForm bpsUserForm = (BpsUserForm) request.getAttribute("bpsUserForm");
+			String selectedIndex = "";
+			if(bpsUserForm != null && bpsUserForm.getBpsTerm() != null && bpsUserForm.getBpsTerm().getBptIndexChar() != null) {
+				selectedIndex = bpsUserForm.getBpsTerm().getBptIndexChar();
+			}
 			String[] indexChar = { "A", "B", "C", "D", "E", "F", "G", "H", "I",
 					"J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
 					"V", "W", "X", "Y", "Z" };
 			for (int i = 0; i < indexChar.length; i++) {
-		%> <a
-			href='<portlet:renderURL><portlet:param name="action" value="list"/><portlet:param name="bptIndexChar" value="<%= indexChar[i]%>"/></portlet:renderURL>'
-			class="team"><%=indexChar[i]%></a> <%
- 	}
- %>
+				if(selectedIndex.equalsIgnoreCase(indexChar[i])) {
+		%>
+		
+			<strong><%=indexChar[i]%></strong>
+		<%
+				} else {
+		%>
+		<a
+			href='<portlet:renderURL><portlet:param name="action" value="list"/><portlet:param name="bptIndexChar" value="<%= indexChar[i]%>"/></portlet:renderURL>' class="team"><%=indexChar[i]%></a>
+		<%			
+				}
+			}
+		%> 
 		</div>
 		</td>
 	</tr>
@@ -121,8 +134,6 @@
 		<div class="pagination">
 		<%
 			VResultMessage resultMessage = (VResultMessage)request.getAttribute("resultList"); 
-			BpsUserForm bpsUserForm = (BpsUserForm) request
-					.getAttribute("bpsUserForm");
 			int pageNo = 1;
 			int pageSize = 20;
 			int total_page = 1;
@@ -149,7 +160,7 @@
 			</c:if>
 			<c:if test="${resultList.maxRow == 0}">
 				<tr>
-					<td colspan="5" align="center" height="25" class="content">ไม่พบข้อมูล</td>
+					<td colspan="5" align="center" height="25" class="content">เนเธกเนเธเธเธเนเธญเธกเธนเธฅ</td>
 				</tr>
 				<tr><td colspan="5" height="30" align="left"><span style="color: #030; font-size: 12px;">< Back to Home</span></td>
 				</tr>
