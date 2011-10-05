@@ -45,5 +45,19 @@ public class BpsUserServiceImpl extends PostCommon implements BpsUserService {
 		bpsAttachFile.setServiceName(ServiceConstant.BPS_ATTACH_FILE_SEARCH);
 		return postMessage(bpsAttachFile,bpsAttachFile.getClass().getName(),"bpsAttachFiles/",true);
 	}
+	
+	public int saveBpsTerm(BpsTerm bpsTerm) {
+		bpsTerm.setServiceName(ServiceConstant.BPS_TERM_SAVE);
+		VResultMessage resultMessage=postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",true);
+		bpsTerm = (BpsTerm)resultMessage.getResultListObj().get(0);
+		return bpsTerm.getUpdateRecord();
+	}
+
+	public int updateBpsTerm(BpsTerm bpsTerm) {
+		bpsTerm.setServiceName(ServiceConstant.BPS_TERM_UPDATE);
+		VResultMessage resultMessage =postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",true);
+		bpsTerm = (BpsTerm)resultMessage.getResultListObj().get(0);
+		return bpsTerm.getUpdateRecord();
+	}
 
 }

@@ -12,11 +12,16 @@
 	href="<%=request.getContextPath()%>/ckeditor/_samples/sample.css" />
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/ckeditor/ckeditor.js"></script>
-	
+<script type="text/javascript"
+        src="<%=request.getContextPath()%>/dwr/interface/BpsUserAjax.js"></script> 
+<script type="text/javascript"
+        src="<%=request.getContextPath()%>/dwr/engine.js"></script> 
+<script type="text/javascript"
+        src="<%=request.getContextPath()%>/dwr/util.js"></script>	
 <script type="text/javascript">
 
 	function stripHTML() {
-		var textArea = document.getElementById("editor1").value;
+		var textArea = CKEDITOR.instances.editor1.getData();
 		alert("1 : " + textArea);
 		var re = /(<([^>]+)>)/gi;
 		alert(textArea.replace(re, ""));
@@ -24,21 +29,21 @@
 	
 	function selectDetail(input) {
 		if(input == 'revisedDiv') {
-			//document.getElementById('proposedDiv').style.display = 'none';
-			//document.getElementById('revisedDiv').style.display = '';
-			CKEDITOR.instances.editor1.setData("App1");
+			document.getElementById('proposedDiv').style.display = 'none';
+			document.getElementById('revisedDiv').style.display = '';
 		} else {
-			//document.getElementById('revisedDiv').style.display = 'none';
-			//document.getElementById('proposedDiv').style.display = '';
-			CKEDITOR.instances.editor1.setData("");
+			document.getElementById('revisedDiv').style.display = 'none';
+			document.getElementById('proposedDiv').style.display = '';
 		}
 	}
 	
-	function printText() {
-		var txt = CKEDITOR.instances.editor1.getData();
-		alert(txt);
-		return false;
+	function saveBtsTerm() {
+		var textArea = CKEDITOR.instances.editor1.getData();
+		var re = /(<([^>]+)>)/gi;
+		var textSearch = textArea.replace(re, "");
+		//BpsUserAjax.saveOrUpdateBpsTerm();
 	}
+	
 </script>
 </head>
 <body>
@@ -106,8 +111,8 @@
 										</tr>
 										<tr>
 											<td>&nbsp;</td>
-											<td><label> <input type="submit" name="button"
-													id="button" value="Send mail" onclick="printText()"> <input type="submit"
+											<td><label> <input type="button" name="button"
+													id="button" value="Send mail" onclick="saveBtsTerm()"> <input type="reset"
 													name="button2" id="button2" value="Cancel"> </label>
 											</td>
 										</tr>
@@ -182,8 +187,8 @@
 											<td class="h_achieve">Detail:</td>
 											<td><div id="proposedDiv"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
 		CKEDITOR.replace('editor1');
-	</script></div><div id="revisedDiv" style="display: none"><textarea cols="50" id="editor1" name="editor1" rows="10">${bpsUserForm.bpsTerm.bptDefinition}</textarea><script type="text/javascript">
-		CKEDITOR.replace('editor1');
+	</script></div><div id="revisedDiv" style="display: none"><textarea cols="50" id="editor2" name="editor2" rows="10"><c:out value="${bpsUserForm.bpsTerm.bptDefinition}" escapeXml="false" /></textarea><script type="text/javascript">
+		CKEDITOR.replace('editor2');
 	</script></div>
 											</td>
 										</tr>
@@ -193,8 +198,8 @@
 										</tr>
 										<tr>
 											<td>&nbsp;</td>
-											<td><label> <input type="submit" name="button"
-													id="button" value="Send mail"> <input type="submit"
+											<td><label> <input type="button" name="button"
+													id="button" value="Send mail" onclick="saveBtsTerm()"> <input type="reset"
 													name="button2" id="button2" value="Cancel"> </label>
 											</td>
 										</tr>

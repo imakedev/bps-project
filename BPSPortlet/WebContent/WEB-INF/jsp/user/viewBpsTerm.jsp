@@ -18,7 +18,7 @@
 			<td align="left"><img
 				src="<%=request.getContextPath()%>/images/term.gif">
 			</td>
-			<td align="right"><a href="#"><img
+			<td align="right"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${bpsUserForm.bpsTerm.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img
 					src="<%=request.getContextPath()%>/images/btn_comment.gif"
 					width="128" height="25">
 			</a>
