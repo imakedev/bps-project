@@ -250,6 +250,7 @@ public class BpsAdminController {
 			BpsAttachFile bpsAttachFile = new BpsAttachFile();
 			bpsAttachFile.setBpsTerm(bpsTerm);
 			resultList_files = bpsAdminService.searchBpsAttachFile(bpsAttachFile);
+			bpsAdminForm.setVersion(bpsTerm.getBptVersionNumber());
 		}else{
 			bpsTerm=new BpsTerm();
 		}
@@ -271,11 +272,16 @@ public class BpsAdminController {
 		System.out.println("saveBpsTerm="+bpsAdminForm.getMode());
 	try{
 		BpsTerm bpsTerm = bpsAdminForm.getBpsTerm();
+		String user=request.getUserPrincipal().getName();
 		int recordUpdate=0; 
-		if (bpsAdminForm.getMode().equalsIgnoreCase("add")) {
+		String mode=bpsAdminForm.getMode();
+		bpsTerm.setBptCreateBy(user);
+		if (mode.equalsIgnoreCase("add")) {
 			recordUpdate=bpsAdminService.saveBpsTerm(bpsTerm);
 			bpsTerm.setBptId(Long.parseLong(recordUpdate+"")); 
-		} else {
+		} else if(mode.equalsIgnoreCase("updateVersion")){
+			recordUpdate=bpsAdminService.updateBpsTermVersion(bpsTerm); 
+		}else if(mode.equalsIgnoreCase("edit")){
 			recordUpdate=bpsAdminService.updateBpsTerm(bpsTerm); 
 		}
 

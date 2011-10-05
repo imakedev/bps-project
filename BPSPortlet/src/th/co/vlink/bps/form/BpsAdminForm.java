@@ -18,6 +18,7 @@ public class BpsAdminForm implements Serializable{
 	private BpsTerm bpsTerm;
 	private String bpgId;
 	private String searchBy;
+	private Integer version;
 	public BpsAdminForm(){
 		bpsGroup =new BpsGroup();
 		bpsTerm =new BpsTerm();
@@ -72,6 +73,12 @@ public class BpsAdminForm implements Serializable{
 	}
 	public void setBptTerm(String bptTerm) {
 		this.bptTerm = bptTerm;
+	}
+	public Integer getVersion() {
+		return version;
+	}
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }
