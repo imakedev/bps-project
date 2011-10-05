@@ -5,10 +5,21 @@
 <c:url var="url" value="/" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src='${url}js/jquery-1.6.4.min.js'></script>
+<script src='${url}js/jquery.highlight-3.js'></script>
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css"
 	href="${url}css/style.css" />
+<style type="text/css">
+.highlight { background-color: yellow }
+</style>
 <script>
+
+	$(document).ready(function() {
+	  // Handler for .ready() called.
+	  var bptTerm = $("#bptTerm").val();
+	  if(bptTerm!='')
+			$('._highlight').highlight(bptTerm);
+	});
 	function <portlet:namespace />doAction(_url, mode) {
 		if (mode == 'delete') {
 			var agree = confirm("Would you like to delete ?");
@@ -180,10 +191,10 @@ table#box-table-a a:hover {
 					</tr>
 					<c:if test="${bpsTerms.maxRow != 0}">
 						<c:forEach items="${bpsTerms.resultListObj}" var="bpsTerm" varStatus="loop">  
-								  	<tr>  
-								  		<td><a href="BPSTerm02_detail.html" class="team"><c:out value="${bpsTerm.bptTerm}"/></a>
+								  	<tr>
+								  		<td><a href="BPSTerm02_detail.html" class="team"><span class="_highlight"><c:out value="${bpsTerm.bptTerm}"/></span></a>
 										</td>
-										<td><c:out value="${bpsTerm.bptDefinition}" escapeXml="false"/></td>
+										<td><span class="_highlight"><c:out value="${bpsTerm.bptDefinition}" escapeXml="false"/></span></td>
 										<td><c:out value="${bpsTerm.bpsGroup.bpgGroupName}"/></td> 
 										<td><c:out value="${bpsTerm.bptSource}"/></td>
 										<td align="center">
