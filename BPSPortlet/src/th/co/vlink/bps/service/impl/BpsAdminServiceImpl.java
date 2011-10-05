@@ -61,6 +61,13 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 		bpsTerm = (BpsTerm)resultMessage.getResultListObj().get(0);
 		return bpsTerm.getUpdateRecord();
 	}
+	public int updateBpsTermVersion(BpsTerm bpsTerm) {
+		// TODO Auto-generated method stub
+		bpsTerm.setServiceName(ServiceConstant.BPS_TERM_UPDATE_VERSION);
+		VResultMessage resultMessage =postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",true);
+		bpsTerm = (BpsTerm)resultMessage.getResultListObj().get(0);
+		return bpsTerm.getUpdateRecord();
+	}
 
 	public int deleteBpsTerm(String key) {
 		BpsTerm bpsTerm = new BpsTerm();
@@ -227,4 +234,6 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 		// imp.testBpsTerm();
 		 //imp.testBpsAttachFile();
 	}
+
+	
 }

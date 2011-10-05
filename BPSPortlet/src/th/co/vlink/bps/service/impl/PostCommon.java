@@ -25,6 +25,9 @@ public class PostCommon {
 	public VResultMessage postMessage(VServiceXML vserviceXML,String className,String endPoint,boolean isReturn) {
 		//HttpPost httppost = new HttpPost(ServiceConstant.hostReference+endPoint); 
 		HttpPost httppost = new HttpPost("http://localhost:3000/v1/"+endPoint);
+		//HttpPost httppost = new HttpPost("http://10.2.0.94:10000/BPSService/RestletServlet/"+endPoint);
+		//HttpPost httppost = new HttpPost("http://10.1.1.188:10000/BPSService/RestletServlet/"+endPoint);
+		
 		XStream xstream = new XStream(new Dom4JDriver());
 		Class c  = null;
 		try {

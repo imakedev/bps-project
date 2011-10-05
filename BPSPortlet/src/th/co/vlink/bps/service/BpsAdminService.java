@@ -17,6 +17,7 @@ public interface BpsAdminService {
 	// BPS_TERM
 	public int saveBpsTerm(BpsTerm bpsTerm);
 	public int updateBpsTerm(BpsTerm bpsTerm);
+	public int updateBpsTermVersion(BpsTerm bpsTerm);
 	public int deleteBpsTerm(String key);
 	public BpsTerm findBpsTermById(String bpgId);
 	public VResultMessage searchBpsTerm(BpsTerm bpsTerm);
