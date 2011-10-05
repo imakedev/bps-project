@@ -3,6 +3,7 @@ package th.co.vlink.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -100,14 +101,24 @@ public class BpsTermResource extends BaseResource {
 						if(serviceName.equals(ServiceConstant.BPS_TERM_SAVE)){
 							logger.info("xntcCalendar.getBpsGroup()="+xbpsTerm.getBpsGroup());
 							logger.info("ntcCalendar.getBpsGroup()="+bpsTerm.getBpsGroup());
-							
+							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							bpsTerm.setBptCreateDate(timeStampStartDate);
 							int updateRecord=(bpsTermService.saveBpsTerm(bpsTerm)).intValue();
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.BPS_TERM_UPDATE)){
+							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							bpsTerm.setBptCreateDate(timeStampStartDate);
 							int updateRecord=bpsTermService.updateBpsTerm(bpsTerm);
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.BPS_TERM_UPDATE_VERSION)){
+							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							bpsTerm.setBptCreateDate(timeStampStartDate);
+							int updateRecord=bpsTermService.updateBpsTermVersion(bpsTerm);
+							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
+						
 						else if(serviceName.equals(ServiceConstant.BPS_TERM_DELETE)){
 							int updateRecord=bpsTermService.deleteBpsTerm(bpsTerm);
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
