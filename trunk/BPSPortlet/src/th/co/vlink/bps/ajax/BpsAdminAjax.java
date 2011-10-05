@@ -12,6 +12,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import th.co.vlink.bps.service.BpsAdminService;
 import th.co.vlink.xstream.BpsGroup;
+import th.co.vlink.xstream.BpsTermVersion;
 import th.co.vlink.xstream.common.VResultMessage;
 
 public class BpsAdminAjax {
@@ -43,6 +44,9 @@ public class BpsAdminAjax {
 	}
 	public int deleteBpsAttachFile(String key){ 
 		return bpsAdminService.deleteBpsAttachFile(key);
+	}
+	public BpsTermVersion findBpsTermVersionById(String bpgId){  
+        return bpsAdminService.findBpsTermVersionById(bpgId) ; 
 	}
 
 }
