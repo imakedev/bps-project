@@ -1,7 +1,6 @@
 package th.co.vlink.managers;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
@@ -11,6 +10,7 @@ public interface BpsTermService {
 	// BANPU_BPS_TERM
 	public Long saveBpsTerm(BpsTerm transientInstance) throws DataAccessException;
 	public int updateBpsTerm(BpsTerm transientInstance) throws DataAccessException ;
+	public int updateBpsTermVersion(BpsTerm transientInstance) throws DataAccessException ; 
 	public int deleteBpsTerm(BpsTerm persistentInstance) throws DataAccessException ;	
 	public BpsTerm findBpsTermById(Long bptId)throws DataAccessException  ;
 	@SuppressWarnings("rawtypes")
