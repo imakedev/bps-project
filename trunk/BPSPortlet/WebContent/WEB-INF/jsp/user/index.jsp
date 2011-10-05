@@ -13,7 +13,14 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/style.css" />
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/johannburkard-v6.js"></script>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/jquery.highlight-3.yui.js"></script>	
 	
+<style type="text/css">
+.highlight { background-color: yellow }
+</style>
 <script type="text/javascript">
 	function clickPage(pageNo) {
 		document.getElementById("pageNo").value = pageNo;
@@ -65,7 +72,7 @@
 			<c:forEach items="${resultListGroup.resultListObj}" var="groupItem">
 				<option value="${groupItem.bpgId}">${groupItem.bpgGroupName}</option>
 			</c:forEach>
-		</select> <input type="hidden" name="pageNo" id="pageNo" value="1"></form>
+		</select> <input type="submit" value="Search"><input type="hidden" name="pageNo" id="pageNo" value="1"></form>
 		</div>
 		</td>
 		<td width="50%" height="30" align="right"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="0"/><portlet:param name="mode" value="add"/></portlet:renderURL>'><img src="<%=request.getContextPath()%>/images/New.gif"></a></td>
@@ -90,20 +97,23 @@
 				<th width="17%" align="center" bgcolor="#3DB0B5">Source&nbsp;<img
 					src="<%=request.getContextPath()%>/images/up.png"><img
 					src="<%=request.getContextPath()%>/images/down.png"></th>
-				<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th>
+<!-- 				<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th> -->
 			</tr>
+			<tr><td colspan="4"><table width="100%" id="box_content">
 			<c:if test="${resultList.maxRow != 0}">
 			<c:forEach items="${resultList.resultListObj}" var="item">
 				<tr>
-					<td><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="view"/></portlet:renderURL>' class="team">${item.bptTerm}</a>
+					<td width="25%"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="view"/></portlet:renderURL>' class="team">${item.bptTerm}</a>
 					</td>
-					<td>${item.bptDefinition}</td>
-					<td>${item.bpsGroup.bpgGroupName}</td>
-					<td>${item.bptSource}</td>
-					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img
-						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td>
+					<td width="26%">${item.bptDefinition}</td>
+					<td width="26%">${item.bpsGroup.bpgGroupName}</td>
+					<td width="17%">${item.bptSource}</td>
+<%-- 					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img --%>
+<%-- 						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td> --%>
 				</tr>
 			</c:forEach>
+			</table>
+			</td></tr>
 			<tr>
 <!-- 		<td colspan="2" width="50%" height="30"><span -->
 <!-- 			style="color: #030; font-size: 12px;">< Back to Home</span></td> -->
@@ -148,5 +158,9 @@
 		</td>
 	</tr>
 </table>
+<script type="text/javascript">
+var higilight_keyword = document.getElementById('textfield').value;
+$('#box_content').removeHighlight().highlight(higilight_keyword);
+</script>
 </body>
 </html>

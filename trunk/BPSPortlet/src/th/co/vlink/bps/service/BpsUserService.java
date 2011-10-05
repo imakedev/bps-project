@@ -12,7 +12,8 @@ public interface BpsUserService {
 	// BPS_TERM 
 	public BpsTerm findBpsTermById(String bpgId);
 	public VResultMessage searchBpsTerm(BpsTerm bpsTerm);
-
+	public int saveBpsTerm(BpsTerm bpsTerm);
+	public int updateBpsTerm(BpsTerm bpsTerm);
 	// BPS_TERM_VERSION
 	 
 	// BPS_FILE 

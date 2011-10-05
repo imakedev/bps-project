@@ -100,7 +100,7 @@ public class BpsUserController {
 			group.setBpgId(Long.parseLong(bpgId));
 			bpsTerm.setBpsGroup(group);
 		}
-		String key = "";
+		/*String key = "";
 		if (!searchBy.equals("0")) { // 1=by term ,2 =by Difinition
 			if (searchBy.equals("1")) {
 				// bptTerm
@@ -109,10 +109,10 @@ public class BpsUserController {
 				// bptDefinitionSearch
 				key = "bptDefinitionSearch";
 			}
-		}
-		bpsTerm.getVcriteria().setKey(key);
+		}*/
+		bpsTerm.getVcriteria().setKey(searchBy);
 		bpsUserForm.setBpgId(bpgId);
-		bpsUserForm.setSearchBy(searchBy);
+//		bpsUserForm.setSearchBy(searchBy);
 		bpsUserForm.setBpsTerm(bpsTerm);
 		VResultMessage resultList = bpsUserService.searchBpsTerm(bpsTerm);
 		VResultMessage resultListGroup = bpsUserService
