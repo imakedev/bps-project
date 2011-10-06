@@ -14,7 +14,8 @@ public interface BpsTermService {
 	public int deleteBpsTerm(BpsTerm persistentInstance) throws DataAccessException ;	
 	public BpsTerm findBpsTermById(Long bptId)throws DataAccessException  ;
 	@SuppressWarnings("rawtypes")
-	public  List searchBpsTerm(BpsTerm persistentInstance,String searchKey)throws DataAccessException  ;
+	public  List searchBpsTerm(BpsTerm persistentInstance,String searchKey,String indexChar,String orderColumn,
+			String orderBy)throws DataAccessException  ;
 //	@SuppressWarnings("rawtypes")
 //	public List searchBpsTerm(BpsTerm instance,Map likeExpression ,Map leExpression ,Map geExpression)throws DataAccessException  ;
 	
