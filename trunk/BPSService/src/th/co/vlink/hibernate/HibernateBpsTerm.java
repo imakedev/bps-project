@@ -11,6 +11,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -93,7 +94,8 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 	}*/
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Transactional(readOnly=true)
-	public List searchBpsTerm(BpsTerm instance,String searchKey ) throws DataAccessException {
+	public List searchBpsTerm(BpsTerm instance,String searchKey,String indexChar,String orderColumn,
+			String orderBy) throws DataAccessException {
 		ArrayList  transList = new ArrayList ();
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		try {
@@ -173,6 +175,11 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 					 criteria.add(Expression.eq("bpsGroup.bpgId", bpsGroup.getBpgId()));	
 						// iscriteria = true;
 			}
+			if(indexChar !=null &&  indexChar.length() > 0){  
+				 criteria.add(Expression.like("bptTerm", indexChar+"%").ignoreCase());	
+					// iscriteria = true;
+			}
+			
 			 
 			if(bptCreateDate != null){ 
 				 criteria.add(Expression.eq("bptCreateDate", bptCreateDate));	
@@ -181,12 +188,15 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 			if(bptVersionNumber != null && bptVersionNumber > 0){ 
 				 criteria.add(Expression.eq("bptVersionNumber", bptVersionNumber));	
 				 //iscriteria = true;
-			} 
-			
-//				criteria.addOrder(Order.asc("ncStartTime"));
-			 
+			}  
+			if(orderBy.equalsIgnoreCase("asc"))
+				criteria.addOrder(Order.asc(orderColumn));
+			else
+				criteria.addOrder(Order.desc(orderColumn));
+		
 			// set pagging.
-			 String size = String.valueOf(getSize(session, instance,searchKey)); 
+			 String size = String.valueOf(getSize(session, instance,searchKey,indexChar,orderColumn,
+						orderBy)); 
 			 
 			 criteria.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 			 criteria.setMaxResults(pagging.getPageSize());
@@ -201,7 +211,8 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 		}
 		return transList;
 	}
-	 private int getSize(Session session, BpsTerm instance,String searchKey) throws Exception{
+	 private int getSize(Session session, BpsTerm instance,String searchKey,String indexChar,String orderColumn,
+				String orderBy) throws Exception{
 			try {
 				 
 				Criteria criteria 	= (Criteria) session.createCriteria(instance.getClass().getName());		 
@@ -273,6 +284,10 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 				}if(bpsGroup !=null && bpsGroup.getBpgId() != null && bpsGroup.getBpgId() > 0){  
 						 criteria.add(Expression.eq("bpsGroup.bpgId", bpsGroup.getBpgId()));	
 							// iscriteria = true;
+				}
+				if(indexChar !=null &&  indexChar.length() > 0){  
+					 criteria.add(Expression.like("bptTerm", indexChar+"%").ignoreCase());	
+						// iscriteria = true;
 				}
 				 
 				if(bptCreateDate != null){ 

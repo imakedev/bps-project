@@ -19,6 +19,7 @@ public class VCriteria  implements Serializable{
 	private String value; // value in column
 	private String orderBy;
 	private String orderColumn;
+	private String indexChar;
 	public VCriteria(){
 		 
 	}
@@ -53,6 +54,12 @@ public class VCriteria  implements Serializable{
 	}
 	public void setValue(String value) {
 		this.value = value;
+	}
+	public String getIndexChar() {
+		return indexChar;
+	}
+	public void setIndexChar(String indexChar) {
+		this.indexChar = indexChar;
 	}
 	
 
