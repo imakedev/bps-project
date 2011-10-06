@@ -24,6 +24,10 @@
 
 <title>Insert title here</title>
 <script>
+function popupwnd(url, toolbar, menubar, locationbar, resize, scrollbars, statusbar, left, top, width, height)
+{
+   var popupwindow = this.open(url, '', 'toolbar=' + toolbar + ',menubar=' + menubar + ',location=' + locationbar + ',scrollbars=' + scrollbars + ',resizable=' + resize + ',status=' + statusbar + ',left=' + left + ',top=' + top + ',width=' + width + ',height=' + height);
+}
 function <portlet:namespace/>downloadFile(_hotLink){ 
 	 	var src = "http://localhost:8081/BPSDownloadServlet/DownloadServlet?"+_hotLink;
 	 	 
@@ -56,6 +60,15 @@ function setChoice(_id){
 		}
 	}); 
 }
+function test(){
+	var editor_data = CKEDITOR.instances.bptDefinition;
+	alert(editor_data.getData())
+	
+	var text = editor_data.document.getBody().getChild( 0 ).getText();
+	alert(editor_data.document.getBody().getChildCount())
+	//alert(text)
+	$("#uu").html(text)
+}
 function clearFile(spanId){
 	//$("#"+elementId).val("");
 	var agree = confirm(" Would you like to delete file ? ");
@@ -76,6 +89,13 @@ function <portlet:namespace />doAction(_command,_mode){
 	var mode = document.getElementById("mode");
 	//alert(nfaqId.value+","+command.value);
 	command.value=_command;
+	var editor_data = CKEDITOR.instances.bptDefinition;
+	var child_count=editor_data.document.getBody().getChildCount();
+	var str="";
+	for(var i=0;i<child_count;i++){
+		str=str+editor_data.document.getBody().getChild( i).getText();
+	} 
+	 $("#bptDefinitionSearch").val(str);
 	mode.value=_mode;
 	var agree ;
 	//alert(_urlDelete)
@@ -106,6 +126,7 @@ function <portlet:namespace />doAction(_command,_mode){
 <body>
 <form:form  name="bpsAdminForm" modelAttribute="bpsAdminForm" method="post" action="${formAction}"  enctype="multipart/form-data">
 <form:hidden path="command" id="command"/>
+<form:hidden path="bpsTerm.bptDefinitionSearch" id="bptDefinitionSearch"/>
 <form:hidden path="mode" id="mode"/>
 <form:hidden path="bpsTerm.bptVersionNumber" id="bptVersionNumber"/>
 	<table width="100%" align="center" border="0" cellspacing="0"
@@ -118,6 +139,7 @@ function <portlet:namespace />doAction(_command,_mode){
 						<c:if test="${mode=='add'}">Add</c:if>
 						<c:if test="${mode=='edit'}">Edit</c:if>  
 						BPS Term and Difinition</span>
+						<span id="uu"></span>
 			</td>
 		</tr>
 		<tr>
@@ -247,6 +269,7 @@ Wikis serve different purposes. Some permit control over different functions (le
 								name="button_add" id="button_add" value="Save &amp; Publish" onclick='return <portlet:namespace />doAction("doSave","updateVersion")' />
 							</c:if>  
 							</span>
+							 
 							</td>
 						</tr>
 

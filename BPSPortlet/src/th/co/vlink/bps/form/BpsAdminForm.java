@@ -18,6 +18,12 @@ public class BpsAdminForm implements Serializable{
 	private BpsTerm bpsTerm;
 	private String bpgId;
 	private String searchBy;
+	 
+	private String indexChar;
+	private String orderColumn;
+	private String orderBy;
+	//private String searchMode;//  
+	
 	private Integer version;
 	public BpsAdminForm(){
 		bpsGroup =new BpsGroup();
@@ -80,5 +86,24 @@ public class BpsAdminForm implements Serializable{
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
+	public String getIndexChar() {
+		return indexChar;
+	}
+	public void setIndexChar(String indexChar) {
+		this.indexChar = indexChar;
+	}
+	public String getOrderColumn() {
+		return orderColumn;
+	}
+	public void setOrderColumn(String orderColumn) {
+		this.orderColumn = orderColumn;
+	}
+	public String getOrderBy() {
+		return orderBy;
+	}
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+	
 
 }

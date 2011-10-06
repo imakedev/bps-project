@@ -1,4 +1,8 @@
 <%@include file="../include.jsp"%>
+<%@page import="th.co.vlink.xstream.common.VResultMessage"%>
+<%@page import="th.co.vlink.utils.Pagging"%>
+<%@page import="th.co.vlink.bps.util.Paging"%>
+<%@page import="th.co.vlink.bps.form.BpsAdminForm"%>
 <%@page contentType="text/html; charset=utf-8"%>
 <html>
 <head>
@@ -13,13 +17,23 @@
 .highlight { background-color: yellow }
 </style>
 <script>
-
 	$(document).ready(function() {
 	  // Handler for .ready() called.
 	  var bptTerm = $("#bptTerm").val();
 	  if(bptTerm!='')
 			$('._highlight').highlight(bptTerm);
+      var _indexChar = $("#indexChar").val();
+      $('a[class^=team_index_]').each(function(){ 
+			var className=$(this).attr("class");  
+			if(className.split("_")[2]==_indexChar.toUpperCase()){
+				$(this).attr("style","font-style:italic;color: black;text-decoration: none;");
+			}
+		});
+      	 
 	});
+	function goToIndex(_index){
+		window.location.href = _index;
+	}
 	function <portlet:namespace />doAction(_url, mode) {
 		if (mode == 'delete') {
 			var agree = confirm("Would you like to delete ?");
@@ -42,8 +56,11 @@
 <portlet:renderURL var="formAction">
     <portlet:param name="action" value="manageBpsTerm"/>
 </portlet:renderURL> 
-<form:form  modelAttribute="bpsAdminForm" method="post"  action="${formAction}">
-<form:hidden path="command" id="command"/>
+<form:form  modelAttribute="bpsAdminForm" name="bpsAdminForm" method="post"  action="${formAction}">
+<form:hidden path="command" id="command"/> 
+<form:hidden path="indexChar" id="indexChar"/>
+<form:hidden path="orderColumn" id="orderColumn"/>
+<form:hidden path="orderBy" id="orderBy"/>
 	<table width="100%" align="center" border="0" cellspacing="0"
 		cellpadding="0">
 		<tr> 
@@ -68,18 +85,25 @@
 					"J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
 					"V", "W", "X", "Y", "Z" };
 				for (int i = 0; i < indexChar.length; i++) {
-			%> <a
-				href='<portlet:renderURL><portlet:param name="action" value="list"/><portlet:param name="bptIndexChar" value="<%= indexChar[i]%>"/></portlet:renderURL>'
+			%> 
+			<%--
+			<a
+				href='<portlet:renderURL><portlet:param name="action" value="manageBpsTerm"/><portlet:param name="bptIndexChar" value="<%= indexChar[i]%>"/></portlet:renderURL>'
 				class="team">
-				<%if("B".equals(indexChar[i])){
-				%>
-				<span style="font-style:italic;color: black;text-decoration: none;"><%=indexChar[i]%></span>
-				<%
+			 --%>
+			 <a
+				href='#'
+				class="team_index_<%=indexChar[i]%>" onclick="goToIndex('<portlet:renderURL><portlet:param name="action" value="manageBpsTerm"/><portlet:param name="indexChar" value="<%= indexChar[i]%>"/></portlet:renderURL>')">
+				<%--if("B".equals(indexChar[i])){
+				
+				<span class="team_index" style="font-style:italic;color: black;text-decoration: none;"><%= indexChar[i] %></span>
+				--%>
+				<%--
 				}else{
-				%>
+				--%>
 					<%=indexChar[i]%>
-				<%
-				}%> 
+				<%--
+				}--%> 
 				</a> <%
  				}
  			%> 
@@ -191,8 +215,13 @@ table#box-table-a a:hover {
 					</tr>
 					<c:if test="${bpsTerms.maxRow != 0}">
 						<c:forEach items="${bpsTerms.resultListObj}" var="bpsTerm" varStatus="loop">  
-								  	<tr>
-								  		<td><a href="BPSTerm02_detail.html" class="team"><span class="_highlight"><c:out value="${bpsTerm.bptTerm}"/></span></a>
+								  	<tr valign="top">
+								  		<td>
+								  			<portlet:renderURL var="urlView">
+                         						<portlet:param name="action" value="viewBpsTerm"/> 
+                         						<portlet:param name="bptId" value="${bpsTerm.bptId}"/>                            
+                      						</portlet:renderURL>
+								  		<a href="${urlView}" class="team"><span class="_highlight"><c:out value="${bpsTerm.bptTerm}"/></span></a>
 										</td>
 										<td><span class="_highlight"><c:out value="${bpsTerm.bptDefinition}" escapeXml="false"/></span></td>
 										<td><c:out value="${bpsTerm.bpsGroup.bpgGroupName}"/></td> 
@@ -239,6 +268,30 @@ table#box-table-a a:hover {
 		<tr> 
 			<td width="100%" colspan="2">
 				<div class="pagination">
+				<%
+			VResultMessage resultMessage = (VResultMessage)request.getAttribute("bpsTerms"); 
+				BpsAdminForm bpsAdminForm = (BpsAdminForm) request
+					.getAttribute("bpsAdminForm");
+			int pageNo = 1;
+			int pageSize = 20;
+			int total_page = 1;
+			if (resultMessage != null && resultMessage.getMaxRow() != null) {
+				Pagging paging = bpsAdminForm.getBpsTerm().getPagging();
+				if (paging != null) {
+					pageNo = paging.getPageNo();
+					pageSize = paging.getPageSize();
+					int totalResult = Integer.parseInt(resultMessage.getMaxRow());
+					if (totalResult % pageSize != 0) {
+						Double d = Math.floor(totalResult / pageSize);
+						total_page = d.intValue() + 1;
+					} else {
+						Double d = Math.floor(totalResult / pageSize);
+						total_page = d.intValue()!=0?d.intValue():1;
+					}
+				}
+			}
+		%> <%-- =Paging.getPaging(pageNo, pageSize, total_page,
+					request.getContextPath()) --%>
 				<%--
 					<ul>
 						<li><a href="#" class="prevnext disablelink">« previous</a>

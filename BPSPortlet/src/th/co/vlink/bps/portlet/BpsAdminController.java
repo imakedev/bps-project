@@ -170,14 +170,19 @@ public class BpsAdminController {
 			,@RequestParam(value="bpgId",required = false) String bpgId
 			,@RequestParam(value="searchBy",required = false) String searchBy
 			,@RequestParam(value="orderBy",required = false) String orderBy
-			,@RequestParam(value="orderColumn",required = false) String orderColumn)  {
-		System.out.println(" into manageBpsTerm=");
+			,@RequestParam(value="orderColumn",required = false) String orderColumn
+			,@RequestParam(value="indexChar",required = false) String indexChar)  {
+		System.out.println(" into manageBpsTerm bptTerm="+bptTerm+",bpgId="+bpgId+",searchBy="+searchBy+",orderBy="+orderBy+",orderColumn="+orderColumn+",indexChar="+indexChar);
 		BpsAdminForm bpsAdminForm=null;
 		bptTerm=(bptTerm!=null&&bptTerm.trim().length()>0)?bptTerm.trim():"";
 		bpgId=(bpgId!=null&&bpgId.trim().length()>0)?bpgId.trim():"0";
 		searchBy=(searchBy!=null&&searchBy.trim().length()>0)?searchBy.trim():"0";
-		orderBy=(orderBy!=null&&orderBy.trim().length()>0)?orderBy.trim():"";
-		orderColumn=(orderColumn!=null&&orderColumn.trim().length()>0)?orderColumn.trim():"";
+		orderBy=(orderBy!=null&&orderBy.trim().length()>0)?orderBy.trim():"asc";
+		orderColumn=(orderColumn!=null&&orderColumn.trim().length()>0)?orderColumn.trim():"bptTerm";
+		if(bptTerm.length()>0)
+			indexChar=bptTerm.substring(0, 1);
+		else
+			indexChar=(indexChar!=null&&indexChar.trim().length()>0)?indexChar.trim():"a";
 		int pageNo = 1; 
 		if(pageNoStr!=null && !pageNoStr.equals(""))
 			pageNo= Integer.parseInt(pageNoStr);
@@ -193,11 +198,15 @@ public class BpsAdminController {
 		} */
 		bpsAdminForm= new BpsAdminForm();
 		BpsTerm bpsTerm =bpsAdminForm.getBpsTerm();
+		bpsAdminForm.setOrderColumn(orderColumn);
+		bpsAdminForm.setOrderBy(orderBy);
+		bpsAdminForm.setIndexChar(indexChar);
 		bpsTerm.setPagging(page);
 		bpsTerm.setBptTerm(bptTerm);
 		bpsTerm.getVcriteria().setValue(bptTerm) ;
 		bpsTerm.getVcriteria().setOrderBy(orderBy);
 		bpsTerm.getVcriteria().setOrderColumn(orderColumn);
+		bpsTerm.getVcriteria().setIndexChar(indexChar);
 		if(!bpgId.equals("0")){
 			BpsGroup group = new BpsGroup();
 			group.setBpgId(Long.parseLong(bpgId));
@@ -264,7 +273,19 @@ public class BpsAdminController {
 		 
 		return "addOrEditBpsTerm";
 	}
-	
+	@RequestMapping(params="action=viewBpsTerm")
+	public String viewBpsTerm(Model model,
+			@RequestParam("bptId") String bptId) { 
+		VResultMessage resultList_files=null; 
+		BpsTerm bpsTerm = bpsAdminService.findBpsTermById(bptId);
+		BpsAttachFile bpsAttachFile = new BpsAttachFile();
+		bpsAttachFile.setBpsTerm(bpsTerm);
+		resultList_files = bpsAdminService.searchBpsAttachFile(bpsAttachFile); 
+		model.addAttribute("bpsAttachFiles", resultList_files);  
+		model.addAttribute("bpsTerm", bpsTerm); 
+		 
+		return "viewBpsTerm";
+	}
 	@RequestMapping(params = "action=saveBpsTerm")
 	public void saveBpsTerm(ActionRequest request, ActionResponse response,
 			@ModelAttribute("bpsAdminForm")
