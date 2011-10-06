@@ -127,7 +127,9 @@ public class BpsTermResource extends BaseResource {
 							Pagging page = xbpsTerm.getPagging(); 
 							bpsTerm.setPagging(page);		 
 							
-							List result = (List) bpsTermService.searchBpsTerm(bpsTerm  ,xbpsTerm.getVcriteria().getKey());
+							List result = (List) bpsTermService.searchBpsTerm(bpsTerm  ,xbpsTerm.getVcriteria().getKey(),
+									xbpsTerm.getVcriteria().getIndexChar(),xbpsTerm.getVcriteria().getOrderColumn(),
+									xbpsTerm.getVcriteria().getOrderBy());
 							if (result != null && result.size() == 2) {
 								java.util.List<th.co.vlink.hibernate.bean.BpsTerm> ntcCalendars = (java.util.List<th.co.vlink.hibernate.bean.BpsTerm>) result
 										.get(0);
