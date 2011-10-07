@@ -17,11 +17,42 @@
 .highlight { background-color: yellow }
 </style>
 <script>
+	var _range_text=500;
 	$(document).ready(function() {
 	  // Handler for .ready() called.
 	  var bptTerm = $("#bptTerm").val();
-	  if(bptTerm!='')
-			$('._highlight').highlight(bptTerm);
+	  if(bptTerm!=''){
+			$('span[class^=_highlight_term]').each(function(){
+				$(this).highlight(bptTerm);
+			});
+	  }
+	//  _sort_bptSource_asc
+	  $('img[class^=_sort_]').each(function(){ 
+		  $(this).attr("style","cursor: pointer;display: none;");
+	  });
+	  var orderColumn = $("#orderColumn").val();
+	  var orderBy = $("#orderBy").val()=="asc"?"desc":"asc"; 
+	  if("bpsGroup.bpgGroupName"==orderColumn){
+		  $("#_sort_bpsGroup_"+orderBy).attr("style","cursor: pointer;");
+	  }else
+	  	$("#_sort_"+orderColumn+"_"+orderBy).attr("style","cursor: pointer;");
+	 if(bptTerm!='')
+	  $('._highlight_def').each(function(){  
+		  var _indexOf_text = $(this).text().toLowerCase().indexOf(bptTerm.toLowerCase()); 
+		  var _offset=parseInt((_indexOf_text/_range_text),10);
+		  var _max_offset=parseInt(($(this).text().length/_range_text),10);
+		  var _length_text=bptTerm.length;
+		  var _startIndex=parseInt((_range_text*_offset),10);
+		  var _endIndex=parseInt((_range_text*(_offset+1)),10);
+		  if((_indexOf_text+_length_text)>=_endIndex){
+			  _endIndex=_indexOf_text+_length_text;
+		  }
+		  var newText=$(this).text().substring(_startIndex,_endIndex)+((_max_offset==_offset)?"":"...");
+		  if(_offset>0)
+			  newText="..."+newText;
+		  $(this).text(newText);
+		  $(this).highlight(bptTerm); 
+	  });
       var _indexChar = $("#indexChar").val();
       $('a[class^=team_index_]').each(function(){ 
 			var className=$(this).attr("class");  
@@ -29,9 +60,34 @@
 				$(this).attr("style","font-style:italic;color: black;text-decoration: none;");
 			}
 		});
-      	 
 	});
+	function checkSorting(_id){ 
+		var haveSorting=false;
+		var _order="desc";
+		var _count=0;
+		$('img[id^=_sort_'+_id+'_]').each(function(){ 
+			  var _style= $(this).attr("style");
+			//  alert(_style);
+			  if(_style.indexOf("display: none")!=-1){
+				 // alert("id is ==> "+$(this).attr("id"));
+				  var ids=$(this).attr("id").split("_");// _sort_bptTerm_asc
+				  haveSorting=true;
+				 // alert("length="+ids.length)
+				  _order=ids[3]=="asc"?"desc":"asc";
+				  _count++;
+			  } 
+		  });
+		if(_count==2)
+			_order="asc";
+		//alert(_count)
+		//_sort_bptTerm_desc
+		//hidden_sort_bptDefinition_asc
+		//alert($("#hidden_sort_"+_id+"_"+_order).val())
+		//alert("#hidden_sort_"+_id+"_"+_order)
+		goToIndex($("#hidden_sort_"+_id+"_"+_order).val());
+	}
 	function goToIndex(_index){
+		//alert(_index)
 		window.location.href = _index;
 	}
 	function <portlet:namespace />doAction(_url, mode) {
@@ -56,6 +112,7 @@
 <portlet:renderURL var="formAction">
     <portlet:param name="action" value="manageBpsTerm"/>
 </portlet:renderURL> 
+
 <form:form  modelAttribute="bpsAdminForm" name="bpsAdminForm" method="post"  action="${formAction}">
 <form:hidden path="command" id="command"/> 
 <form:hidden path="indexChar" id="indexChar"/>
@@ -196,20 +253,101 @@ table#box-table-a a:hover {
 	text-decoration: underline;
 }
 </style>
+<portlet:renderURL var="_sort_bptTerm_desc">
+	<portlet:param name="action" value="manageBpsTerm"/>
+	<portlet:param name="indexChar" value="${bpsAdminForm.indexChar}"/>
+	<portlet:param name="bptTerm" value="${bpsAdminForm.bptTerm}"/> 
+	<portlet:param name="bpgId" value="${bpsAdminForm.bpgId}"/>
+	<portlet:param name="searchBy" value="${bpsAdminForm.searchBy}"/>
+	<portlet:param name="orderBy" value="desc"/>
+	<portlet:param name="orderColumn" value="bptTerm"/>
+</portlet:renderURL>
+<portlet:renderURL var="_sort_bptTerm_asc"> 
+	<portlet:param name="action" value="manageBpsTerm"/>
+	<portlet:param name="indexChar" value="${bpsAdminForm.indexChar}"/>
+	<portlet:param name="bptTerm" value="${bpsAdminForm.bptTerm}"/> 
+	<portlet:param name="bpgId" value="${bpsAdminForm.bpgId}"/>
+	<portlet:param name="searchBy" value="${bpsAdminForm.searchBy}"/>
+	<portlet:param name="orderBy" value="asc"/>
+	<portlet:param name="orderColumn" value="bptTerm"/>
+</portlet:renderURL>
+<portlet:renderURL var="_sort_bptDefinitionSearch_desc"> 
+	<portlet:param name="action" value="manageBpsTerm"/>
+	<portlet:param name="indexChar" value="${bpsAdminForm.indexChar}"/>
+	<portlet:param name="bptTerm" value="${bpsAdminForm.bptTerm}"/> 
+	<portlet:param name="bpgId" value="${bpsAdminForm.bpgId}"/>
+	<portlet:param name="searchBy" value="${bpsAdminForm.searchBy}"/>
+	<portlet:param name="orderBy" value="desc"/>
+	<portlet:param name="orderColumn" value="bptDefinitionSearch"/>
+</portlet:renderURL>
+<portlet:renderURL var="_sort_bptDefinitionSearch_asc">
+	<portlet:param name="action" value="manageBpsTerm"/>
+	<portlet:param name="indexChar" value="${bpsAdminForm.indexChar}"/>
+	<portlet:param name="bptTerm" value="${bpsAdminForm.bptTerm}"/> 
+	<portlet:param name="bpgId" value="${bpsAdminForm.bpgId}"/>
+	<portlet:param name="searchBy" value="${bpsAdminForm.searchBy}"/>
+	<portlet:param name="orderBy" value="asc"/>
+	<portlet:param name="orderColumn" value="bptDefinitionSearch"/>
+</portlet:renderURL>
+<portlet:renderURL var="_sort_bpsGroup_desc">  
+	<portlet:param name="action" value="manageBpsTerm"/>
+	<portlet:param name="indexChar" value="${bpsAdminForm.indexChar}"/>
+	<portlet:param name="bptTerm" value="${bpsAdminForm.bptTerm}"/> 
+	<portlet:param name="bpgId" value="${bpsAdminForm.bpgId}"/>
+	<portlet:param name="searchBy" value="${bpsAdminForm.searchBy}"/>
+	<portlet:param name="orderBy" value="desc"/>
+	<portlet:param name="orderColumn" value="bpsGroup.bpgGroupName"/>
+</portlet:renderURL>
+<portlet:renderURL var="_sort_bpsGroup_asc">
+	<portlet:param name="action" value="manageBpsTerm"/>
+	<portlet:param name="indexChar" value="${bpsAdminForm.indexChar}"/>
+	<portlet:param name="bptTerm" value="${bpsAdminForm.bptTerm}"/> 
+	<portlet:param name="bpgId" value="${bpsAdminForm.bpgId}"/>
+	<portlet:param name="searchBy" value="${bpsAdminForm.searchBy}"/>
+	<portlet:param name="orderBy" value="asc"/>
+	<portlet:param name="orderColumn" value="bpsGroup.bpgGroupName"/>
+</portlet:renderURL>
+<portlet:renderURL var="_sort_bptSource_desc">
+	<portlet:param name="action" value="manageBpsTerm"/>
+	<portlet:param name="indexChar" value="${bpsAdminForm.indexChar}"/>
+	<portlet:param name="bptTerm" value="${bpsAdminForm.bptTerm}"/> 
+	<portlet:param name="bpgId" value="${bpsAdminForm.bpgId}"/>
+	<portlet:param name="searchBy" value="${bpsAdminForm.searchBy}"/>
+	<portlet:param name="orderBy" value="desc"/>
+	<portlet:param name="orderColumn" value="bptSource"/>
+</portlet:renderURL>
+<portlet:renderURL var="_sort_bptSource_asc">
+	<portlet:param name="action" value="manageBpsTerm"/>
+	<portlet:param name="indexChar" value="${bpsAdminForm.indexChar}"/>
+	<portlet:param name="bptTerm" value="${bpsAdminForm.bptTerm}"/> 
+	<portlet:param name="bpgId" value="${bpsAdminForm.bpgId}"/>
+	<portlet:param name="searchBy" value="${bpsAdminForm.searchBy}"/>
+	<portlet:param name="orderBy" value="asc"/>
+	<portlet:param name="orderColumn" value="bptSource"/>
+</portlet:renderURL>
+<input type="hidden" id="hidden_sort_bptTerm_desc" value="${_sort_bptTerm_desc}" >
+<input type="hidden" id="hidden_sort_bptTerm_asc" value="${_sort_bptTerm_asc}" >
+<input type="hidden" id="hidden_sort_bptDefinitionSearch_desc" value="${_sort_bptDefinitionSearch_desc}" >
+<input type="hidden" id="hidden_sort_bptDefinitionSearch_asc" value="${_sort_bptDefinitionSearch_asc}" >
+<input type="hidden" id="hidden_sort_bpsGroup_desc" value="${_sort_bpsGroup_desc}" >
+<input type="hidden" id="hidden_sort_bpsGroup_asc" value="${_sort_bpsGroup_asc}" >
+<input type="hidden" id="hidden_sort_bptSource_desc" value="${_sort_bptSource_desc}" >
+<input type="hidden" id="hidden_sort_bptSource_asc" value="${_sort_bptSource_asc}" >
+    
 				<table width="100%" id="box-table-a" border="0" cellspacing="2"
 					cellpadding="0" style="border: 1px solid #132C00">
 					<tr>
-						<th width="25%" height="25" align="center" bgcolor="#3DB0B5">Term&nbsp;<img
-							src="${url}images/up.png" style="cursor: pointer;"><img src="${url}images/down.png" style="cursor: pointer;">
+						<th width="25%" height="25" align="center" bgcolor="#3DB0B5"><span  style="cursor: pointer;" onclick="checkSorting('bptTerm')">Term&nbsp;</span><img id="_sort_bptTerm_desc" 
+							src="${url}images/up.png" style="cursor: pointer;display: none" onclick="goToIndex('${_sort_bptTerm_desc}')"/><img id="_sort_bptTerm_asc" src="${url}images/down.png" style="cursor: pointer;display: none;" onclick="goToIndex('${_sort_bptTerm_asc}')"/>
 						</th>
-						<th width="26%" align="center" bgcolor="#3DB0B5">Difinition&nbsp;<img
-							src="${url}images/up.png" style="cursor: pointer;"><img src="${url}images/down.png" style="cursor: pointer;">
+						<th width="26%" align="center" bgcolor="#3DB0B5"><span  style="cursor: pointer;" onclick="checkSorting('bptDefinitionSearch')">Difinition&nbsp;</span><img id="_sort_bptDefinitionSearch_desc" 
+							src="${url}images/up.png" style="cursor: pointer;display: none" onclick="goToIndex('${_sort_bptDefinitionSearch_desc}')"/><img id="_sort_bptDefinitionSearch_asc" src="${url}images/down.png" style="cursor: pointer;display: none" onclick="goToIndex('${_sort_bptDefinitionSearch_asc}')"/>
 						</th>
-						<th width="26%" align="center" bgcolor="#3DB0B5">Categoty&nbsp;<img
-							src="${url}images/up.png" style="cursor: pointer;"><img src="${url}images/down.png" style="cursor: pointer;">
+						<th width="26%" align="center" bgcolor="#3DB0B5"><span  style="cursor: pointer;" onclick="checkSorting('bpsGroup')">Categoty&nbsp;</span><img id="_sort_bpsGroup_desc"
+							src="${url}images/up.png" style="cursor: pointer;display: none" onclick="goToIndex('${_sort_bpsGroup_desc}')"/><img  id="_sort_bpsGroup_asc" src="${url}images/down.png" style="cursor: pointer;display: none" onclick="goToIndex('${_sort_bpsGroup_asc}')"/>
 						</th>
-						<th width="17%" align="center" bgcolor="#3DB0B5">Source&nbsp;<img
-							src="${url}images/up.png" style="cursor: pointer;"><img src="${url}images/down.png" style="cursor: pointer;">
+						<th width="17%" align="center" bgcolor="#3DB0B5"><span  style="cursor: pointer;" onclick="checkSorting('bptSource')">Source&nbsp;</span><img id="_sort_bptSource_desc"
+							src="${url}images/up.png" style="cursor: pointer;display: none" onclick="goToIndex('${_sort_bptSource_desc}')"/><img id="_sort_bptSource_asc" src="${url}images/down.png" style="cursor: pointer;display: none" onclick="goToIndex('${_sort_bptSource_asc}')"/>
 						</th>
 						<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th>
 					</tr>
@@ -221,9 +359,9 @@ table#box-table-a a:hover {
                          						<portlet:param name="action" value="viewBpsTerm"/> 
                          						<portlet:param name="bptId" value="${bpsTerm.bptId}"/>                            
                       						</portlet:renderURL>
-								  		<a href="${urlView}" class="team"><span class="_highlight"><c:out value="${bpsTerm.bptTerm}"/></span></a>
+								  		<a href="${urlView}" class="team"><span class="_highlight_term"><c:out value="${bpsTerm.bptTerm}"/></span></a>
 										</td>
-										<td><span class="_highlight"><c:out value="${bpsTerm.bptDefinition}" escapeXml="false"/></span></td>
+										<td><span class="_highlight_def"><c:out value="${bpsTerm.bptDefinition}" escapeXml="false"/></span></td>										
 										<td><c:out value="${bpsTerm.bpsGroup.bpgGroupName}"/></td> 
 										<td><c:out value="${bpsTerm.bptSource}"/></td>
 										<td align="center">
