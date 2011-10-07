@@ -11,7 +11,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -99,7 +98,8 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 		ArrayList  transList = new ArrayList ();
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		try {
-			Criteria criteria 	= (Criteria) session.createCriteria(instance.getClass().getName());		 
+			//Criteria criteria 	= (Criteria) session.createCriteria(instance.getClass().getName());
+			
 			Long bptId = instance.getBptId();
 			String bptCreatBy = instance.getBptCreateBy();
 			String bptDefinition = instance.getBptDefinition();
@@ -116,14 +116,16 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 			System.out.println("search key="+searchKey);
 			System.out.println("bptTerm="+bptTerm);
 			if(bpsGroup!=null)
-				System.out.println("bpsGroup="+bpsGroup.getBpgId
-					());
-			 
-			if(bptId !=null && bptId > 0){  
-				 criteria.add(Expression.eq("bptId", bptId));	
-				// iscriteria = true;
-			}
+				System.out.println("bpsGroup="+bpsGroup.getBpgId());
+			StringBuffer sb =new StringBuffer(" select bpsTerm from BpsTerm bpsTerm ");
 			
+			boolean iscriteria = false;
+			if(bptId !=null && bptId > 0){  
+				//criteria.add(Expression.eq("bptId", bptId));	
+				 sb.append(iscriteria?(" and bpsTerm.bptId="+bptId+""):(" where bpsTerm.bptId="+bptId+""));
+				  iscriteria = true;
+			}
+			/*
 			if(bptCreatBy !=null && bptCreatBy.trim().length() > 0){  
 				 criteria.add(Expression.eq("bptCreatBy", bptCreatBy));	
 				// iscriteria = true;
@@ -148,59 +150,76 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 			if(bptSourceRef !=null && bptSourceRef.trim().length() > 0){  
 				 criteria.add(Expression.eq("bptSourceRef", bptSourceRef));	
 				// iscriteria = true;
-			}
+			}*/
+			boolean isSearchByKeyWord=false;
 			if(bptTerm !=null && bptTerm.trim().length() > 0){   	
 				if(searchKey!=null){
 					  //1=by term ,2 =by Difinition , 3 all
 						if(searchKey.equals("1")){ 
-							 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+							// criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+							 sb.append(iscriteria?(" and lower(bpsTerm.bptTerm) like '%"+bptTerm.trim().toLowerCase()+"%'"):(" where lower(bpsTerm.bptTerm) like '%"+bptTerm.trim().toLowerCase()+"%'"));
+							  iscriteria = true;
 						}else if(searchKey.equals("2")){
 							//bptDefinitionSearch
-							 criteria.add(Expression.like("bptDefinition", "%"+bptTerm.trim()+"%").ignoreCase());
+							// criteria.add(Expression.like("bptDefinitionSearch", "%"+bptTerm.trim()+"%").ignoreCase());
+							sb.append(iscriteria?(" and lower(bpsTerm.bptDefinitionSearch) like '%"+bptTerm.trim().toLowerCase()+"%'"):(" where lower(bpsTerm.bptDefinitionSearch) like '%"+bptTerm.trim().toLowerCase()+"%'"));
+							  iscriteria = true;
 						}else if(searchKey.equals("3")){
-							criteria.add(Expression.or
+							/*criteria.add(Expression.or
 									 (Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase(),
-									 Expression.like("bptDefinition", "%"+bptTerm.trim()+"%").ignoreCase()));
-							/*
-							 crit.add(Expression.or
-									 (Expression.eq("lngInsuranceId",new Long(3)),
-									  Expression.eq("lngInsuranceId",new Long(6))));*/
+									 Expression.like("bptDefinitionSearch", "%"+bptTerm.trim()+"%").ignoreCase()));*/
+							sb.append(iscriteria?(" and (lower(bpsTerm.bptTerm) like '%"+bptTerm.trim().toLowerCase()+"%' " +
+									" or lower(bpsTerm.bptDefinitionSearch) like  '%"+bptTerm.trim().toLowerCase()+"%' ) "):(" where (lower(bpsTerm.bptTerm) like '%"+bptTerm.trim().toLowerCase()+"%' " +
+									" or lower(bpsTerm.bptDefinitionSearch) like  '%"+bptTerm.trim().toLowerCase()+"%' ) "));
+							  iscriteria = true;
 						} 
 				}else{
-					 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+					 //criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
+					sb.append(iscriteria?(" and lower(bpsTerm.bptTerm) like '%"+bptTerm.trim().toLowerCase()+"%'"):(" where lower(bpsTerm.bptTerm) like '%"+bptTerm.trim().toLowerCase()+"%'"));
+					  iscriteria = true;
 				}
-				
+				isSearchByKeyWord=true;
 					// iscriteria = true;
 			}if(bpsGroup !=null && bpsGroup.getBpgId() != null && bpsGroup.getBpgId() > 0){  
-					 criteria.add(Expression.eq("bpsGroup.bpgId", bpsGroup.getBpgId()));	
+					// criteria.add(Expression.eq("bpsGroup.bpgId", bpsGroup.getBpgId()));
+				sb.append(iscriteria?(" and bpsTerm.bpsGroup.bpgId="+bpsGroup.getBpgId()+""):(" where bpsTerm.bpsGroup.bpgId="+bpsGroup.getBpgId()+""));
+				  iscriteria = true;
 						// iscriteria = true;
 			}
+			if(!isSearchByKeyWord)
 			if(indexChar !=null &&  indexChar.length() > 0){  
-				 criteria.add(Expression.like("bptTerm", indexChar+"%").ignoreCase());	
+				// criteria.add(Expression.like("bptTerm", indexChar+"%").ignoreCase());	
+				 sb.append(iscriteria?(" and lower(bpsTerm.bptTerm) like '"+indexChar.toLowerCase()+"%'"+""):(" where lower(bpsTerm.bptTerm) like '"+indexChar.toLowerCase()+"%'"+""));
+				  iscriteria = true;
 					// iscriteria = true;
 			}
 			
 			 
-			if(bptCreateDate != null){ 
+			/*if(bptCreateDate != null){ 
 				 criteria.add(Expression.eq("bptCreateDate", bptCreateDate));	
 				 //iscriteria = true;
 			} 
 			if(bptVersionNumber != null && bptVersionNumber > 0){ 
 				 criteria.add(Expression.eq("bptVersionNumber", bptVersionNumber));	
 				 //iscriteria = true;
-			}  
-			if(orderBy.equalsIgnoreCase("asc"))
+			}  */
+			/*if(orderBy.equalsIgnoreCase("asc"))
 				criteria.addOrder(Order.asc(orderColumn));
 			else
-				criteria.addOrder(Order.desc(orderColumn));
+				criteria.addOrder(Order.desc(orderColumn));*/
+			if(orderBy.equalsIgnoreCase("asc"))
+				 sb.append( " order by bpsTerm."+orderColumn+" asc");
+			else
+				sb.append( " order by bpsTerm."+orderColumn+" desc");
 		
+			Query query =session.createQuery(sb.toString());
 			// set pagging.
 			 String size = String.valueOf(getSize(session, instance,searchKey,indexChar,orderColumn,
 						orderBy)); 
 			 
-			 criteria.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
-			 criteria.setMaxResults(pagging.getPageSize());
-			 List l = criteria.list();  
+			 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
+			 query.setMaxResults(pagging.getPageSize());
+			 List l = query.list();  
 			 transList.add(l); 
 		 	 transList.add(size); 
 			return transList;
@@ -260,6 +279,7 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 					 criteria.add(Expression.eq("bptSourceRef", bptSourceRef));	
 					// iscriteria = true;
 				}
+				boolean isSearchByKeyWord=false;
 				if(bptTerm !=null && bptTerm.trim().length() > 0){ 
 					if(searchKey!=null){
 						  //1=by term ,2 =by Difinition , 3 all
@@ -267,24 +287,22 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 								 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
 							}else if(searchKey.equals("2")){
 								//bptDefinitionSearch
-								 criteria.add(Expression.like("bptDefinition", "%"+bptTerm.trim()+"%").ignoreCase());
+								 criteria.add(Expression.like("bptDefinitionSearch", "%"+bptTerm.trim()+"%").ignoreCase());
 							}else if(searchKey.equals("3")){
 								criteria.add(Expression.or
 										 (Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase(),
-										 Expression.like("bptDefinition", "%"+bptTerm.trim()+"%").ignoreCase()));
-								/*
-								 crit.add(Expression.or
-										 (Expression.eq("lngInsuranceId",new Long(3)),
-										  Expression.eq("lngInsuranceId",new Long(6))));*/
+										 Expression.like("bptDefinitionSearch", "%"+bptTerm.trim()+"%").ignoreCase()));
 							} 
 					}else{
 						 criteria.add(Expression.like("bptTerm", "%"+bptTerm.trim()+"%").ignoreCase());
 					}
+					isSearchByKeyWord=true;
 						// iscriteria = true;
 				}if(bpsGroup !=null && bpsGroup.getBpgId() != null && bpsGroup.getBpgId() > 0){  
 						 criteria.add(Expression.eq("bpsGroup.bpgId", bpsGroup.getBpgId()));	
 							// iscriteria = true;
 				}
+				if(!isSearchByKeyWord)
 				if(indexChar !=null &&  indexChar.length() > 0){  
 					 criteria.add(Expression.like("bptTerm", indexChar+"%").ignoreCase());	
 						// iscriteria = true;
