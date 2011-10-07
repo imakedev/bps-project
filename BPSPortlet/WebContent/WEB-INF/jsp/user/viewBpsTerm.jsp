@@ -3,7 +3,20 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet"%>
 <portlet:defineObjects />
 <html>
-<head></head>
+<head>
+<script type="text/javascript">
+function <portlet:namespace/>downloadFile(_hotLink){ 
+ 	var src = "http://localhost:8081/BPSDownloadServlet/DownloadServlet?"+_hotLink;
+ 	 
+    var div = document.createElement("div");
+    document.body.appendChild(div);
+    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>";
+	  // Create an IFRAME.
+	//var _form =document.getElementById('downloadAdminform');
+ 	//_form.submit();
+} 
+</script>
+</head>
 <body>
 	<table width="950" align="center" border="0" cellspacing="0"
 		cellpadding="0">
@@ -59,18 +72,18 @@
 						<td width="25%">
 							<ul>
 								<c:forEach items="${resultList.resultListObj}" var="item">
-									<li><a href="${item.bpafFilePath}">&nbsp;${item.bpafFileName}</a></li>
+									<li><a href='javascript: downloadFile("${item.bpafHotLink}")'>&nbsp;${item.bpafFileName}</a></li>
 								</c:forEach>
 							</ul></td>
 					</tr>
 				</table></td>
 		</tr>
-<!-- 		<tr> -->
-<!-- 			<td width="50%" height="30"><span -->
-<!-- 				style="color: #030; font-size: 12px;">< Back to Home</span> -->
-<!-- 			</td> -->
-<!-- 			<td width="50%">&nbsp;</td> -->
-<!-- 		</tr> -->
+		<tr>
+			<td width="50%" height="30"><span
+				style="color: #030; font-size: 12px;"><a href='<portlet:renderURL><portlet:param name="action" value="list"/></portlet:renderURL>'>< Back to Home</a></span>
+			</td>
+			<td width="50%">&nbsp;</td>
+		</tr>
 	</table>
 </body>
 </html>

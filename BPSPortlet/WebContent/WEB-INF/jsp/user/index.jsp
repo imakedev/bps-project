@@ -13,17 +13,28 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/style.css" />
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/johannburkard-v6.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery.highlight-3.yui.js"></script>	
-	
+<script src='<%=request.getContextPath()%>/js/jquery-1.6.4.min.js'></script>
+<script src='<%=request.getContextPath()%>/js/jquery.highlight-3.js'></script>
+
 <style type="text/css">
 .highlight { background-color: yellow }
 </style>
 <script type="text/javascript">
+
+String.prototype.trim = function() {
+	return this.replace(/^\s+|\s+$/g,"");
+}
+
 	function clickPage(pageNo) {
 		document.getElementById("pageNo").value = pageNo;
+		document.forms['bpsUserForm'].submit();
+	}
+	
+	function sortFunction(sortBy, sortOrder) {
+		//alert("sortBy : "+sortBy);
+		//alert("sortOrder : "+sortOrder);
+		document.getElementById('sortBy').value=sortBy;
+		document.getElementById('sortOrder').value=sortOrder;
 		document.forms['bpsUserForm'].submit();
 	}
 </script>
@@ -77,15 +88,34 @@
 			method="post" name="bpsUserForm"><strong style="padding-left: 5px;">Search:</strong>
 		<input name="textfield" type="text" id="textfield" size="30"
 			value="${bpsUserForm.bpsTerm.bptTerm}"> <select name="select" id="select">
-			<option value="1" selected>By Term</option>
-			<option value="2">By Difinition</option>
-			<option value="3">By All</option>
+			<c:if test="${bpsUserForm.bpsTerm.vcriteria.key eq '1'}">
+			<option value="1" selected="selected">By Term</option>
+			</c:if>
+			<c:if test="${bpsUserForm.bpsTerm.vcriteria.key ne '1'}">
+			<option value="1">By Term</option></c:if>
+			<c:if test="${bpsUserForm.bpsTerm.vcriteria.key eq '2'}"><option value="2" selected="selected">By Difinition</option></c:if>
+			<c:if test="${bpsUserForm.bpsTerm.vcriteria.key ne '2'}"><option value="2">By Difinition</option></c:if>
+			<c:if test="${bpsUserForm.bpsTerm.vcriteria.key eq '3'}"><option value="3" selected="selected">By All</option></c:if>
+			<c:if test="${bpsUserForm.bpsTerm.vcriteria.key ne '3'}"><option value="3">By All</option></c:if>
 		</select> <select name="select2" id="select2">
+		<c:if test="${bpsUserForm.bpsTerm.bpsGroup eq null}">
+			<option value="0" selected="selected">--Select Category--</option>
+		</c:if>
+		<c:if test="${bpsUserForm.bpsTerm.bpsGroup ne null}">
 			<option value="0" selected>--Select Category--</option>
+		</c:if>
 			<c:forEach items="${resultListGroup.resultListObj}" var="groupItem">
-				<option value="${groupItem.bpgId}">${groupItem.bpgGroupName}</option>
+				<c:if test="${bpsUserForm.bpsTerm.bpsGroup ne null && bpsUserForm.bpsTerm.bpsGroup.bpgId eq groupItem.bpgId}">
+					<option value="${groupItem.bpgId}" selected="selected">${groupItem.bpgGroupName}</option>
+				</c:if>
+				<c:if test="${bpsUserForm.bpsTerm.bpsGroup ne null && bpsUserForm.bpsTerm.bpsGroup.bpgId ne groupItem.bpgId}">
+					<option value="${groupItem.bpgId}">${groupItem.bpgGroupName}</option>
+				</c:if>
 			</c:forEach>
-		</select> <input type="submit" value="Search"><input type="hidden" name="pageNo" id="pageNo" value="1"></form>
+		</select> 
+		<input type="submit" value="Search"><input type="hidden" name="pageNo" id="pageNo" value="1"><input type="hidden" value="asc" name="sortOrder" id="sortOrder">
+		<input type="hidden" value="bptTerm" name="sortBy" id="sortBy"><input type="hidden" value="<%= selectedIndex%>" name="indexChar" id="indexChar"></form>
+			
 		</div>
 		</td>
 		<td width="50%" height="30" align="right"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="0"/><portlet:param name="mode" value="add"/></portlet:renderURL>'><img src="<%=request.getContextPath()%>/images/New.gif"></a></td>
@@ -98,35 +128,32 @@
 		<table width="100%" id="box-table-a" border="0" cellspacing="2"
 			cellpadding="0" style="border: 1px solid #132C00">
 			<tr>
-				<th width="25%" height="25" align="center" bgcolor="#3DB0B5">Term&nbsp;<img
-					src="<%=request.getContextPath()%>/images/up.png"><img
-					src="<%=request.getContextPath()%>/images/down.png"></th>
-				<th width="26%" align="center" bgcolor="#3DB0B5">Difinition&nbsp;<img
-					src="<%=request.getContextPath()%>/images/up.png"><img
-					src="<%=request.getContextPath()%>/images/down.png"></th>
-				<th width="26%" align="center" bgcolor="#3DB0B5">Categoty&nbsp;<img
-					src="<%=request.getContextPath()%>/images/up.png"><img
-					src="<%=request.getContextPath()%>/images/down.png"></th>
-				<th width="17%" align="center" bgcolor="#3DB0B5">Source&nbsp;<img
-					src="<%=request.getContextPath()%>/images/up.png"><img
-					src="<%=request.getContextPath()%>/images/down.png"></th>
+				<th width="25%" height="25" align="center" bgcolor="#3DB0B5">Term&nbsp;<a href="javascript: sortFunction('bptTerm','asc')"><img
+					src="<%=request.getContextPath()%>/images/up.png"></a><a href="javascript: sortFunction('bptTerm','desc')"><img
+					src="<%=request.getContextPath()%>/images/down.png"></a></th>
+				<th width="26%" align="center" bgcolor="#3DB0B5">Difinition&nbsp;<a href="javascript: sortFunction('bptDefinition','asc')"><img
+					src="<%=request.getContextPath()%>/images/up.png"></a><a href="javascript: sortFunction('bptDefinition','desc')"><img
+					src="<%=request.getContextPath()%>/images/down.png"></a></th>
+				<th width="26%" align="center" bgcolor="#3DB0B5">Categoty&nbsp;<a href="javascript: sortFunction('bpsGroup','asc')"><img
+					src="<%=request.getContextPath()%>/images/up.png"></a><a href="javascript: sortFunction('bpsGroup','desc')"><img
+					src="<%=request.getContextPath()%>/images/down.png"></a></th>
+				<th width="17%" align="center" bgcolor="#3DB0B5">Source&nbsp;<a href="javascript: sortFunction('bptSource','asc')"><img
+					src="<%=request.getContextPath()%>/images/up.png"></a><a href="javascript: sortFunction('bptSource','desc')"><img
+					src="<%=request.getContextPath()%>/images/down.png"></a></th>
 <!-- 				<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th> -->
 			</tr>
-			<tr><td colspan="4"><table width="100%" id="box_content">
 			<c:if test="${resultList.maxRow != 0}">
 			<c:forEach items="${resultList.resultListObj}" var="item">
 				<tr>
-					<td width="25%"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="view"/></portlet:renderURL>' class="team">${item.bptTerm}</a>
+					<td width="25%"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="view"/></portlet:renderURL>' class="team"><span class="_highlight">${item.bptTerm}</span></a>
 					</td>
-					<td width="26%">${item.bptDefinition}</td>
+					<td width="26%"><span class="_highlight">${item.bptDefinition}</span></td>
 					<td width="26%">${item.bpsGroup.bpgGroupName}</td>
 					<td width="17%">${item.bptSource}</td>
 <%-- 					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img --%>
 <%-- 						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td> --%>
 				</tr>
 			</c:forEach>
-			</table>
-			</td></tr>
 			<tr>
 <!-- 		<td colspan="2" width="50%" height="30"><span -->
 <!-- 			style="color: #030; font-size: 12px;">< Back to Home</span></td> -->
@@ -160,7 +187,7 @@
 			</c:if>
 			<c:if test="${resultList.maxRow == 0}">
 				<tr>
-					<td colspan="5" align="center" height="25" class="content">เนเธกเนเธเธเธเนเธญเธกเธนเธฅ</td>
+					<td colspan="5" align="center" height="25" class="content">Data not found.</td>
 				</tr>
 				<tr><td colspan="5" height="30" align="left"><span style="color: #030; font-size: 12px;">< Back to Home</span></td>
 				</tr>
@@ -170,8 +197,12 @@
 	</tr>
 </table>
 <script type="text/javascript">
-var higilight_keyword = document.getElementById('textfield').value;
-$('#box_content').removeHighlight().highlight(higilight_keyword);
+$(document).ready(function() {
+var higilight_keyword = $("#textfield").val();
+if(higilight_keyword.trim().length > 0) {
+	$('._highlight').highlight(higilight_keyword);
+}
+});
 </script>
 </body>
 </html>

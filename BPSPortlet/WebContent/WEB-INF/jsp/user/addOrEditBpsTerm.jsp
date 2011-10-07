@@ -42,25 +42,44 @@
 		}
 		var fromMail = "";
 		var toMail = "";
-		var textArea = CKEDITOR.instances.editor1.getData();
+		/*var textArea = CKEDITOR.instances.editor1.getData();
 		var re = /(<([^>]+)>)/gi;
-		var textSearch = textArea.replace(re, "");
-		var default_value = "0";
+		var textSearch = textArea.replace(re, "");*/
+		
 		var bpt_term = document.getElementById('term').value;
 		if(bpt_term.trim().length == 0) {
 			alert("Please enter Term.");
 			return false;
+		} 
+		
+		var selectGroup = document.getElementById('bpgGroupId');
+		var bpgId = selectGroup.options[selectGroup.selectedIndex].value;
+		if(bpgId == '0') {
+			alert("Please select Category.");
+			return false;
 		}
+		var editor_data = CKEDITOR.instances.editor1;
+		var child_count=editor_data.document.getBody().getChildCount();
+		var str="";
+		for(var i=0;i<child_count;i++){
+			str=str+editor_data.document.getBody().getChild( i).getText();
+		} 
+		var textSearch = str;
+		var default_value = "0";
+		
 		var bpt_source_ref = document.getElementById('sourceRef').value;
 		var bpsTerm = {
 				bptId : default_value,
 				bptStatus : default_value,
 				bptTerm : bpt_term,
-				bptDefinition : textArea,
+				bptDefinition : editor_data.getData(),
 				bptDefinitionSearch : textSearch,
-				bptSourceRef : bpt_source_ref
+				bptSourceRef : bpt_source_ref,
+				bpsGroup : {
+					bpgId : bpgId
+				}
 		};
-		BpsUserAjax.saveOrUpdateBpsTerm(bpsTerm, '${mode}', handle_Complete);
+		BpsUserAjax.saveOrUpdateBpsTerm(bpsTerm, bpgId, handle_Complete);
 	}
 	
 	function handle_Complete(result) {
@@ -118,6 +137,19 @@
 											</td>
 										</tr>
 										<tr>
+											<td class="h_achieve">Category:</td>
+											<td>
+											<select name="bpsGroupId" id="bpgGroupId">
+											<option  label="---Select Category--" value="0"/>
+											<c:if test="${resultListGroup ne null && not empty resultListGroup.resultListObj}">
+												<c:forEach items="${resultListGroup.resultListObj}" var="groupItem">
+													<option  label="${groupItem.bpgGroupName}" value="${groupItem.bpgId}"/>
+												</c:forEach>
+											</c:if>
+	    					</select>
+											</td>
+										</tr>
+										<tr>
 											<td class="h_achieve">Source / Referance:</td>
 											<td><input name="sourceRef" type="text" id="sourceRef"
 												size="50">
@@ -148,6 +180,11 @@
 						</tr>
 					</table></td>
 			</tr>
+			<tr>
+			<td height="30"><span
+				style="color: #030; font-size: 12px;"><a href='<portlet:renderURL><portlet:param name="action" value="list"/></portlet:renderURL>'>< Back to Home</a></span>
+			</td>
+		</tr>
 		</table>
 	</c:if>
 	<c:if test="${mode eq 'edit'}">
@@ -197,6 +234,24 @@
 											</td>
 										</tr>
 										<tr>
+											<td class="h_achieve">Category:</td>
+											<td>
+											<select name="bpsGroupId" id="bpgGroupId">
+											<option  label="---Select Category--" value="0"/>
+											<c:if test="${resultListGroup ne null && not empty resultListGroup.resultListObj}">
+												<c:forEach items="${resultListGroup.resultListObj}" var="groupItem">
+													<c:if test="${bpsUserForm.bpsTerm.bpsGroup ne null && bpsUserForm.bpsTerm.bpsGroup.bpgId eq groupItem.bpgId}">
+					<option value="${groupItem.bpgId}" selected="selected">${groupItem.bpgGroupName}</option>
+				</c:if>
+				<c:if test="${bpsUserForm.bpsTerm.bpsGroup ne null && bpsUserForm.bpsTerm.bpsGroup.bpgId ne groupItem.bpgId}">
+					<option value="${groupItem.bpgId}">${groupItem.bpgGroupName}</option>
+				</c:if>
+												</c:forEach>
+											</c:if>
+	    					</select>
+											</td>
+										</tr>
+										<tr>
 											<td class="h_achieve">Source / Referance:</td>
 											<td><input name="sourceRef" type="text" id=""sourceRef""
 												size="50">
@@ -234,6 +289,11 @@
 						</tr>
 					</table></td>
 			</tr>
+			<tr>
+			<td height="30"><span
+				style="color: #030; font-size: 12px;"><a href='<portlet:renderURL><portlet:param name="action" value="list"/></portlet:renderURL>'>< Back to Home</a></span>
+			</td>
+		</tr>
 		</table>
 	</c:if>
 </body>

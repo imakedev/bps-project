@@ -1,6 +1,5 @@
 package th.co.vlink.bps.portlet;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
@@ -11,16 +10,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.portlet.bind.PortletRequestDataBinder;
 
-import th.co.vlink.bps.form.BpsAdminForm;
 import th.co.vlink.bps.form.BpsUserForm;
 import th.co.vlink.bps.service.BpsUserService;
 import th.co.vlink.utils.Pagging;
@@ -69,9 +65,9 @@ public class BpsUserController {
 		searchBy = (searchBy != null && searchBy.trim().length() > 0) ? searchBy
 				.trim() : "0";
 		orderBy = (orderBy != null && orderBy.trim().length() > 0) ? orderBy
-				.trim() : "";
+				.trim() : "asc";
 		orderColumn = (orderColumn != null && orderColumn.trim().length() > 0) ? orderColumn
-				.trim() : "";
+				.trim() : "bptTerm";
 		bptIndexChar = (bptIndexChar != null && bptIndexChar.trim().length() > 0) ? bptIndexChar
 				.trim() : "A";
 		int pageNo = 1;
@@ -92,31 +88,43 @@ public class BpsUserController {
 		bpsTerm.setPagging(page);
 		bpsTerm.setBptTerm(bptTerm);
 		bpsTerm.setBptIndexChar(bptIndexChar);
+		bpsTerm.setBptStatus("1");
 		bpsTerm.getVcriteria().setValue(bptTerm);
 		bpsTerm.getVcriteria().setOrderBy(orderBy);
 		bpsTerm.getVcriteria().setOrderColumn(orderColumn);
+		bpsTerm.getVcriteria().setIndexChar(bptIndexChar);
+		bpsTerm.getVcriteria().setKey(searchBy);
 		if (!bpgId.equals("0")) {
 			BpsGroup group = new BpsGroup();
 			group.setBpgId(Long.parseLong(bpgId));
 			bpsTerm.setBpsGroup(group);
 		}
 		/*String key = "";
-		if (!searchBy.equals("0")) { // 1=by term ,2 =by Difinition
-			if (searchBy.equals("1")) {
-				// bptTerm
-				key = "bptTerm";
-			} else if (searchBy.equals("2")) {
-				// bptDefinitionSearch
-				key = "bptDefinitionSearch";
+		if(!searchBy.equals("0")){ //1=by term ,2 =by Difinition , 3 all
+			if(searchBy.equals("1")){
+				//bptTerm
+				key="bptTerm";
+			}else if(searchBy.equals("2")){
+				//bptDefinitionSearch
+				key="bptDefinitionSearch";
+			}else if(searchBy.equals("3")){
+				key="bptAll";
 			}
+		}
 		}*/
 		bpsTerm.getVcriteria().setKey(searchBy);
 		bpsUserForm.setBpgId(bpgId);
 //		bpsUserForm.setSearchBy(searchBy);
 		bpsUserForm.setBpsTerm(bpsTerm);
 		VResultMessage resultList = bpsUserService.searchBpsTerm(bpsTerm);
+		BpsGroup bpsGroup2 = new BpsGroup();
+		Pagging pagging = new Pagging();
+		pagging.setPageSize(Integer.MAX_VALUE);
+		pagging.setOrderBy("asc");
+		pagging.setSortBy("bpgGroupName");
+		bpsGroup2.setPagging(pagging);
 		VResultMessage resultListGroup = bpsUserService
-				.searchBpsGroup(new BpsGroup());
+				.searchBpsGroup(bpsGroup2);
 		model.addAttribute("resultList", resultList);
 		model.addAttribute("resultListGroup", resultListGroup);
 		model.addAttribute("bpsUserForm", bpsUserForm);
@@ -150,7 +158,16 @@ public class BpsUserController {
 		}
 		bpsUserForm.setMode(mode);
 		bpsUserForm.setBpsTerm(bpsTerm);
-
+		
+		BpsGroup bpsGroup = new BpsGroup();
+		Pagging pagging = new Pagging();
+		pagging.setPageSize(Integer.MAX_VALUE);
+		pagging.setOrderBy("asc");
+		pagging.setSortBy("bpgGroupName");
+		bpsGroup.setPagging(pagging);
+		VResultMessage resultListGroup = bpsUserService.searchBpsGroup(bpsGroup);
+		model.addAttribute("resultListGroup", resultListGroup);
+		
 		model.addAttribute("bpsUserForm", bpsUserForm);
 		model.addAttribute("mode", mode);
 
@@ -164,6 +181,11 @@ public class BpsUserController {
 		String bpgId = request.getParameter("select2");
 		String searchBy = request.getParameter("select");
 		String pageNoStr = request.getParameter("pageNo");
+		String orderBy = request.getParameter("sortOrder");
+//		System.out.println("Order By : "+orderBy);
+		String orderColumn = request.getParameter("sortBy");
+//		System.out.println("Order Column : "+orderColumn);
+		String bptIndexChar = request.getParameter("indexChar");
 		bptTerm = (bptTerm != null && bptTerm.trim().length() > 0) ? bptTerm
 				.trim() : "";
 		bpgId = (bpgId != null && bpgId.trim().length() > 0) ? bpgId.trim()
@@ -181,13 +203,19 @@ public class BpsUserController {
 		BpsTerm bpsTerm = new BpsTerm();
 		bpsTerm.setPagging(page);
 		bpsTerm.setBptTerm(bptTerm);
+		bpsTerm.setBptIndexChar(bptIndexChar);
+		bpsTerm.setBptStatus("1");
 		bpsTerm.getVcriteria().setValue(bptTerm);
+		bpsTerm.getVcriteria().setOrderBy(orderBy);
+		bpsTerm.getVcriteria().setOrderColumn(orderColumn);
+		bpsTerm.getVcriteria().setIndexChar(bptIndexChar);
+		bpsTerm.getVcriteria().setKey(searchBy);
 		if (!bpgId.equals("0")) {
 			BpsGroup group = new BpsGroup();
 			group.setBpgId(Long.parseLong(bpgId));
 			bpsTerm.setBpsGroup(group);
 		}
-		String key = "";
+		/*String key = "";
 		if (!searchBy.equals("0")) { // 1=by term ,2 =by Difinition
 			if (searchBy.equals("1")) {
 				// bptTerm
@@ -197,7 +225,7 @@ public class BpsUserController {
 				key = "bptDefinitionSearch";
 			}
 		}
-		bpsTerm.getVcriteria().setKey(key);
+		bpsTerm.getVcriteria().setKey(key);*/
 		VResultMessage resultList = bpsUserService.searchBpsTerm(bpsTerm);
 		VResultMessage resultListGroup = bpsUserService
 				.searchBpsGroup(new BpsGroup());
