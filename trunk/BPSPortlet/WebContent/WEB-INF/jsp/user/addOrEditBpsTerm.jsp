@@ -68,6 +68,9 @@
 		var default_value = "0";
 		
 		var bpt_source_ref = document.getElementById('sourceRef').value;
+		
+		var userCreate = document.getElementById('userCreate').value;
+		
 		var bpsTerm = {
 				bptId : default_value,
 				bptStatus : default_value,
@@ -75,6 +78,7 @@
 				bptDefinition : editor_data.getData(),
 				bptDefinitionSearch : textSearch,
 				bptSourceRef : bpt_source_ref,
+				bptCreateBy : userCreate,
 				bpsGroup : {
 					bpgId : bpgId
 				}
@@ -91,6 +95,17 @@
 </script>
 </head>
 <body>
+
+<%
+/*com.ibm.portal.puma.User user = (com.ibm.portal.puma.User) request
+.getAttribute("com.ibm.portal.puma.request-user");
+String userCreate = "";
+String userMail = "";
+if(user != null) {
+	userCreate = user.get("uid");
+	userMail = user.get("mail");
+}*/
+%>
 	<c:if test="${mode eq 'add'}">
 		<table width="800" border="0" cellspacing="0" cellpadding="0"
 			align="center" style="background-color: #FFF;">
@@ -174,6 +189,7 @@
 											</td>
 										</tr>
 									</table>
+									<input name="userCreate" type="hidden" id="userCreate">
 								</form>
 							</td>
 
@@ -284,6 +300,7 @@
 											</td>
 										</tr>
 									</table>
+									<input name="userCreate" type="hidden" id="userCreate">
 								</form>
 							</td>
 						</tr>
