@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
@@ -130,6 +131,18 @@ public class HibernateBpsGroup extends HibernateCommon implements BpsGroupServic
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return	delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance); 
+	}
+	public int checkDuplicateGroup(BpsGroup persistentInstance)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		int count=0;
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select count(*) from BpsGroup bpsGroup where lower(bpsGroup.bpgGroupName)=:bpgGroupName " );
+		query.setParameter("bpgGroupName", persistentInstance.getBpgGroupName().toLowerCase());
+		Object obj=query.uniqueResult();
+		if(obj!=null)
+			count=((java.lang.Long)obj).intValue();
+		return count;
 	}
 
 }

@@ -216,9 +216,11 @@ public class HibernateBpsTerm extends HibernateCommon implements BpsTermService 
 			// set pagging.
 			 String size = String.valueOf(getSize(session, instance,searchKey,indexChar,orderColumn,
 						orderBy)); 
+			 System.out.println(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 			 
 			 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 			 query.setMaxResults(pagging.getPageSize());
+			 
 			 List l = query.list();  
 			 transList.add(l); 
 		 	 transList.add(size); 
