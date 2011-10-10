@@ -47,6 +47,14 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 		return postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
 
 	}
+	public int checkDuplicateGroup(String groupName) {
+		BpsGroup bpsGroup = new BpsGroup();
+		bpsGroup.setBpgGroupName(groupName);
+		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_CHECK_DUPLICATE);
+		VResultMessage resultMessage =postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
+		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
+		return bpsGroup.getUpdateRecord();
+	}
     // BPS_TERM
 	public int saveBpsTerm(BpsTerm bpsTerm) {
 		bpsTerm.setServiceName(ServiceConstant.BPS_TERM_SAVE);

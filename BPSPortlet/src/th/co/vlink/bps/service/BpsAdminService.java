@@ -10,9 +10,10 @@ public interface BpsAdminService {
 	// BPS_GROUP
 	public int saveBpsGroup(BpsGroup bpsGroup);
 	public int updateBpsGroup(BpsGroup bpsGroup);
-	public int deleteBpsGroup(String key);
+	public int deleteBpsGroup(String key);	
 	public BpsGroup findBpsGroupById(String key);
 	public VResultMessage searchBpsGroup(BpsGroup bpsGroup);
+	public int checkDuplicateGroup(String groupName);
 
 	// BPS_TERM
 	public int saveBpsTerm(BpsTerm bpsTerm);
