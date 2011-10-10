@@ -43,16 +43,16 @@ String.prototype.trim = function() {
 <table width="100%" align="center" border="0" cellspacing="0"
 	cellpadding="0">
 	<tr>
-		<td height="30" colspan="2"><span
+		<td height="30" colspan="2" align="left"><span
 			style="color: #030; font-size: 12px;"><strong>You are
 		in:</strong> Home > BPS Term and Difinition</span></td>
 	</tr>
-	  <tr>
-	    <td align="left"><img src="<%=request.getContextPath()%>/images/term.gif"></td>
-	    <td align="right"><a href="#"><img src="<%=request.getContextPath()%>/images/btn_admin.gif" width="65" height="25"></a></td>
-	  </tr>
+<!-- 	  <tr> -->
+<%-- 	    <td align="left"><img src="<%=request.getContextPath()%>/images/term.gif"></td> --%>
+<%-- 	    <td align="right"><a href="#"><img src="<%=request.getContextPath()%>/images/btn_admin.gif" width="65" height="25"></a></td> --%>
+<!-- 	  </tr> -->
 	<tr>
-		<td colspan="2" height="30">
+		<td colspan="2" height="30" align="left">
 		<div class="team" style="padding-left: 10px;">
 		<%
 			BpsUserForm bpsUserForm = (BpsUserForm) request.getAttribute("bpsUserForm");
@@ -128,16 +128,16 @@ String.prototype.trim = function() {
 		<table width="100%" id="box-table-a" border="0" cellspacing="2"
 			cellpadding="0" style="border: 1px solid #132C00">
 			<tr>
-				<th width="25%" height="25" align="center" bgcolor="#3DB0B5">Term&nbsp;<a href="javascript: sortFunction('bptTerm','asc')"><img
+				<th width="25%" height="25" align="center" bgcolor="#3DB0B5" align="left">Term&nbsp;<a href="javascript: sortFunction('bptTerm','asc')"><img
 					src="<%=request.getContextPath()%>/images/up.png"></a><a href="javascript: sortFunction('bptTerm','desc')"><img
 					src="<%=request.getContextPath()%>/images/down.png"></a></th>
-				<th width="26%" align="center" bgcolor="#3DB0B5">Difinition&nbsp;<a href="javascript: sortFunction('bptDefinition','asc')"><img
+				<th width="26%" align="center" bgcolor="#3DB0B5" align="left">Difinition&nbsp;<a href="javascript: sortFunction('bptDefinition','asc')"><img
 					src="<%=request.getContextPath()%>/images/up.png"></a><a href="javascript: sortFunction('bptDefinition','desc')"><img
 					src="<%=request.getContextPath()%>/images/down.png"></a></th>
-				<th width="26%" align="center" bgcolor="#3DB0B5">Categoty&nbsp;<a href="javascript: sortFunction('bpsGroup','asc')"><img
+				<th width="26%" align="center" bgcolor="#3DB0B5" align="left">Categoty&nbsp;<a href="javascript: sortFunction('bpsGroup','asc')"><img
 					src="<%=request.getContextPath()%>/images/up.png"></a><a href="javascript: sortFunction('bpsGroup','desc')"><img
 					src="<%=request.getContextPath()%>/images/down.png"></a></th>
-				<th width="17%" align="center" bgcolor="#3DB0B5">Source&nbsp;<a href="javascript: sortFunction('bptSource','asc')"><img
+				<th width="17%" align="center" bgcolor="#3DB0B5" align="left">Source&nbsp;<a href="javascript: sortFunction('bptSource','asc')"><img
 					src="<%=request.getContextPath()%>/images/up.png"></a><a href="javascript: sortFunction('bptSource','desc')"><img
 					src="<%=request.getContextPath()%>/images/down.png"></a></th>
 <!-- 				<th width="6%" align="center" bgcolor="#3DB0B5">&nbsp;</th> -->
@@ -145,11 +145,11 @@ String.prototype.trim = function() {
 			<c:if test="${resultList.maxRow != 0}">
 			<c:forEach items="${resultList.resultListObj}" var="item">
 				<tr>
-					<td width="25%"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="view"/></portlet:renderURL>' class="team"><span class="_highlight">${item.bptTerm}</span></a>
+					<td width="25%" align="left"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="view"/></portlet:renderURL>' class="team"><span class="_highlight">${item.bptTerm}</span></a>
 					</td>
-					<td width="26%"><span class="_highlight">${item.bptDefinition}</span></td>
-					<td width="26%">${item.bpsGroup.bpgGroupName}</td>
-					<td width="17%">${item.bptSource}</td>
+					<td width="26%" align="left"><span class="_highlight">${item.bptDefinition}</span></td>
+					<td width="26%" align="left">${item.bpsGroup.bpgGroupName}</td>
+					<td width="17%" align="left">${item.bptSource}</td>
 <%-- 					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img --%>
 <%-- 						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td> --%>
 				</tr>
@@ -179,7 +179,7 @@ String.prototype.trim = function() {
 					}
 				}
 			}
-		%> <%=Paging.getPaging(pageNo, pageSize, total_page,
+		%> Page: <%=Paging.getPaging(pageNo, pageSize, total_page,
 					request.getContextPath())%>
 		</div>
 		</td>

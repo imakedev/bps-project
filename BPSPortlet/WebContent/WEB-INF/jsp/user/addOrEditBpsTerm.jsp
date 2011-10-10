@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet"%>
+<%@ page import="java.util.List" %>
 <portlet:defineObjects />
 <html>
 <head>
@@ -97,17 +98,26 @@
 <body>
 
 <%
-/*com.ibm.portal.puma.User user = (com.ibm.portal.puma.User) request
-.getAttribute("com.ibm.portal.puma.request-user");
+/*com.ibm.portal.puma.User user = (com.ibm.portal.puma.User) request.getAttribute("com.ibm.portal.puma.request-user");
 String userCreate = "";
 String userMail = "";
 if(user != null) {
 	userCreate = user.get("uid");
 	userMail = user.get("mail");
+	List list = user.getGroups();
+	if(list != null && list.size() > 0) {
+		int size = list.size();
+		for(int i=0;i<size;i++) {
+			com.ibm.wps.puma.Group groupElement = (com.ibm.wps.puma.Group)list.get(i);
+			if(groupElement.getName() != null) {
+				
+			}
+		}
+	}
 }*/
 %>
 	<c:if test="${mode eq 'add'}">
-		<table width="800" border="0" cellspacing="0" cellpadding="0"
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			align="center" style="background-color: #FFF;">
 			<tr>
 				<td>
@@ -117,27 +127,27 @@ if(user != null) {
 								<form action="" method="get">
 									<table width="100%" border="0" cellspacing="3" cellpadding="0">
 										<tr>
-											<td height="30" colspan="2"
+											<td height="30" colspan="2"  align="left"
 												style="background-color: #132C00; font-weight: bold; color: #FFF;">&nbsp;New
 												BPS Terms and Definitions</td>
 										</tr>
 										<tr>
-											<td width="19%" height="19" class="h_achieve">To:</td>
-											<td width="81%"><label> <input name="mailTo"
+											<td width="19%" height="19" class="h_achieve" align="left">To:</td>
+											<td width="81%" align="left"><label> <input name="mailTo"
 													type="text" id="mailTo" value="COS Staff" size="50"
 													class="readonly" readonly="readonly"> </label>
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">From:</td>
-											<td><input name="mailFrom" type="text"
+											<td class="h_achieve" align="left">From:</td>
+											<td><input name="mailFrom" type="text"  align="left"
 												class="readonly" id="mailFrom" value="name" size="50"
 												readonly="readonly">
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Subject:</td>
-											<td><input name="mailSubject" type="text" id="textfield3"
+											<td class="h_achieve" align="left">Subject:</td>
+											<td align="left"><input name="mailSubject" type="text" id="textfield3"
 												size="50">
 											</td>
 										</tr>
@@ -146,14 +156,14 @@ if(user != null) {
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Term:</td>
-											<td><input name="term" type="text" id="term"
+											<td class="h_achieve" align="left">Term:</td>
+											<td align="left"><input name="term" type="text" id="term"
 												size="50">
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Category:</td>
-											<td>
+											<td class="h_achieve" align="left">Category:</td>
+											<td align="left">
 											<select name="bpsGroupId" id="bpgGroupId">
 											<option  label="---Select Category--" value="0"/>
 											<c:if test="${resultListGroup ne null && not empty resultListGroup.resultListObj}">
@@ -165,14 +175,14 @@ if(user != null) {
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Source / Referance:</td>
-											<td><input name="sourceRef" type="text" id="sourceRef"
+											<td class="h_achieve" align="left">Source / Referance:</td>
+											<td align="left"><input name="sourceRef" type="text" id="sourceRef"
 												size="50">
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Detail:</td>
-											<td><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
+											<td class="h_achieve" align="left">Detail:</td>
+											<td align="left"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
 		CKEDITOR.replace('editor1');
 	</script>
 											</td>
@@ -183,7 +193,7 @@ if(user != null) {
 										</tr>
 										<tr>
 											<td>&nbsp;</td>
-											<td><label> <input type="button" name="button"
+											<td align="left"><label> <input type="button" name="button"
 													id="button" value="Send mail" onclick="saveBtsTerm()"> <input type="reset"
 													name="button2" id="button2" value="Cancel"> </label>
 											</td>
@@ -197,14 +207,14 @@ if(user != null) {
 					</table></td>
 			</tr>
 			<tr>
-			<td height="30"><span
+			<td height="30" align="left"><span
 				style="color: #030; font-size: 12px;"><a href='<portlet:renderURL><portlet:param name="action" value="list"/></portlet:renderURL>'>< Back to Home</a></span>
 			</td>
 		</tr>
 		</table>
 	</c:if>
 	<c:if test="${mode eq 'edit'}">
-		<table width="800" border="0" cellspacing="0" cellpadding="0"
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			align="center" style="background-color: #FFF;">
 			<tr>
 				<td>
@@ -214,26 +224,26 @@ if(user != null) {
 								<form action="" method="get">
 									<table width="100%" border="0" cellspacing="3" cellpadding="0">
 										<tr>
-											<td height="30" colspan="2"
+											<td height="30" colspan="2" align="left"
 												style="background-color: #132C00; font-weight: bold; color: #FFF;">&nbsp;Request
 												to modify BPS Term and Definition</td>
 										</tr>
 										<tr>
-											<td width="19%" height="19" class="h_achieve">To:</td>
+											<td width="19%" height="19" class="h_achieve" align="left">To:</td>
 											<td width="81%"><label> <input name="mailTo"
 													type="text" id="mailTo" value="COS Staff" size="50"
 													class="readonly" readonly="readonly"> </label>
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">From:</td>
+											<td class="h_achieve" align="left">From:</td>
 											<td><input name="mailFrom" type="text"
 												class="readonly" id="mailFrom" value="name" size="50"
 												readonly="readonly">
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Subject:</td>
+											<td class="h_achieve" align="left">Subject:</td>
 											<td><input name="mailSubject" type="text" id="mailSubject"
 												size="50">
 											</td>
@@ -243,15 +253,15 @@ if(user != null) {
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Term:</td>
-											<td><input name="term" type="text" id="term"
+											<td class="h_achieve" align="left">Term:</td>
+											<td align="left"><input name="term" type="text" id="term"
 												value="${bpsUserForm.bpsTerm.bptTerm}" size="50" class="readonly"
 												readonly="readonly">
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Category:</td>
-											<td>
+											<td class="h_achieve" align="left">Category:</td>
+											<td align="left">
 											<select name="bpsGroupId" id="bpgGroupId">
 											<option  label="---Select Category--" value="0"/>
 											<c:if test="${resultListGroup ne null && not empty resultListGroup.resultListObj}">
@@ -268,20 +278,20 @@ if(user != null) {
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Source / Referance:</td>
-											<td><input name="sourceRef" type="text" id=""sourceRef""
+											<td class="h_achieve" align="left">Source / Referance:</td>
+											<td align="left"><input name="sourceRef" type="text" id=""sourceRef""
 												size="50">
 											</td>
 										</tr>
 										<tr>
 											<td height="25">&nbsp;</td>
-											<td class="h_achieve"><a href="javascript: selectDetail('proposedDiv')">Proposed change</a> |
+											<td class="h_achieve" align="left"><a href="javascript: selectDetail('proposedDiv')">Proposed change</a> |
 												<a href="javascript: selectDetail('revisedDiv')">Revised version</a>
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve">Detail:</td>
-											<td><div id="proposedDiv"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
+											<td class="h_achieve" align="left">Detail:</td>
+											<td align="left"><div id="proposedDiv"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
 		CKEDITOR.replace('editor1');
 	</script></div><div id="revisedDiv" style="display: none"><textarea cols="50" id="editor2" name="editor2" rows="10"><c:out value="${bpsUserForm.bpsTerm.bptDefinition}" escapeXml="true" /></textarea><script type="text/javascript">
 		CKEDITOR.replace('editor2');
@@ -294,7 +304,7 @@ if(user != null) {
 										</tr>
 										<tr>
 											<td>&nbsp;</td>
-											<td><label> <input type="button" name="button"
+											<td align="left"><label> <input type="button" name="button"
 													id="button" value="Send mail" onclick="saveBtsTerm()"> <input type="reset"
 													name="button2" id="button2" value="Cancel"> </label>
 											</td>
