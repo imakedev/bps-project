@@ -3,6 +3,13 @@
 <html>
 <head>
 <c:url var="url" value="/" />
+<script src='${url}js/jquery-1.6.4.min.js'></script>
+<script type="text/javascript"
+        src="${url}dwr/interface/BpsAdminAjax.js"></script> 
+<script type="text/javascript"
+        src="${url}dwr/engine.js"></script> 
+<script type="text/javascript"
+        src="${url}dwr/util.js"></script> 
 <link rel="stylesheet" type="text/css"
 	href="${url}css/style.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -64,11 +71,42 @@ table#box-table-a a:hover {
 }
 </style>
 <script>
+function <portlet:namespace />doActionCheck(_mode){
+	var agree ;
+	//alert(_urlDelete)
+	if(_mode == 'edit')
+		agree = confirm(" Would you like to edit Categoty? ");
+	else
+		agree = confirm(" Would you like to add Categoty? ");
+	if (agree){ 
+		var bpgGroupName= jQuery.trim($("#bpgGroupName").val());
+		BpsAdminAjax.checkDuplicateGroup(jQuery.trim(bpgGroupName),{
+			callback:function(data){
+				if(data!=0){ // have data
+					if(_mode == 'edit')
+						alert(" Can't Edit , Duplicate value ");
+					else
+						alert(" Can't Add , Duplicate value ");
+				}else{
+					if(_mode == 'edit')
+						$("#button_edit").click();
+					else
+						$("#button_save").click();
+				}
+			}
+		});
+	}
+	else{
+		return false ;
+	} 
+	
+}
 function <portlet:namespace />doAction(_command,_mode){
 	//alert(_command+","+_mode);
 	var command = document.getElementById("command");
 	//alert(nfaqId.value+","+command.value);
 	command.value=_command;
+	/*
 	var agree ;
 	//alert(_urlDelete)
 	if(_mode == 'edit')
@@ -82,8 +120,10 @@ function <portlet:namespace />doAction(_command,_mode){
 	else{
 		return false ;
 	} 
+	*/
 		return true;//false;
 	}
+ 
 </script>
 </head>
 <body>
@@ -102,6 +142,11 @@ function <portlet:namespace />doAction(_command,_mode){
 	<table width="950" align="center" border="0" cellspacing="0"
 		cellpadding="0">
 		<tr>
+			<td><img src="${url}images/term.gif">
+			</td>
+			<td align="right">&nbsp;</td>
+		</tr>
+		<tr>
 			<td height="30" colspan="2"><span
 				style="color: #030; font-size: 12px;"><strong>You
 						are in:</strong> <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(backURL)}">BPS
@@ -111,11 +156,7 @@ function <portlet:namespace />doAction(_command,_mode){
 						BPS Term and Difinition</span>
 			</td>
 		</tr>
-		<tr>
-			<td><img src="${url}images/term.gif">
-			</td>
-			<td align="right">&nbsp;</td>
-		</tr>
+		
 		<tr>
 			<td colspan="2">&nbsp;</td>
 		</tr>
@@ -126,23 +167,25 @@ function <portlet:namespace />doAction(_command,_mode){
 					<table width="100%" border="0" cellspacing="5" cellpadding="0">
 						<tr>
 							<th width="13%" height="25" align="left">Category Name:</th>
-							<td width="87%" align="left"><form:input path="bpsGroup.bpgGroupName" size="45"/>  
+							<td width="87%" align="left"><form:input path="bpsGroup.bpgGroupName" id="bpgGroupName" size="45"/>  
 							</td>
 						</tr> 
 						<tr>
 						<td width="13%">&nbsp;</td>
 						<td width="87%" align="left" height="20">
 						<c:if test="${mode=='add'}">
-							<input type="submit"
-							name="button_add" id="button_add" value=" Submit "  onclick='return <portlet:namespace />doAction("doSave","add")' />
+							<input type="submit" style="display: none;"
+							name="button_save" id="button_save" value=" Submit "  onclick='return <portlet:namespace />doAction("doSave","add")' />
+							<input id="button_save_check" type="button" value=" Submit " onclick='<portlet:namespace />doActionCheck("add")'/>
 							<%--
 							 onclick='<portlet:namespace />doAction("doSave","add")'
 							 --%>
 						</c:if>
 						<c:if test="${mode=='edit'}">
-							<input type="submit"
-							name="button_add" id="button_add" value=" Submit  " onclick='return <portlet:namespace />doAction("doSave","edit")' />
-						</c:if>  						 
+							<input type="submit" style="display: none;"
+							name="button_edit" id="button_edit" value=" Submit  " onclick='return <portlet:namespace />doAction("doSave","edit")' />
+							<input id="button_edit_check" type="button" value=" Submit " onclick='<portlet:namespace />doActionCheck("edit")'/>
+						</c:if>  	 
 						</td>
 					</tr>
 					</table> 
