@@ -182,10 +182,34 @@ if(user != null) {
 										</tr>
 										<tr>
 											<td class="h_achieve" align="left">Detail:</td>
-											<td align="left"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
-		CKEDITOR.replace('editor1');
-	</script>
-											</td>
+											<td align="left"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea>
+											<script type="text/javascript">
+												//CKEDITOR.replace('editor1');
+												CKEDITOR.replace( 'editor1',
+														{
+															// Defines a simpler toolbar to be used in this sample.
+															// Note that we have added out "MyButton" button here.
+															//height : 50,
+															//Preview - 
+															//toolbar : [ [ 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike','-','Link' ] ]
+													toolbar : [
+																{ name: 'document', items : [ 'Source','-','Preview','-'] },
+																//{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+																//{ name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
+																//{ name: 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton','HiddenField' ] },
+																//'/',
+																{ name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike',] },
+																{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ] },
+																{ name: 'links', items : [ 'Link','Unlink'] },
+																{ name: 'insert', items : [ 'Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },
+																'/',
+																{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+																{ name: 'colors', items : [ 'TextColor','BGColor' ] }
+																//{ name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
+															]
+														});
+											</script>			
+										</td>
 										</tr>
 										<tr>
 											<td>&nbsp;</td>
