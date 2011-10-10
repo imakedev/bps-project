@@ -48,5 +48,7 @@ public class BpsAdminAjax {
 	public BpsTermVersion findBpsTermVersionById(String bpgId){  
         return bpsAdminService.findBpsTermVersionById(bpgId) ; 
 	}
-
+	public int checkDuplicateGroup(String groupName){
+		return  bpsAdminService.checkDuplicateGroup(groupName); 
+	}
 }
