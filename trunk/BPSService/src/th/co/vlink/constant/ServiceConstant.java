@@ -12,6 +12,8 @@ public class ServiceConstant {
 	public static final String BPS_GROUP_DELETE = "deleteBpsGroup";
 	public static final String BPS_GROUP_SEARCH = "searchBpsGroup";
 	public static final String BPS_GROUP_FIND_BY_ID = "findBpsGroupById";
+	public static final String BPS_GROUP_CHECK_DUPLICATE= "checkDuplicateGroup";
+	
 
 	// BANPU_BPS_TERM
 	public static final String BPS_TERM_SAVE = "saveBpsTerm";

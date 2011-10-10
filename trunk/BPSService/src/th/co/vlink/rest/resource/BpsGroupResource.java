@@ -100,6 +100,11 @@ public class BpsGroupResource extends BaseResource {
 							int updateRecord=bpsGroupService.deleteBpsGroup(bpsGroup);
 							returnUpdateRecord(entity,xbpsGroup,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.BPS_GROUP_CHECK_DUPLICATE)){							
+							int updateRecord=bpsGroupService.checkDuplicateGroup(bpsGroup);
+							returnUpdateRecord(entity,xbpsGroup,updateRecord);
+						}
+						
 						else if(serviceName.equals(ServiceConstant.BPS_GROUP_SEARCH)){
 							Pagging page = xbpsGroup.getPagging(); 
 							bpsGroup.setPagging(page);		 
