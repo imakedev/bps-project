@@ -50,16 +50,17 @@
 	<table width="950" align="center" border="0" cellspacing="0"
 		cellpadding="0">
 		<tr>
+			<td><img src="${url}images/corporatew.gif" width="233" height="22">
+			</td>
+			<td align="right">&nbsp;</td>
+		</tr>
+		<tr>
 			<td height="30" colspan="2"><span
 				style="color: #030; font-size: 12px;"><strong>You
 						are in:</strong> <a href="${fn:escapeXml(homeURL)}">Home</a> > Corporate Work Procedure > Manage a Category</span>
 			</td>
 		</tr>
-		<tr>
-			<td><img src="${url}images/corporatew.gif" width="233" height="22">
-			</td>
-			<td align="right">&nbsp;</td>
-		</tr>
+		
 		<tr>
 			<td colspan="2">&nbsp;</td>
 		</tr>

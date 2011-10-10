@@ -32,13 +32,21 @@ function <portlet:namespace/>downloadFile(_hotLink){
 <body>
 <table width="950" align="center" border="0" cellspacing="0" cellpadding="0">
  <tr>
-    <td height="30" colspan="2"><span style="color:#030; font-size:12px;"><strong>You are in:</strong> <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(backURL)}">BPS Term and Difinition</a> > ${bpsTerm.bptTerm}</span></td>
+	<td><img src="${url}images/term.gif"></td>
+	<td align="right">&nbsp;</td>
+ </tr>
+ <tr>
+    <td height="30" colspan="2"><span style="color:#030; font-size:12px;"><strong>You are in:</strong> 
+    <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(backURL)}">BPS Term and Difinition</a> > ${bpsTerm.bptTerm}</span></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td align="right"></td>
   </tr>
-
+ <tr>
+    <td height="30" colspan="2"><span style="color:#030; font-size:12px;"><strong>Category:</strong> ${bpsTerm.bpsGroup.bpgGroupName} | <strong>Source:</strong> ${bpsTerm.bptSource} |<strong>Updated: </strong><fmt:formatDate pattern="dd/MM/yyyy HH:mm:ss a" value="${bpsTerm.bptCreateDate}" /> by ${bpsTerm.bptCreateBy}
+    </span></td>
+  </tr>
 		<tr>
 			<td colspan="2" valign="top">
 				<!--//-->

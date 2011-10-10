@@ -3,6 +3,7 @@
 <%@page import="th.co.vlink.utils.Pagging"%>
 <%@page import="th.co.vlink.bps.util.Paging"%>
 <%@page import="th.co.vlink.bps.form.BpsAdminForm"%>
+<%@page import="javax.portlet.PortletURL"%>
 <%@page contentType="text/html; charset=utf-8"%>
 <html>
 <head>
@@ -13,6 +14,8 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css"
 	href="${url}css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="${url}css/style_cos.css" />
 <style type="text/css">
 .highlight { background-color: yellow }
 </style>
@@ -112,7 +115,9 @@
 <portlet:renderURL var="formAction">
     <portlet:param name="action" value="manageBpsTerm"/>
 </portlet:renderURL> 
-
+<portlet:renderURL var="homeURL">
+    <portlet:param name="action" value="list"/>
+</portlet:renderURL>
 <form:form  modelAttribute="bpsAdminForm" name="bpsAdminForm" method="post"  action="${formAction}">
 <form:hidden path="command" id="command"/> 
 <form:hidden path="indexChar" id="indexChar"/>
@@ -121,12 +126,6 @@
 	<table width="100%" align="center" border="0" cellspacing="0"
 		cellpadding="0">
 		<tr> 
-			<td height="30" colspan="2"><span
-				style="color: #030; font-size: 12px;"><strong>You
-						are in:</strong> Home > BPS Term and Difinition</span>
-			</td>
-		</tr>
-		<tr> 
 			 <td align="left"><img src="${url}images/term.gif"></td>
 	    	 <td align="right">
 	    	 <%--
@@ -134,7 +133,13 @@
 	    	  --%></a>
 	    	 </td>
 		</tr>
-
+		<tr> 
+			<td height="30" colspan="2"><span
+				style="color: #030; font-size: 12px;"><strong>You
+						are in:</strong> <a href="${fn:escapeXml(homeURL)}">Home</a> > BPS Term and Difinition</span>
+			</td>
+		</tr>
+		 
 		<tr>
 			<td colspan="2"><div class="team" style="padding-left: 10px;">
 			<%
@@ -406,32 +411,146 @@ table#box-table-a a:hover {
 		<tr> 
 			<td width="100%" colspan="2">
 				<div class="pagination">
-				<%
-			VResultMessage resultMessage = (VResultMessage)request.getAttribute("bpsTerms"); 
-				BpsAdminForm bpsAdminForm = (BpsAdminForm) request
-					.getAttribute("bpsAdminForm");
-			int pageNo = 1;
-			int pageSize = 20;
-			int total_page = 1;
-			if (resultMessage != null && resultMessage.getMaxRow() != null) {
-				Pagging paging = bpsAdminForm.getBpsTerm().getPagging();
-				if (paging != null) {
-					pageNo = paging.getPageNo();
-					pageSize = paging.getPageSize();
-					int totalResult = Integer.parseInt(resultMessage.getMaxRow());
-					if (totalResult % pageSize != 0) {
-						Double d = Math.floor(totalResult / pageSize);
-						total_page = d.intValue() + 1;
-					} else {
-						Double d = Math.floor(totalResult / pageSize);
-						total_page = d.intValue()!=0?d.intValue():1;
-					}
+				<% 
+		      	 Object obj =  request.getAttribute("pageObj"); 
+				th.co.vlink.utils.Pagging paging = (th.co.vlink.utils.Pagging)obj; 
+				BpsAdminForm bpsAdminForm = (BpsAdminForm) request.getAttribute("bpsAdminForm");
+				/* ,@RequestParam(value="bptTerm",required = false) String bptTerm
+				,@RequestParam(value="bpgId",required = false) String bpgId
+				,@RequestParam(value="searchBy",required = false) String searchBy
+				,@RequestParam(value="orderBy",required = false) String orderBy
+				,@RequestParam(value="orderColumn",required = false) String orderColumn
+				,@RequestParam(value="indexChar",required = false) String indexChar)   */
+					
+				String bptTerm = bpsAdminForm.getBptTerm();
+				String bpgId = bpsAdminForm.getBpgId();
+				String searchBy = bpsAdminForm.getSearchBy();
+				String orderBy = bpsAdminForm.getOrderBy();
+				String orderColumn = bpsAdminForm.getOrderColumn();
+				String indexChar_ = bpsAdminForm.getIndexChar();
+				int PAGE_BETWEEN = 5;
+		        int pagingScript_currentPage=paging.getPageNo();
+				int pagingScript_recordCount=paging.getTotalRecord();
+				int pagingScript_recordPerPage=paging.getPageSize();//RECORD_PERPAGE;
+				
+				int plus = pagingScript_recordCount%pagingScript_recordPerPage!=0?1:0;
+				int  pagingScript_pageCount=new Double(Math.floor((pagingScript_recordCount)/pagingScript_recordPerPage)).intValue()+plus;
+		 
+				int startIndex =1;
+				int endIndex = 0;
+				if(pagingScript_currentPage-PAGE_BETWEEN>0){
+					if(pagingScript_pageCount==pagingScript_currentPage)
+						startIndex = pagingScript_currentPage- 4;//(PAGE_BETWEEN-1);
+					else			 
+						startIndex = pagingScript_currentPage- 2;//(PAGE_BETWEEN-1);
+				} 
+				if(pagingScript_pageCount>=(startIndex+5)){
+					endIndex = startIndex+4;//(3-1);
+				}else{
+					endIndex = pagingScript_pageCount;
 				}
-			}
+				 
+				
+				String pagingScript_pageListStr="";
+				 
+			 	String pagingScript_pagePrevStr="";
+			 		/*
+			 		"<td width=\"25\" onclick=\"window.location.href='"+urlPrevFirst.toString()+"'\" align=\"center\" style=\"cursor: pointer;\" bgcolor=\"#999999\">&lt;&lt;</td>"+
+			 	"<td width=\"25\" onclick=\"window.location.href='"+urlPrev.toString()+"'\" align=\"center\" style=\"cursor: pointer;\" bgcolor=\"#999999\">&lt;</td>";
+			 	 */
+				String pagingScript_pageNextStr="";
+					/*
+					"<td width=\"25\" onclick=\"window.location.href='"+urlNext.toString()+"'\" align=\"center\" style=\"cursor: pointer;\" bgcolor=\"#999999\">&gt;</td>"+
+				"<td width=\"25\" onclick=\"window.location.href='"+urlNextEnd.toString()+"'\" align=\"center\" style=\"cursor: pointer;\" bgcolor=\"#999999\">&gt;&gt;</td>";	
+				 */
+				 
+				String pagingScript_pagePrevFirstStr="";
+					/*
+					"<td width=\"25\" onclick=\"window.location.href='"+urlPrevFirst.toString()+"'\" align=\"center\" style=\"cursor: pointer;\" bgcolor=\"#999999\">&lt;&lt;</td>";
+				 */
+				String pagingScript_pageNextEndStr="";
+					/*
+					"<td width=\"25\" onclick=\"window.location.href='"+urlNextEnd.toString()+"'\" align=\"center\" style=\"cursor: pointer;\" bgcolor=\"#999999\">&gt;&gt;</td>";
+		 				*/
+				 
+				String pagingScript_pageListStrReturn="";
+				for(int j=startIndex;j<=endIndex;j++)
+				{
+			 	int pageRunner=j;
+				 
+		         
+					if(pageRunner>0 && pageRunner<=pagingScript_pageCount){
+						if(pageRunner==pagingScript_currentPage){
+							 
+								 pagingScript_pageListStr+="<li><strong class=\"currentpage\">"+pageRunner+"</strong></li>";
+								//	 "<a><font color=\"#A0AFBF\">"+pageRunner+"</font></a> ";
+								// pagingScript_pageListStrBuff.append("<a><font color=\"#A0AFBF\">"+pageRunner+"</font></a> ");
+							 
+						}
+						else{		
+							PortletURL url = renderResponse.createRenderURL(); 
+							url.setParameter("action","manageBpsTerm");
+							url.setParameter("pageNo",pageRunner+"");
+						 	url.setParameter("bptTerm",bptTerm);  
+							url.setParameter("bpgId",bpgId);  
+							url.setParameter("searchBy",searchBy);  
+							url.setParameter("orderBy",orderBy);  
+							url.setParameter("orderColumn",orderColumn);  
+							url.setParameter("indexChar",indexChar_);    
+							
+							pagingScript_pageListStr+="<li><a href=\""+url.toString()+"\" class=\"pager-next active\" title=\"Go to page "+pageRunner+"\">"+pageRunner+"</a></li>";
+								
+						}
+					}
+				 
+				}
+		 
+				if(startIndex>1){ 
+					PortletURL first = renderResponse.createRenderURL();
+					first.setParameter("action","manageBpsTerm");
+					first.setParameter("pageNo","1"); 
+					first.setParameter("bptTerm",bptTerm);  
+					first.setParameter("bpgId",bpgId);  
+					first.setParameter("searchBy",searchBy);  
+					first.setParameter("orderBy",orderBy);  
+					first.setParameter("orderColumn",orderColumn);  
+					first.setParameter("indexChar",indexChar_);    
+					PortletURL prev = renderResponse.createRenderURL();
+					prev.setParameter("action","manageBpsTerm");
+					prev.setParameter("pageNo",(pagingScript_currentPage-1)+""); 
+					pagingScript_pageListStr="<li><a href=\""+first.toString()+"\" class=\"pager-first active\" title=\"Go to next page\">first </a><a href=\""+prev.toString()+"\" class=\"pager-prev active\" title=\"Go to next page\">prev </a></li>"+pagingScript_pageListStr;
+				}
+				if(endIndex<pagingScript_pageCount){ 
+					PortletURL next = renderResponse.createRenderURL();
+					next.setParameter("action","manageBpsTerm");
+					next.setParameter("pageNo",(pagingScript_currentPage+1)+""); 
+					next.setParameter("bptTerm",bptTerm);  
+					next.setParameter("bpgId",bpgId);  
+					next.setParameter("searchBy",searchBy);  
+					next.setParameter("orderBy",orderBy);  
+					next.setParameter("orderColumn",orderColumn);  
+					next.setParameter("indexChar",indexChar_);    
+					
+					PortletURL end = renderResponse.createRenderURL();
+					end.setParameter("action","manageBpsTerm");
+					end.setParameter("pageNo",pagingScript_pageCount+"");
+					end.setParameter("bptTerm",bptTerm);  
+					end.setParameter("bpgId",bpgId);  
+					end.setParameter("searchBy",searchBy);  
+					end.setParameter("orderBy",orderBy);  
+					end.setParameter("orderColumn",orderColumn);  
+					end.setParameter("indexChar",indexChar_);    
+					//pagingScript_pageListStr+="<div class=\"pager-list-dots-right\">...</div><a href=\""+next.toString()+"\" class=\"pager-next active\" title=\"Go to next page\">next </a><a href=\""+end.toString()+"\" class=\"pager-last active\" title=\"Go to last page\">last </a>";
+				} 
+				pageContext.setAttribute("pagingScript_pageListStr",pagingScript_pageListStr);
+			 
 		%> <%-- =Paging.getPaging(pageNo, pageSize, total_page,
 					request.getContextPath()) --%>
-				<%--
 					<ul>
+					<% if(pagingScript_recordCount!=0){%>
+        	 				<c:out value="${pagingScript_pageListStr}" escapeXml="false"></c:out>
+         				<%}%>
+         				<%--
 						<li><a href="#" class="prevnext disablelink">« previous</a>
 						</li>
 						<li><a href="#" class="currentpage">1</a>
@@ -457,8 +576,8 @@ table#box-table-a a:hover {
 						</li>
 						<li><a href="#" class="prevnext">next »</a>
 						</li>
+						 --%>
 					</ul>
-					 --%>
 				</div>
 			</td>
 		</tr>

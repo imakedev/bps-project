@@ -84,10 +84,8 @@ function clearFile(spanId){
 	 }
 }
 function <portlet:namespace />doAction(_command,_mode){
-	//alert(_command+","+_mode);
 	var command = document.getElementById("command");
 	var mode = document.getElementById("mode");
-	//alert(nfaqId.value+","+command.value);
 	command.value=_command;
 	var editor_data = CKEDITOR.instances.bptDefinition;
 	var child_count=editor_data.document.getBody().getChildCount();
@@ -98,13 +96,11 @@ function <portlet:namespace />doAction(_command,_mode){
 	 $("#bptDefinitionSearch").val(str);
 	mode.value=_mode;
 	var agree ;
-	//alert(_urlDelete)
 	if(_mode == 'edit' || _mode=='updateVersion')
 		agree = confirm(" Would you like to edit Term and Definition? ");
 	else
 		agree = confirm(" Would you like to add Term and Definition? ");
 	if (agree){
-	//window.location.href = _urlDelete;
 		return true ;
 	}
 	else{
@@ -132,6 +128,11 @@ function <portlet:namespace />doAction(_command,_mode){
 	<table width="100%" align="center" border="0" cellspacing="0"
 		cellpadding="0">
 		<tr>
+			<td><img src="${url}images/term.gif">
+			</td>
+			<td align="right">&nbsp;</td>
+		</tr>
+		<tr>
 			<td height="30" colspan="2"><span
 				style="color: #030; font-size: 12px;"><strong>You
 						are in:</strong> <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(backURL)}">BPS
@@ -142,11 +143,7 @@ function <portlet:namespace />doAction(_command,_mode){
 						<span id="uu"></span>
 			</td>
 		</tr>
-		<tr>
-			<td><img src="${url}images/term.gif">
-			</td>
-			<td align="right">&nbsp;</td>
-		</tr>
+		
 		<tr>
 			<td colspan="2">&nbsp;</td>
 		</tr>
@@ -211,29 +208,20 @@ table#box-table-a a:hover {
 </style> 
 					<table width="100%" border="0" cellspacing="5" cellpadding="0">
 						<tr>
-							<th width="13%" height="25" align="left">Term:</th>
-							<td width="87%" align="left">
+							<th width="100%" colspan="2" height="25" align="left">Term:</th>
+							
+						</tr>
+						<tr>
+							<td width="100%" colspan="2" align="left">
 								<form:input path="bpsTerm.bptTerm" size="45"/> 
 							</td>
 						</tr>
 						<tr>
-							<th valign="top" align="left">Definiion:</th>
-							<td align="left" valign="top">
-							<form:textarea path="bpsTerm.bptDefinition" id="bptDefinition" rows="10" cols="80"/> 
-							<script type="text/javascript">
-									CKEDITOR.replace('bptDefinition');
-							</script>
-							<%--
-							<textarea name="" cols="80"
-									rows="8">A wiki (Listeni/ˈwɪki/ wik-ee) is a website that allows the creation and editing of any number of interlinked web pages via a web browser using a simplified markup language or a WYSIWYG text editor.[1][2][3] Wikis are typically powered by wiki software and are often used collaboratively by multiple users. Examples include community websites, corporate intranets, knowledge management systems, and note services. The software can also be used for personal notetaking.
-
-Wikis serve different purposes. Some permit control over different functions (levels of access). For example editing rights may permit changing, adding or removing material. Others may permit access without enforcing access control. Other rules can be imposed for organizing content.</textarea>
- 	--%>
-							</td>
+							<th width="100%" colspan="2" height="25" align="left">Category:</th>
+							
 						</tr>
 						<tr>
-							<th width="13%" height="25" align="left">Category:</th>
-							<td width="87%" align="left">
+							<td width="100%" colspan="2" align="left">
 							<form:select path="bpsTerm.bpsGroup.bpgId" id="bpgId">
 	    						<form:option  label="---Select Category--" value="0"/>
 	    						<form:options items="${listCates}" itemValue="bpgId"  itemLabel="bpgGroupName"/>
@@ -243,13 +231,62 @@ Wikis serve different purposes. Some permit control over different functions (le
 							</td>
 						</tr>
 						<tr>
-							<th height="25" align="left">Source / Refence:</th>
-							<td align="left"><form:input path="bpsTerm.bptSource" size="45"/>
+							<th height="25" colspan="2" align="left">Source / Refence:</th>							
+						</tr>
+						<tr>
+							<td align="left" colspan="2">
+								<form:input path="bpsTerm.bptSource" size="45"/>
 							</td>
 						</tr>
+						<tr>
+							<th height="25" colspan="2" align="left">Definiion:</th>							
+						</tr>
+						<tr>
+							<td align="left" colspan="2">
+								<form:textarea  path="bpsTerm.bptShortDesc" cols="80" rows="3"/>
+							</td>
+						</tr>
+						<tr>							
+							<th valign="top" colspan="2" align="left">Definiion:</th>
+						</tr>
+						<tr>
+							<td align="left" colspan="2" valign="top">
+							<form:textarea path="bpsTerm.bptDefinition" id="bptDefinition" rows="10" cols="80"/> 
+							<script type="text/javascript">
+									//CKEDITOR.replace('bptDefinition');
+									CKEDITOR.replace( 'bptDefinition',
+											{
+												// Defines a simpler toolbar to be used in this sample.
+												// Note that we have added out "MyButton" button here.
+												//height : 50,
+												//Preview - 
+												//toolbar : [ [ 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike','-','Link' ] ]
+										toolbar : [
+													{ name: 'document', items : [ 'Source','-','Preview','-'] },
+													//{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+													//{ name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
+													//{ name: 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton','HiddenField' ] },
+													//'/',
+													{ name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike',] },
+													{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ] },
+													{ name: 'links', items : [ 'Link','Unlink'] },
+													{ name: 'insert', items : [ 'Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },
+													'/',
+													{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+													{ name: 'colors', items : [ 'TextColor','BGColor' ] }
+													//{ name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
+												]
+											});
+							</script> 
+							</td>
+						</tr>
+						
 						<tr valign="top">
-							<th height="25" align="left" valign="top">Attachments:</th>
-							<td align="left">
+							<th height="25" align="left" colspan="2" valign="top">Attachments:</th>
+						</tr>
+						<tr valign="top">
+							
+							<td align="left" colspan="2">
 							<label><span id="more_file_element">
 							<input type="file" name="file0"/>&nbsp; &nbsp;<img	src="${url}images/plus.png" alt="Add more file" style="cursor: pointer;" onclick="manageMoreFile('0','add')" /><br/>
 							 </span>
