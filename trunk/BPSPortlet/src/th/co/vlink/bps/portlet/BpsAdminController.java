@@ -189,7 +189,7 @@ public class BpsAdminController {
 		 
 		Pagging page   = new Pagging();
 		page.setPageNo(pageNo);
-		page.setPageSize(20);
+		page.setPageSize(10);
 		/*if(!model.containsAttribute("bpsAdminForm")){
 			bpsAdminForm= new BpsAdminForm();
 		}else {
@@ -230,7 +230,8 @@ public class BpsAdminController {
 		bpsAdminForm.setBptTerm(bptTerm);
 		VResultMessage resultList = bpsAdminService.searchBpsTerm(bpsTerm);
 		System.out.println("resultList == "+resultList.getResultListObj());
-		 
+		page.setTotalRecord(Integer.parseInt(resultList.getMaxRow()));
+		model.addAttribute("pageObj", 	page);
 		model.addAttribute("bpsTerms", resultList);
 		model.addAttribute("listCates", listBpsGroup());
 		model.addAttribute("bpsAdminForm", bpsAdminForm);
