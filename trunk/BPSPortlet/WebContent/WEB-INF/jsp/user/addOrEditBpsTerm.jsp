@@ -165,12 +165,10 @@ if(user != null) {
 											<td class="h_achieve" align="left">Category:</td>
 											<td align="left">
 											<select name="bpsGroupId" id="bpgGroupId">
-											<option  label="---Select Category--" value="0"/>
-											<c:if test="${resultListGroup ne null && not empty resultListGroup.resultListObj}">
+											<option value="0">---Select Category--</option>
 												<c:forEach items="${resultListGroup.resultListObj}" var="groupItem">
-													<option  label="${groupItem.bpgGroupName}" value="${groupItem.bpgId}"/>
+													<option value="${groupItem.bpgId}">${groupItem.bpgGroupName}</option>
 												</c:forEach>
-											</c:if>
 	    					</select>
 											</td>
 										</tr>
@@ -287,8 +285,7 @@ if(user != null) {
 											<td class="h_achieve" align="left">Category:</td>
 											<td align="left">
 											<select name="bpsGroupId" id="bpgGroupId">
-											<option  label="---Select Category--" value="0"/>
-											<c:if test="${resultListGroup ne null && not empty resultListGroup.resultListObj}">
+											<option value="0">---Select Category--</option>
 												<c:forEach items="${resultListGroup.resultListObj}" var="groupItem">
 													<c:if test="${bpsUserForm.bpsTerm.bpsGroup ne null && bpsUserForm.bpsTerm.bpsGroup.bpgId eq groupItem.bpgId}">
 					<option value="${groupItem.bpgId}" selected="selected">${groupItem.bpgGroupName}</option>
@@ -297,7 +294,6 @@ if(user != null) {
 					<option value="${groupItem.bpgId}">${groupItem.bpgGroupName}</option>
 				</c:if>
 												</c:forEach>
-											</c:if>
 	    					</select>
 											</td>
 										</tr>

@@ -145,11 +145,11 @@ String.prototype.trim = function() {
 			<c:if test="${resultList.maxRow != 0}">
 			<c:forEach items="${resultList.resultListObj}" var="item">
 				<tr>
-					<td width="25%" align="left"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="view"/></portlet:renderURL>' class="team"><span class="_highlight">${item.bptTerm}</span></a>
+					<td width="25%" align="left" valign="top"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="view"/></portlet:renderURL>' class="team"><span class="_highlight">${item.bptTerm}</span></a>
 					</td>
-					<td width="26%" align="left"><span class="_highlight">${item.bptDefinition}</span></td>
-					<td width="26%" align="left">${item.bpsGroup.bpgGroupName}</td>
-					<td width="17%" align="left">${item.bptSource}</td>
+					<td width="26%" align="left" valign="top"><span class="_highlight">${item.bptDefinition}</span></td>
+					<td width="26%" align="left" valign="top">${item.bpsGroup.bpgGroupName}</td>
+					<td width="17%" align="left" valign="top">${item.bptSource}</td>
 <%-- 					<td align="center"><a href='<portlet:renderURL><portlet:param name="action" value="viewBpsTerm"/><portlet:param name="bptId" value="${item.bptId}"/><portlet:param name="mode" value="edit"/></portlet:renderURL>'><img --%>
 <%-- 						src="<%=request.getContextPath()%>/images/btn_edit.gif"></a></td> --%>
 				</tr>

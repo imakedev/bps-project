@@ -55,12 +55,12 @@ table#box-table-a a {
 	font-weight: bold;
 }
 
-table#box-table-a a:link,table.links a:visited {
-	color: #004a5d;
-	font-family: Tahoma;
-	font-size: 12px;
-	font-weight: bold;
-}
+/* table#box-table-a a:link,table.links a:visited { */
+/* 	color: #004a5d; */
+/* 	font-family: Tahoma; */
+/* 	font-size: 12px; */
+/* 	font-weight: bold; */
+/* } */
 
 table#box-table-a a:hover {
 	color: #758D39;
