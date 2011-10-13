@@ -29,9 +29,13 @@
 		if(input == 'revisedDiv') {
 			document.getElementById('proposedDiv').style.display = 'none';
 			document.getElementById('revisedDiv').style.display = '';
+			document.getElementById('proposedLink').style.color = 'blue';
+			document.getElementById('revisedLink').style.color = 'gray';
 		} else {
 			document.getElementById('revisedDiv').style.display = 'none';
 			document.getElementById('proposedDiv').style.display = '';
+			document.getElementById('proposedLink').style.color = 'gray';
+			document.getElementById('revisedLink').style.color = 'blue';
 		}
 	}
 	
@@ -42,6 +46,8 @@
 			return false;
 		}
 		var fromMail = "";
+		//var fromMail = document.getElementById('mailFrom').value;
+		//alert(fromMail);
 		var toMail = "";
 		/*var textArea = CKEDITOR.instances.editor1.getData();
 		var re = /(<([^>]+)>)/gi;
@@ -50,6 +56,12 @@
 		var bpt_term = document.getElementById('term').value;
 		if(bpt_term.trim().length == 0) {
 			alert("Please enter Term.");
+			return false;
+		} 
+		
+		var shortDesc = document.getElementById('shortDesc').value;
+		if(shortDesc.trim().length == 0) {
+			alert("Please enter Definition.");
 			return false;
 		} 
 		
@@ -76,6 +88,7 @@
 				bptId : default_value,
 				bptStatus : default_value,
 				bptTerm : bpt_term,
+				bptShortDesc : shortDesc,
 				bptDefinition : editor_data.getData(),
 				bptDefinitionSearch : textSearch,
 				bptSourceRef : bpt_source_ref,
@@ -84,7 +97,7 @@
 					bpgId : bpgId
 				}
 		};
-		BpsUserAjax.saveOrUpdateBpsTerm(bpsTerm, bpgId, handle_Complete);
+		BpsUserAjax.saveOrUpdateBpsTerm(bpsTerm, "", handle_Complete);
 	}
 	
 	function handle_Complete(result) {
@@ -135,14 +148,14 @@ if(user != null) {
 											<td width="19%" height="19" class="h_achieve" align="left">To:</td>
 											<td width="81%" align="left"><label> <input name="mailTo"
 													type="text" id="mailTo" value="COS Staff" size="50"
-													class="readonly" readonly="readonly"> </label>
+													class="readonly" disabled="disabled"> </label>
 											</td>
 										</tr>
 										<tr>
 											<td class="h_achieve" align="left">From:</td>
 											<td><input name="mailFrom" type="text"  align="left"
 												class="readonly" id="mailFrom" value="name" size="50"
-												readonly="readonly">
+												disabled="disabled">
 											</td>
 										</tr>
 										<tr>
@@ -173,13 +186,19 @@ if(user != null) {
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve" align="left">Source / Referance:</td>
+											<td class="h_achieve" align="left">Source / Reference:</td>
 											<td align="left"><input name="sourceRef" type="text" id="sourceRef"
 												size="50">
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve" align="left">Detail:</td>
+											<td class="h_achieve" align="left">Definition:</td>
+											<td align="left"><textarea name="shortDesc" id="shortDesc"
+												cols="80" rows="3"></textarea>
+											</td>
+										</tr>
+										<tr>
+											<td class="h_achieve" align="left" valign="top">Detail:</td>
 											<td align="left"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea>
 											<script type="text/javascript">
 												//CKEDITOR.replace('editor1');
@@ -254,14 +273,14 @@ if(user != null) {
 											<td width="19%" height="19" class="h_achieve" align="left">To:</td>
 											<td width="81%"><label> <input name="mailTo"
 													type="text" id="mailTo" value="COS Staff" size="50"
-													class="readonly" readonly="readonly"> </label>
+													class="readonly" disabled="disabled"> </label>
 											</td>
 										</tr>
 										<tr>
 											<td class="h_achieve" align="left">From:</td>
 											<td><input name="mailFrom" type="text"
 												class="readonly" id="mailFrom" value="name" size="50"
-												readonly="readonly">
+												disabled="disabled">
 											</td>
 										</tr>
 										<tr>
@@ -278,7 +297,7 @@ if(user != null) {
 											<td class="h_achieve" align="left">Term:</td>
 											<td align="left"><input name="term" type="text" id="term"
 												value="${bpsUserForm.bpsTerm.bptTerm}" size="50" class="readonly"
-												readonly="readonly">
+												disabled="disabled">
 											</td>
 										</tr>
 										<tr>
@@ -298,23 +317,71 @@ if(user != null) {
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve" align="left">Source / Referance:</td>
-											<td align="left"><input name="sourceRef" type="text" id=""sourceRef""
+											<td class="h_achieve" align="left">Source / Reference:</td>
+											<td align="left"><input name="sourceRef" type="text" id="sourceRef"
 												size="50">
 											</td>
 										</tr>
 										<tr>
-											<td height="25">&nbsp;</td>
-											<td class="h_achieve" align="left"><a href="javascript: selectDetail('proposedDiv')">Proposed change</a> |
-												<a href="javascript: selectDetail('revisedDiv')">Revised version</a>
+											<td class="h_achieve" align="left">Definition:</td>
+											<td align="left"><textarea name="shortDesc" id="shortDesc"
+												cols="80" rows="3"><c:out value="${bpsUserForm.bpsTerm.bptShortDesc}" escapeXml="true" /></textarea>
 											</td>
 										</tr>
 										<tr>
-											<td class="h_achieve" align="left">Detail:</td>
+											<td height="25">&nbsp;</td>
+											<td class="h_achieve" align="left"><a href="javascript: selectDetail('proposedDiv')" id="proposedLink" style="color: gray">Proposed change</a> |
+												<a href="javascript: selectDetail('revisedDiv')" id="revisedLink" style="color: blue">Revised version</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="h_achieve" align="left" valign="top">Detail:</td>
 											<td align="left"><div id="proposedDiv"><textarea cols="50" id="editor1" name="editor1" rows="10"></textarea><script type="text/javascript">
-		CKEDITOR.replace('editor1');
+		CKEDITOR.replace('editor1', {
+			// Defines a simpler toolbar to be used in this sample.
+			// Note that we have added out "MyButton" button here.
+			//height : 50,
+			//Preview - 
+			//toolbar : [ [ 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike','-','Link' ] ]
+	toolbar : [
+				{ name: 'document', items : [ 'Source','-','Preview','-'] },
+				//{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+				//{ name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
+				//{ name: 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton','HiddenField' ] },
+				//'/',
+				{ name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike',] },
+				{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ] },
+				{ name: 'links', items : [ 'Link','Unlink'] },
+				{ name: 'insert', items : [ 'Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },
+				'/',
+				{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+				{ name: 'colors', items : [ 'TextColor','BGColor' ] }
+				//{ name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
+			]
+		});
 	</script></div><div id="revisedDiv" style="display: none"><textarea cols="50" id="editor2" name="editor2" rows="10"><c:out value="${bpsUserForm.bpsTerm.bptDefinition}" escapeXml="true" /></textarea><script type="text/javascript">
-		CKEDITOR.replace('editor2');
+		CKEDITOR.replace('editor2', {
+			// Defines a simpler toolbar to be used in this sample.
+			// Note that we have added out "MyButton" button here.
+			//height : 50,
+			//Preview - 
+			//toolbar : [ [ 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike','-','Link' ] ]
+	toolbar : [
+				{ name: 'document', items : [ 'Source','-','Preview','-'] },
+				//{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+				//{ name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
+				//{ name: 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton','HiddenField' ] },
+				//'/',
+				{ name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike',] },
+				{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ] },
+				{ name: 'links', items : [ 'Link','Unlink'] },
+				{ name: 'insert', items : [ 'Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },
+				'/',
+				{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+				{ name: 'colors', items : [ 'TextColor','BGColor' ] }
+				//{ name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
+			]
+		});
 	</script></div>
 											</td>
 										</tr>
