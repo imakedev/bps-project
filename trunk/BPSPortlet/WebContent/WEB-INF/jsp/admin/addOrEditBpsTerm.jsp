@@ -239,7 +239,7 @@ table#box-table-a a:hover {
 							</td>
 						</tr>
 						<tr>
-							<th height="25" colspan="2" align="left">Definiion:</th>							
+							<th height="25" colspan="2" align="left">Definition:</th>							
 						</tr>
 						<tr>
 							<td align="left" colspan="2">
@@ -247,7 +247,7 @@ table#box-table-a a:hover {
 							</td>
 						</tr>
 						<tr>							
-							<th valign="top" colspan="2" align="left">Definiion:</th>
+							<th valign="top" colspan="2" align="left">Detail:</th>
 						</tr>
 						<tr>
 							<td align="left" colspan="2" valign="top">
