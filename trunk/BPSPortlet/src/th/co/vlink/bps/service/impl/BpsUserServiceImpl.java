@@ -87,7 +87,7 @@ public class BpsUserServiceImpl extends PostCommon implements BpsUserService {
 		vuser.setServiceName(ServiceConstant.COP_WORKPROCEDURE_MAIL_USER);
 		resultMessage=postMessage(vuser,vuser.getClass().getName(),"bpsUserLdaps/",true);
 		vuser = (VUser)resultMessage.getResultListObj().get(0);
-		vuser.setBaseDN("CN=00_COS");
+		vuser.setBaseDN("CN=00_COS_WCM");
 		vuser.setServiceName(ServiceConstant.LDAP_GROUP_FIND_BY_ID);
 		resultMessage=postMessage(vuser,vuser.getClass().getName(),"bpsUserLdaps/",true);
 		List<VUser> users =resultMessage.getResultListObj();
