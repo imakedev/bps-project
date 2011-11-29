@@ -3,6 +3,7 @@ package th.co.vlink.bps.service;
 import th.co.vlink.xstream.BpsAttachFile;
 import th.co.vlink.xstream.BpsGroup;
 import th.co.vlink.xstream.BpsTerm;
+import th.co.vlink.xstream.BpsTermLog;
 import th.co.vlink.xstream.common.VResultMessage;
 
 public interface BpsUserService {
@@ -14,6 +15,10 @@ public interface BpsUserService {
 	public VResultMessage searchBpsTerm(BpsTerm bpsTerm);
 	public int saveBpsTerm(BpsTerm bpsTerm);
 	public int updateBpsTerm(BpsTerm bpsTerm);
+
+	// BPS_TERM_LOG
+	public int saveBpsTermLog(BpsTermLog bpsTerm,String subjectMail,String mode);
+	public int updateBpsTermLog(BpsTermLog bpsTerm);
 	// BPS_TERM_VERSION
 	 
 	// BPS_FILE 
