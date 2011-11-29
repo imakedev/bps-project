@@ -1,8 +1,8 @@
-package th.co.vlink.bps.util;
+package th.co.vlink.bps.service.mail;
+
+
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -19,12 +19,13 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.springframework.web.multipart.MultipartFile;
- 
+import org.apache.log4j.Logger;
 
 import com.sun.mail.smtp.SMTPTransport;
 
 public class MailRunnable implements Runnable {
+	
+	private static final Logger logger = Logger.getRootLogger();
 	String subject = null;
 	String messagebody = null;
 	String sessionId= null;
@@ -102,7 +103,7 @@ public class MailRunnable implements Runnable {
 				//	NtcNewsLetterRecipient ntcNewsLetterRecipient = (NtcNewsLetterRecipient)ntcNewsLetterRecipientList.get(i);
 				//	recipients[0] = "siripornc@pttep.com";//ntcNewsLetterRecipient.getNnlrAddress().trim();
 				/*		recipients[0] = "chatchai@vlink.co.th";//ntcNewsLetterRecipient.getNnlrAddress().trim();
-					*/
+					logger.debug(" sent mail loopxx  email "+recipients[0]);*/
 			/*else{
 				recipients= new String[0];
 			}*/
@@ -113,10 +114,16 @@ public class MailRunnable implements Runnable {
 		    	Date date = new Date();
 		    	StringBuffer sb = new StringBuffer();
 				sb.append("<HTML>\n");
-				sb.append("<HEAD>\n");
+				sb.append("<HEAD>\n");								
 				sb.append("<TITLE>\n");
 				sb.append(" PTTEP " + "\n");
 				sb.append("</TITLE>\n");
+				sb.append("<style>\n");
+				sb.append("body{font-family:Tahoma; font-size:12px;color: #000000;}\n");
+				sb.append("h3 {font-weight: bold;font-family:Tahoma; font-size:14px;color: #015941;margin-bottom: 0.7em;}\n");
+				sb.append("table{ border:1px #063 solid;}\n");
+				sb.append("th{ background-color:#B2D03E; vertical-align:middle;}\n");
+				sb.append("</style>\n"); 
 				sb.append("</HEAD>\n");
 				sb.append("<BODY>\n");
 				sb.append(messagebody);
@@ -172,7 +179,7 @@ public class MailRunnable implements Runnable {
 					msgArray[0].setRecipient(Message.RecipientType.TO,addressTo[0]);
 					msgArray[0].setSentDate(date);
 					 try {
-						 msgArray[0].setSubject(subject);
+						 msgArray[0].setSubject(subject,"UTF-8");
 						 msgArray[0].setHeader("Content-Transfert-Encoding","8Bit");
 						 msgArray[0].setContent(mp);
 					 } catch (MessagingException e1) {
@@ -203,6 +210,7 @@ public class MailRunnable implements Runnable {
 					//else
 						t.connect();
 						//for (int i = 0; i < msgArray.length; i++) {
+							//logger.debug("Chatchai Debug==>"+msgArray[0].getAllRecipients().toString());
 						//	t.sendMessage(arg0, arg1)send(msgArray[i]);
 							t.sendMessage(msgArray[0], msgArray[0].getAllRecipients());
 						

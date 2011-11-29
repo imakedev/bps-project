@@ -1,10 +1,13 @@
 package th.co.vlink.bps.service.impl;
 
+import java.util.List;
+
 import th.co.vlink.bps.service.BpsAdminService;
 import th.co.vlink.constant.ServiceConstant;
 import th.co.vlink.xstream.BpsAttachFile;
 import th.co.vlink.xstream.BpsGroup;
 import th.co.vlink.xstream.BpsTerm;
+import th.co.vlink.xstream.BpsTermLog;
 import th.co.vlink.xstream.BpsTermVersion;
 import th.co.vlink.xstream.common.VResultMessage;
  
@@ -100,7 +103,31 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 		return postMessage(bpsTerm,bpsTerm.getClass().getName(),"bpsTerms/",true);
 
 	}
+	// BPS_TERM_LOG
+	public int deleteBpsTermLog(String key) {
+		BpsTermLog bpsTermLog = new BpsTermLog();
+		bpsTermLog.setBptlId(Long.parseLong(key));
+		bpsTermLog.setServiceName(ServiceConstant.BPS_TERM_LOG_DELETE);
+		VResultMessage resultMessage =postMessage(bpsTermLog,bpsTermLog.getClass().getName(),"bpsTermLogs/",true);
+		bpsTermLog = (BpsTermLog)resultMessage.getResultListObj().get(0);
+		return bpsTermLog.getUpdateRecord();
+	}
 
+	public BpsTermLog findBpsTermLogById(String bptlId) {
+		BpsTermLog bpsTermLog = new BpsTermLog();
+		bpsTermLog.setBptlId(new Long(bptlId));
+		bpsTermLog.setServiceName(ServiceConstant.BPS_TERM_LOG_FIND_BY_ID);
+		VResultMessage resultMessage = postMessage(bpsTermLog,bpsTermLog.getClass().getName(),"bpsTermLogs/",true);
+		return (BpsTermLog)resultMessage.getResultListObj().get(0);
+
+	}
+
+	public VResultMessage searchBpsTermLog(BpsTermLog bpsTermLog) {
+		bpsTermLog.setServiceName(ServiceConstant.BPS_TERM_LOG_SEARCH); 
+		VResultMessage resultMessage =postMessage(bpsTermLog,bpsTermLog.getClass().getName(),"bpsTermLogs/",true);
+		return resultMessage;
+
+	}
 	// BPS_TERM_VERSION
 	public VResultMessage searchBpsTermVersion(BpsTermVersion bpsTermVersion) {
 		bpsTermVersion.setServiceName(ServiceConstant.BPS_TERM_VERSION_SEARCH);
@@ -156,40 +183,51 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 		 bpsGroup.setBpgGroupName("Group K");
 		 /*VResultMessage vresultMessage =searchBpsGroup(bpsGroup);
 		 if(vresultMessage!=null && vresultMessage.getResultListObj()!=null){
-			System.out.println("list="+vresultMessage.getResultListObj());
-			System.out.println("max row="+vresultMessage.getMaxRow());
 		 }
-		 System.out.println(vresultMessage);
 		 */
 		
 		saveBpsGroup(bpsGroup);
 		//  updateBpsGroup(bpsGroup);
 		// BpsGroup group= findBpsGroupById("1");
-		// System.out.println("name="+group.getBpgGroupName());
 		//  deleteBpsGroup("1");
 	}
 	public void testBpsTerm(){
-		 BpsGroup bpsGroup=new BpsGroup();
-		 bpsGroup.setBpgId(1L);
+		/* BpsGroup bpsGroup=new BpsGroup();
+		 bpsGroup.setBpgId(2L);*/
 		 BpsTerm bpsTerm=new BpsTerm();
-		 bpsTerm.setBpsGroup(bpsGroup);
-		  bpsTerm.setBptId(1L);
-		 bpsTerm.setBptTerm("Term A");
+		// bpsTerm.setBpsGroup(bpsGroup);
+		 bpsTerm.setBptId(1L);
 		 
-		  bpsTerm.setBptDefinition("BptDefinition A Update");
-		  bpsTerm.setBptDefinitionSearch("BptDefinitionSearch A Update");
+		 String bptTerm="liferay";
+		 String orderBy="desc";
+		 String orderColumn="BPT_TERM";
+		 String indexChar="l";
+		 String searchBy="2";
+		 bpsTerm.setBptTerm(bptTerm);
+		 bpsTerm.getVcriteria().setKey(searchBy);
+		/* Pagging page=new Pagging();
+		 page.setPageNo(2);
+		 page.setPageSize(20);
+		 bpsTerm.setPagging(page);*/
+			//bpsTerm.setBptTerm(bptTerm);
+			bpsTerm.getVcriteria().setValue(bptTerm) ;
+			bpsTerm.getVcriteria().setOrderBy(orderBy);
+			bpsTerm.getVcriteria().setOrderColumn(orderColumn);
+			bpsTerm.getVcriteria().setIndexChar(indexChar);
+		  bpsTerm.setBptDefinition("bptTerm");
+		  bpsTerm.setBptDefinitionSearch("bptTerm");
 		 VResultMessage vresultMessage =searchBpsTerm(bpsTerm);
 		 if(vresultMessage!=null && vresultMessage.getResultListObj()!=null){
-			System.out.println("list="+vresultMessage.getResultListObj());
-			System.out.println("max row="+vresultMessage.getMaxRow());
+			 List xx = vresultMessage.getResultListObj();
+			 for (int i = 0; i < xx.size(); i++) {
+				 BpsTerm term = (BpsTerm)xx.get(i);
+			}
 		 }
-		 System.out.println(vresultMessage);
 		 
 		
 		//saveBpsTerm(bpsTerm);
 		//   updateBpsTerm(bpsTerm);
 		// BpsTerm group= findBpsTermById("1");
-		// System.out.println("name="+group.getBpgTermName());
 		 //  deleteBpsTerm("2");
 	}
 	public void testBpsTermVersion(){
@@ -202,16 +240,12 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 		 bpsTermVersion.setBptDefinition("BptDefinitio Term A");
 		 VResultMessage vresultMessage =searchBpsTermVersion(bpsTermVersion);
 		 if(vresultMessage!=null && vresultMessage.getResultListObj()!=null){
-			System.out.println("list="+vresultMessage.getResultListObj());
-			System.out.println("max row="+vresultMessage.getMaxRow());
 		 }
-		 System.out.println(vresultMessage);
 		 
 		
 	//	saveBpsTerm(bpsTerm)ermVersion(bpsTermVersion);
 		//  updateBpsGroup(bpsGroup);
 		// BpsGroup group= findBpsGroupById("1");
-		// System.out.println("name="+group.getBpgGroupName());
 		//  deleteBpsGroup("1");
 	}
 	public void testBpsAttachFile(){
@@ -224,24 +258,20 @@ public class BpsAdminServiceImpl extends PostCommon implements BpsAdminService {
 	//	 bpsAttachFile.setBpafFilePath("BpafFilePath B");
 		 VResultMessage vresultMessage =searchBpsAttachFile(bpsAttachFile);
 		 if(vresultMessage!=null && vresultMessage.getResultListObj()!=null){
-			System.out.println("list="+vresultMessage.getResultListObj());
-			System.out.println("max row="+vresultMessage.getMaxRow());
 		 }
-		 System.out.println(vresultMessage);
 		 
 		
 	//	saveBpsAttachFile(bpsAttachFile);
 		//  updateBpsAttacheFile(bpsAttachFile);
 		// BpsAttacheFile group= findBpsAttacheFileById("1");
-		// System.out.println("name="+group.getBpgAttacheFileName());
 		//  deleteBpsAttacheFile("1");
 	}
-	 public static void main(String[] args) {
+	 /*public static void main(String[] args) {
 		 BpsAdminServiceImpl imp =new BpsAdminServiceImpl();
-		 imp.testBpsGroup();
-		// imp.testBpsTerm();
+		// imp.testBpsGroup();
+		 imp.testBpsTerm();
 		 //imp.testBpsAttachFile();
-	}
+	}*/
 
 	
 }

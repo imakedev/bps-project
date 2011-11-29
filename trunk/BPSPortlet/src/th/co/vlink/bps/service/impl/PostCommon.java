@@ -12,7 +12,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import th.co.vlink.constant.ServiceConstant;
 import th.co.vlink.utils.Pagging;
 import th.co.vlink.xstream.common.VResultMessage;
 import th.co.vlink.xstream.common.VServiceXML;
@@ -24,8 +23,14 @@ public class PostCommon {
 	public static final int PAGE_SIZE = 5; 
 	public VResultMessage postMessage(VServiceXML vserviceXML,String className,String endPoint,boolean isReturn) {
 		//HttpPost httppost = new HttpPost(ServiceConstant.hostReference+endPoint); 
-		HttpPost httppost = new HttpPost("http://localhost:3000/v1/"+endPoint);
-		//HttpPost httppost = new HttpPost("http://10.2.0.94:10000/BPSService/RestletServlet/"+endPoint);
+		//HttpPost httppost = new HttpPost("http://localhost:3000/v1/"+endPoint);
+//		HttpPost httppost = new HttpPost("http://10.0.20.62:3000/v1/"+endPoint);
+		
+		//HttpPost httppost = new HttpPost("http://10.0.20.27:3000/v1/"+endPoint);
+		HttpPost httppost = new HttpPost("http://10.2.0.94:10000/BPSService/RestletServlet/"+endPoint);
+		
+		//HttpPost httppost = new HttpPost("http://10.2.0.76:10000/BPSService/RestletServlet/"+endPoint);
+		
 		//HttpPost httppost = new HttpPost("http://10.1.1.188:10000/BPSService/RestletServlet/"+endPoint);
 		
 		XStream xstream = new XStream(new Dom4JDriver());
@@ -57,7 +62,6 @@ public class PostCommon {
 		vserviceXML.getPagging().setStartIndex(startIndex);
 		//String xString = xstream.toXML(ntcFaq); 
 		String xString = xstream.toXML(vserviceXML);
-//		System.out.println("xString\n"+xString);
 		ByteArrayEntity entity = null;
 		try {
 			entity = new ByteArrayEntity(xString.getBytes("UTF-8"));
