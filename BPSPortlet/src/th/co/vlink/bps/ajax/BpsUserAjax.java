@@ -16,6 +16,8 @@ import th.co.vlink.bps.service.BpsUserService;
 import th.co.vlink.bps.util.MailRunnable;
 import th.co.vlink.bps.util.Utils;
 import th.co.vlink.xstream.BpsTerm;
+import th.co.vlink.xstream.BpsTermLog;
+import th.co.vlink.xstream.common.VResultMessage;
 
 public class BpsUserAjax {
 	private BpsUserService bpsUserService;
@@ -30,18 +32,15 @@ public class BpsUserAjax {
 	}
 	
 	public int saveOrUpdateBpsTerm(BpsTerm bpsTerm,String mode){
-		//if(mode.equals("add"))
-//		System.out.println("******************* Ajax saveOrUpdateBpsTerm ***************");
-//		bpsTerm.setBptId(1l);
-//		System.out.println("Term : "+bpsTerm.getBptTerm());
-//		bpsTerm.setBptStatus("0");
-//		bpsUserService = new BpsUserServiceImpl();
 		String bptIndexChar = bpsTerm.getBptTerm().trim().substring(0, 1);
 		bpsTerm.setBptIndexChar(bptIndexChar);
 		bpsTerm.setBptCreateDate(new Timestamp(new Date().getTime()));
 		return bpsUserService.saveBpsTerm(bpsTerm);
-		//else
-			//return bpsUserService.updateBpsTerm(bpsTerm);
+	}
+	public int saveOrUpdateBpsTermLog(BpsTermLog bpsTermLog,String subjectMail,String mode){
+		String bptIndexChar = bpsTermLog.getBptTerm().trim().substring(0, 1);
+		bpsTermLog.setBptIndexChar(bptIndexChar);
+		return bpsUserService.saveBpsTermLog(bpsTermLog,subjectMail,mode);
 	}
 	
 	public void sendMail(BpsTerm bpsTerm,String mode) {
@@ -51,6 +50,21 @@ public class BpsUserAjax {
 		MailRunnable mailRunnable = new MailRunnable(Utils.getProperty("SMTP_PROTOCOL"), Utils.getProperty("SMTP_HOST"), Utils.getProperty("USERNAME"), Utils.getProperty("PASSWORD"), "0", recipients, subject, messagebody, "99");
 		Thread thread = new Thread(mailRunnable);
 		thread.start();
+	}
+	public List searchBpsTerm(BpsTerm bpsTerm) {
+		List result = null;
+		VResultMessage vresultMessage = bpsUserService.searchBpsTerm(bpsTerm);
+		if (vresultMessage != null && vresultMessage.getResultListObj() != null
+				&& vresultMessage.getMaxRow() != null) {
+			result = new ArrayList(2);
+			result.add(vresultMessage.getResultListObj());
+			result.add(vresultMessage.getMaxRow());
+		}
+		return result;
+	}
+	 
+	public BpsTerm findBpsTermById(String bptId) {
+		return bpsUserService.findBpsTermById(bptId);
 	}
 	
 }
