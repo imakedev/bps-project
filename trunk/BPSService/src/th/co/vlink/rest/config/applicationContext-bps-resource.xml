@@ -33,4 +33,24 @@
 		<property name="feed" ref="feed"></property>
 		<property name="xstream" ref="xstream"></property>
 	</bean>
+	<bean id="bpsTermLogResource"
+		class="th.co.vlink.rest.resource.BpsTermLogResource"
+		scope="prototype"> 
+		<property name="bpsTermLogService" ref="bpsTermLogService"></property>
+		<property name="feed" ref="feed"></property>
+		<property name="xstream" ref="xstream"></property>
+	</bean>	
+	<bean id="bpsUserLdapResource"
+		class="th.co.vlink.rest.resource.BpsUserLdapResource"
+		scope="prototype">  		
+		<property name="copWorkProcedureMailUserService" ref="copWorkProcedureMailUserService"></property>
+		<property name="feed" ref="feed"></property>
+		<property name="xstream" ref="xstream"></property>
+	</bean>	
+	<bean id="bpsGroupLdapResource"
+		class="th.co.vlink.rest.resource.BpsGroupLdapResource"
+		scope="prototype">  
+		<property name="feed" ref="feed"></property>
+		<property name="xstream" ref="xstream"></property>
+	</bean>	
 </beans>

@@ -33,9 +33,9 @@ public class BpsTerm extends VServiceXML implements Serializable {
 	private Integer bptVersionNumber;
 	@XStreamAlias("bpsGroup")
 	private BpsGroup bpsGroup;
-	@XStreamAlias("bptStatus")
-	private String bptStatus;
  
+	private String bptUpdateBy; 
+	private Timestamp bptUpdateDate;
 	public BpsTerm(){
 		bpsGroup=new BpsGroup();
 	}
@@ -139,11 +139,18 @@ public class BpsTerm extends VServiceXML implements Serializable {
 	public void setBptDefinitionSearch(String bptDefinitionSearch) {
 		this.bptDefinitionSearch = bptDefinitionSearch;
 	}
-	public String getBptStatus() {
-		return bptStatus;
+	public String getBptUpdateBy() {
+		return bptUpdateBy;
 	}
-	public void setBptStatus(String bptStatus) {
-		this.bptStatus = bptStatus;
+	public void setBptUpdateBy(String bptUpdateBy) {
+		this.bptUpdateBy = bptUpdateBy;
 	}
+	public Timestamp getBptUpdateDate() {
+		return bptUpdateDate;
+	}
+	public void setBptUpdateDate(Timestamp bptUpdateDate) {
+		this.bptUpdateDate = bptUpdateDate;
+	}
+	 
 
 }

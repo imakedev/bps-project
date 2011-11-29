@@ -18,8 +18,8 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-//@Table(name="BANPU_BPS_TERM",schema="DB2INST1")
-@Table(name="BANPU_BPS_TERM")
+@Table(name="BANPU_BPS_TERM",schema="DB2INST1")
+//@Table(name="BANPU_BPS_TERM")
 //@Table(name="BANPU_BPS_TERM",schema="DB2INST4") // pttep
 public class BpsTerm  extends VServiceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -54,8 +54,13 @@ public class BpsTerm  extends VServiceBean implements Serializable {
 	@Column(name="BPT_VERSION_NUMBER")
 	private Integer bptVersionNumber;
 	
-	@Column(name="BBT_STATUS")
-	private String bptStatus;
+	/*@Column(name="BBT_STATUS")
+	private String bptStatus;*/
+	
+	@Column(name="BPT_UPDATE_BY")
+	private String bptUpdateBy;
+	@Column(name="BPT_UPDATE_DATE")
+	private Timestamp bptUpdateDate;
 	
 	@ManyToOne
 	@JoinColumn(name="BPG_GROUP_ID")
@@ -141,11 +146,24 @@ public class BpsTerm  extends VServiceBean implements Serializable {
 	public void setBptDefinitionSearch(String bptDefinitionSearch) {
 		this.bptDefinitionSearch = bptDefinitionSearch;
 	}
-	public String getBptStatus() {
+	/*public String getBptStatus() {
 		return bptStatus;
 	}
 	public void setBptStatus(String bptStatus) {
 		this.bptStatus = bptStatus;
+	}*/
+	public String getBptUpdateBy() {
+		return bptUpdateBy;
 	}
+	public void setBptUpdateBy(String bptUpdateBy) {
+		this.bptUpdateBy = bptUpdateBy;
+	}
+	public Timestamp getBptUpdateDate() {
+		return bptUpdateDate;
+	}
+	public void setBptUpdateDate(Timestamp bptUpdateDate) {
+		this.bptUpdateDate = bptUpdateDate;
+	}
+	
 
 }

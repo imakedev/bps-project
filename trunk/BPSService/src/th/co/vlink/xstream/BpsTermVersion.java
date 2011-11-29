@@ -3,8 +3,6 @@ package th.co.vlink.xstream;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-
 import th.co.vlink.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -24,7 +22,9 @@ public class BpsTermVersion extends VServiceXML implements Serializable {
 	private Integer bptVersionNumber; 
 	private String bptTerm;
 	@XStreamAlias("bpsTerm")
-	private BpsTerm bpsTerm;
+	private BpsTerm bpsTerm; 
+	private String bptUpdateBy; 
+	private Timestamp bptUpdateDate;
 
     public BpsTermVersion() {
     }
@@ -117,6 +117,22 @@ public class BpsTermVersion extends VServiceXML implements Serializable {
 
 	public void setBptDefinitionSearch(String bptDefinitionSearch) {
 		this.bptDefinitionSearch = bptDefinitionSearch;
+	}
+
+	public String getBptUpdateBy() {
+		return bptUpdateBy;
+	}
+
+	public void setBptUpdateBy(String bptUpdateBy) {
+		this.bptUpdateBy = bptUpdateBy;
+	}
+
+	public Timestamp getBptUpdateDate() {
+		return bptUpdateDate;
+	}
+
+	public void setBptUpdateDate(Timestamp bptUpdateDate) {
+		this.bptUpdateDate = bptUpdateDate;
 	}
 
 	 

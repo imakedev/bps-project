@@ -12,8 +12,7 @@ public class ServiceConstant {
 	public static final String BPS_GROUP_DELETE = "deleteBpsGroup";
 	public static final String BPS_GROUP_SEARCH = "searchBpsGroup";
 	public static final String BPS_GROUP_FIND_BY_ID = "findBpsGroupById";
-	public static final String BPS_GROUP_CHECK_DUPLICATE= "checkDuplicateGroup";
-	
+	public static final String BPS_GROUP_CHECK_DUPLICATE = "checkDuplicateGroup";
 
 	// BANPU_BPS_TERM
 	public static final String BPS_TERM_SAVE = "saveBpsTerm";
@@ -36,4 +35,18 @@ public class ServiceConstant {
 	public static final String BPS_ATTACH_FILE_DELETE = "deleteBpsAttachFile";
 	public static final String BPS_ATTACH_FILE_SEARCH = "searchBpsAttachFile";
 	public static final String BPS_ATTACH_FILE_FIND_BY_ID = "findBpsAttachFileById";
+
+	// BANPU_BPS_TERM_LOG
+	public static final String BPS_TERM_LOG_SAVE = "saveBpsTermLog";
+	public static final String BPS_TERM_LOG_UPDATE = "updateBpsTermLog";
+	public static final String BPS_TERM_LOG_DELETE = "deleteBpsTermLog";
+	public static final String BPS_TERM_LOG_SEARCH = "searchBpsTermLog";
+	public static final String BPS_TERM_LOG_FIND_BY_ID = "findBpsTermLogById";
+	
+	//LDAP_USER
+	public static final String LDAP_USER_FIND_BY_ID = "findUserById";
+	//LDAP_GROUP
+	public static final String LDAP_GROUP_FIND_BY_ID = "findGrupById";
+	//COP_WORKPROCEDURE_MAIL_USER
+	public static final String COP_WORKPROCEDURE_MAIL_USER = "getCopWorkProcedureUser";
 }

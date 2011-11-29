@@ -111,7 +111,6 @@ public class BpsGroupResource extends BaseResource {
 							
 							List result = (List) bpsGroupService.searchBpsGroup(bpsGroup, xbpsGroup.getLikeExpression(), 
 									xbpsGroup.getLeExpression(), xbpsGroup.getGeExpression());
-							System.out.println(" xxx = "+result);
 							if (result != null && result.size() == 2) {
 								java.util.List<th.co.vlink.hibernate.bean.BpsGroup> bpsGroups = (java.util.List<th.co.vlink.hibernate.bean.BpsGroup>) result
 										.get(0);

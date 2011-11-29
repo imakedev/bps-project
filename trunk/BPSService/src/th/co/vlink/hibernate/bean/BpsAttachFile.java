@@ -17,8 +17,8 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-//@Table(name="BANPU_BPS_ATTACH_FILE",schema="DB2INST1")
-@Table(name="BANPU_BPS_ATTACH_FILE")
+@Table(name="BANPU_BPS_ATTACH_FILE",schema="DB2INST1")
+//@Table(name="BANPU_BPS_ATTACH_FILE")
 //@Table(name="BANPU_BPS_ATTACH_FILE",schema="DB2INST4") // pttep
 public class BpsAttachFile  extends VServiceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
