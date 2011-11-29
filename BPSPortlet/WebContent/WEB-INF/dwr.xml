@@ -8,8 +8,13 @@
     <create creator="new" javascript="BpsUserAjax">
       <param name="class" value="th.co.vlink.bps.ajax.BpsUserAjax"/>
     </create>
+    <create creator="new" javascript="BpsLogAjax">
+      <param name="class" value="th.co.vlink.bps.ajax.BpsLogAjax"/>
+    </create> 
     <convert converter="bean" match="th.co.vlink.xstream.BpsGroup"/>
     <convert converter="bean" match="th.co.vlink.xstream.BpsTerm"/>
+    <convert converter="bean" match="th.co.vlink.xstream.BpsTermLog"/>
+    <convert converter="bean" match="th.co.vlink.xstream.CopWorkProcedureMailUser"/>
     <convert converter="bean" match="th.co.vlink.xstream.BpsTermVersion"/>
     <convert converter="bean" match="th.co.vlink.xstream.BpsAttachFile"/>    
     <convert converter="bean" match="th.co.vlink.criteria.VCriteria"/>

@@ -3,7 +3,12 @@
 <html>
 <head>
 <c:url var="url" value="/" />
-<script src='${url}js/jquery-1.6.4.min.js'></script>
+<%--
+<link rel="stylesheet" href="${url}css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
+ --%>
+<link rel="stylesheet" href="${url}css/jquery-ui/jquery-ui-1.8.custom.css" type="text/css">
+<script src='${url}js/jquery-1.6.4.min.js' type="text/javascript"></script>
+<script src="${url}css/jquery-ui/jquery-ui-1.8.custom.min.js" type="text/javascript"></script>
 <script type="text/javascript"
         src="${url}dwr/interface/BpsAdminAjax.js"></script> 
 <script type="text/javascript"
@@ -71,13 +76,27 @@ table#box-table-a a:hover {
 }
 </style>
 <script>
+$(document).ready(function() {
+	  // Handler for .ready() called.
+	  alert("loaded") 
+	// $('input[id^=button_]').button();
+	  $("button").button();
+	  $("input:button").button();
+	  $('input[type=button]').each(function(){ 
+		  alert($(this));
+		  $(this).button();
+	  });
+	  //<input id="button_edit_check" type="button" value=" Edit " onclick='<portlet:namespace />doActionCheck("edit")'/>
+})
 function <portlet:namespace />doActionCheck(_mode){
-	var agree ;
+	var agree = true ;
 	//alert(_urlDelete)
+	/*
 	if(_mode == 'edit')
-		agree = confirm(" Would you like to edit Categoty? ");
+		agree = confirm(" Would you like to edit Category? ");
 	else
-		agree = confirm(" Would you like to add Categoty? ");
+		agree = confirm(" Would you like to add Category? ");
+	*/
 	if (agree){ 
 		var bpgGroupName= jQuery.trim($("#bpgGroupName").val());
 		BpsAdminAjax.checkDuplicateGroup(jQuery.trim(bpgGroupName),{
@@ -95,6 +114,7 @@ function <portlet:namespace />doActionCheck(_mode){
 				}
 			}
 		});
+		return false;
 	}
 	else{
 		return false ;
@@ -110,9 +130,9 @@ function <portlet:namespace />doAction(_command,_mode){
 	var agree ;
 	//alert(_urlDelete)
 	if(_mode == 'edit')
-		agree = confirm(" Would you like to edit Categoty? ");
+		agree = confirm(" Would you like to edit Category? ");
 	else
-		agree = confirm(" Would you like to add Categoty? ");
+		agree = confirm(" Would you like to add Category? ");
 	if (agree){
 	//window.location.href = _urlDelete;
 		return true ;
@@ -150,10 +170,10 @@ function <portlet:namespace />doAction(_command,_mode){
 			<td height="30" colspan="2"><span
 				style="color: #030; font-size: 12px;"><strong>You
 						are in:</strong> <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(backURL)}">BPS
-						Term and Difinition</a> >
+						Term and Definition</a> >
 						<c:if test="${mode=='add'}">Add</c:if>
 						<c:if test="${mode=='edit'}">Edit</c:if>  
-						BPS Term and Difinition</span>
+						BPS Term and Definition</span>
 			</td>
 		</tr>
 		
@@ -176,16 +196,22 @@ function <portlet:namespace />doAction(_command,_mode){
 						<c:if test="${mode=='add'}">
 							<input type="submit" style="display: none;"
 							name="button_save" id="button_save" value=" Submit "  onclick='return <portlet:namespace />doAction("doSave","add")' />
-							<input id="button_save_check" type="button" value=" Submit " onclick='<portlet:namespace />doActionCheck("add")'/>
 							<%--
-							 onclick='<portlet:namespace />doAction("doSave","add")'
-							 --%>
+							<input id="button_save_check" type="button" value=" Save " onclick='<portlet:namespace />doActionCheck("add")'/>
+							 --%>						 
+							 <button id="button_save_check"   value=" Save " onclick='return <portlet:namespace />doActionCheck("add")'> Save </button>
 						</c:if>
 						<c:if test="${mode=='edit'}">
 							<input type="submit" style="display: none;"
 							name="button_edit" id="button_edit" value=" Submit  " onclick='return <portlet:namespace />doAction("doSave","edit")' />
-							<input id="button_edit_check" type="button" value=" Submit " onclick='<portlet:namespace />doActionCheck("edit")'/>
-						</c:if>  	 
+							<%-- 
+							<input id="button_edit_check" type="button" value=" Edit " onclick='<portlet:namespace />doActionCheck("edit")'/>
+							 --%>
+							 <button id="button_edit_check"   value=" Edit " onclick='return <portlet:namespace />doActionCheck("edit")'> Edit </button>
+						</c:if>  
+						
+						<button>A button element</button>
+						 
 						</td>
 					</tr>
 					</table> 

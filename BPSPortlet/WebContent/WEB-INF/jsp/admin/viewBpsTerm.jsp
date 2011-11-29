@@ -32,12 +32,8 @@ function <portlet:namespace/>downloadFile(_hotLink){
 <body>
 <table width="950" align="center" border="0" cellspacing="0" cellpadding="0">
  <tr>
-	<td><img src="${url}images/term.gif"></td>
-	<td align="right">&nbsp;</td>
- </tr>
- <tr>
     <td height="30" colspan="2"><span style="color:#030; font-size:12px;"><strong>You are in:</strong> 
-    <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(backURL)}">BPS Term and Difinition</a> > ${bpsTerm.bptTerm}</span></td>
+    <a href="${fn:escapeXml(homeURL)}">Home</a> > <a href="${fn:escapeXml(backURL)}">Banpu Term and Definition</a> > ${bpsTerm.bptTerm}</span></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -112,6 +108,10 @@ table#box-table-a a:hover {
 						<th height="25" align="left" bgcolor="#3DB0B5"><span
 							style="padding-left: 5px;">${bpsTerm.bptTerm}</span>
 						</th>
+					</tr>
+					<tr>
+						<td width="25%"><span style="padding: 5px;"><c:out value="${bpsTerm.bptShortDesc}" escapeXml="false" /></span>
+						</td>
 					</tr>
 					<tr>
 						<td width="25%"><span style="padding: 5px;"><c:out value="${bpsTerm.bptDefinition}" escapeXml="false"/></span>
