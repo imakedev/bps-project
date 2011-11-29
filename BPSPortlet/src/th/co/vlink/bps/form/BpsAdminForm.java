@@ -18,6 +18,7 @@ public class BpsAdminForm implements Serializable{
 	private BpsTerm bpsTerm;
 	private String bpgId;
 	private String searchBy;
+	private Long bptId;
 	 
 	private String indexChar;
 	private String orderColumn;
@@ -103,6 +104,12 @@ public class BpsAdminForm implements Serializable{
 	}
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
+	}
+	public Long getBptId() {
+		return bptId;
+	}
+	public void setBptId(Long bptId) {
+		this.bptId = bptId;
 	}
 	
 

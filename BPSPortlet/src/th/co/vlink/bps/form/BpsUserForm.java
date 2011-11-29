@@ -15,6 +15,12 @@ public class BpsUserForm implements Serializable{
 	private BpsTerm bpsTerm;
 	private String bpgId;
 	private String searchBy;
+	 
+	private Long bptId;
+	 
+	private String indexChar;
+	private String orderColumn;
+	private String orderBy;
 	public BpsUserForm(){
 		bpsTerm=new BpsTerm();
 	}
@@ -47,6 +53,30 @@ public class BpsUserForm implements Serializable{
 	}
 	public void setSearchBy(String searchBy) {
 		this.searchBy = searchBy;
+	}
+	public Long getBptId() {
+		return bptId;
+	}
+	public void setBptId(Long bptId) {
+		this.bptId = bptId;
+	}
+	public String getIndexChar() {
+		return indexChar;
+	}
+	public void setIndexChar(String indexChar) {
+		this.indexChar = indexChar;
+	}
+	public String getOrderColumn() {
+		return orderColumn;
+	}
+	public void setOrderColumn(String orderColumn) {
+		this.orderColumn = orderColumn;
+	}
+	public String getOrderBy() {
+		return orderBy;
+	}
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
 	}
 	
 }
