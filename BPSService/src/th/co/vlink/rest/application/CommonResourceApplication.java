@@ -16,7 +16,7 @@ public class CommonResourceApplication extends Application {
     @Override
     public synchronized Restlet createRoot() {
         // Create a router Restlet that defines routes.
-    	System.out.println( " AoeResourceApplication into createRoot"); 
+    	//System.out.println( " AoeResourceApplication into createRoot"); 
     	final   ApplicationContext springContext = new ClassPathXmlApplicationContext(
                  new String[] {
                 		 "th/co/vlink/rest/config/applicationContext-common.xml",

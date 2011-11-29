@@ -15,8 +15,8 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-//@Table(name="BANPU_BPS_GROUP",schema="DB2INST1")
-@Table(name="BANPU_BPS_GROUP")
+@Table(name="BANPU_BPS_GROUP",schema="DB2INST1")
+//@Table(name="BANPU_BPS_GROUP")
 //@Table(name="BANPU_BPS_GROUP",schema="DB2INST4") // pttep
 public class BpsGroup  extends VServiceBean implements Serializable {
 	private static final long serialVersionUID = 1L;

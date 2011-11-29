@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -129,7 +130,7 @@ public class HibernateBpsTermVersion extends HibernateCommon implements BpsTermV
 				 
 			}
 			
-//				criteria.addOrder(Order.asc("ncStartTime"));
+			criteria.addOrder(Order.desc("bptVersionNumber"));
 			 
 			// set pagging.
 			 String size = String.valueOf(getSize(session, instance)); 
@@ -213,7 +214,7 @@ public class HibernateBpsTermVersion extends HibernateCommon implements BpsTermV
 					 //iscriteria = true;
 				} 
 					 criteria.setProjection(Projections.rowCount()); 
-					 System.out.println("criteria.list().get(0)="+criteria.list().get(0).getClass());
+					 //System.out.println("criteria.list().get(0)="+criteria.list().get(0).getClass());
 					 return ((java.lang.Integer)criteria.list().get(0)).intValue(); 
 			} catch (HibernateException re) {
 				logger.error("HibernateException",re);

@@ -16,6 +16,10 @@ public interface BpsTermService {
 	@SuppressWarnings("rawtypes")
 	public  List searchBpsTerm(BpsTerm persistentInstance,String searchKey,String indexChar,String orderColumn,
 			String orderBy)throws DataAccessException  ;
+	@SuppressWarnings("rawtypes")
+	public  List searchBpsTermSQL(BpsTerm persistentInstance,String searchKey,String indexChar,String orderColumn,
+			String orderBy)throws DataAccessException  ;
+	
 //	@SuppressWarnings("rawtypes")
 //	public List searchBpsTerm(BpsTerm instance,Map likeExpression ,Map leExpression ,Map geExpression)throws DataAccessException  ;
 	

@@ -32,6 +32,24 @@
 							bean="bpsAttachFileResource" />
 					</bean>
 				</entry>
+				<entry key="/bpsTermLogs">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="createResource"
+							bean="bpsTermLogResource" />
+					</bean>
+				</entry>
+				<entry key="/bpsUserLdaps">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="createResource"
+							bean="bpsUserLdapResource" />
+					</bean>
+				</entry>
+				<entry key="/bpsGroupLdaps">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="createResource"
+							bean="bpsGroupLdapResource" />
+					</bean>
+				</entry>
 			</map>
 		</property>
 		<!--<property name="routes[2].template.variables[URI]">

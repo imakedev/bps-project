@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<bean id="top" class="org.restlet.ext.spring.SpringComponent">
-		<property name="server">
+		<property name="server"> 
 			<bean class="org.restlet.ext.spring.SpringServer">
 				<constructor-arg value="http" />
 				<constructor-arg value="3000" />

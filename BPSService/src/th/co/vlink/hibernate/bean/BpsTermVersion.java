@@ -19,8 +19,8 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-//@Table(name="BANPU_BPS_TERM_VERSION",schema="DB2INST1")
-@Table(name="BANPU_BPS_TERM_VERSION")
+@Table(name="BANPU_BPS_TERM_VERSION",schema="DB2INST1")
+//@Table(name="BANPU_BPS_TERM_VERSION")
 //@Table(name="BANPU_BPS_TERM_VERSION",schema="DB2INST4") // ptteppublic class BpsTermVersion extends VServiceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -59,6 +59,12 @@ import javax.persistence.Table;
 	
 	@Column(name="BPT_TERM")
 	private String bptTerm; 
+
+	@Column(name="BPT_UPDATE_BY")
+	private String bptUpdateBy;
+	@Column(name="BPT_UPDATE_DATE")
+	private Timestamp bptUpdateDate;
+	
 	//bi-directional many-to-one association to BanpuBpsTerm
     @ManyToOne
 	@JoinColumn(name="BPT_ID")
@@ -161,6 +167,22 @@ import javax.persistence.Table;
 
 	public void setBptDefinitionSearch(String bptDefinitionSearch) {
 		this.bptDefinitionSearch = bptDefinitionSearch;
+	}
+
+	public String getBptUpdateBy() {
+		return bptUpdateBy;
+	}
+
+	public void setBptUpdateBy(String bptUpdateBy) {
+		this.bptUpdateBy = bptUpdateBy;
+	}
+
+	public Timestamp getBptUpdateDate() {
+		return bptUpdateDate;
+	}
+
+	public void setBptUpdateDate(Timestamp bptUpdateDate) {
+		this.bptUpdateDate = bptUpdateDate;
 	}
 
 	 

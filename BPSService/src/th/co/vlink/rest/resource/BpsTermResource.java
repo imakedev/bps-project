@@ -2,6 +2,10 @@ package th.co.vlink.rest.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigInteger;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -127,12 +131,19 @@ public class BpsTermResource extends BaseResource {
 							Pagging page = xbpsTerm.getPagging(); 
 							bpsTerm.setPagging(page);		 
 							
-							List result = (List) bpsTermService.searchBpsTerm(bpsTerm  ,xbpsTerm.getVcriteria().getKey(),
+							/*List result = (List) bpsTermService.searchBpsTerm(bpsTerm  ,xbpsTerm.getVcriteria().getKey(),
+									xbpsTerm.getVcriteria().getIndexChar(),xbpsTerm.getVcriteria().getOrderColumn(),
+									xbpsTerm.getVcriteria().getOrderBy());*/
+							List result = (List) bpsTermService.searchBpsTermSQL(bpsTerm  ,xbpsTerm.getVcriteria().getKey(),
 									xbpsTerm.getVcriteria().getIndexChar(),xbpsTerm.getVcriteria().getOrderColumn(),
 									xbpsTerm.getVcriteria().getOrderBy());
+							
 							if (result != null && result.size() == 2) {
-								java.util.List<th.co.vlink.hibernate.bean.BpsTerm> ntcCalendars = (java.util.List<th.co.vlink.hibernate.bean.BpsTerm>) result
+								/*java.util.List<th.co.vlink.hibernate.bean.BpsTerm> ntcCalendars = (java.util.List<th.co.vlink.hibernate.bean.BpsTerm>) result
+										.get(0);*/
+								java.util.ArrayList<Object[]> ntcCalendars = (java.util.ArrayList<Object[]>) result
 										.get(0);
+								 
 								String faqs_size = (String) result.get(1);
 //								logger.debug("NtcCalendar=" + ntcCalendars + ",faqs_size="
 //										+ faqs_size);
@@ -216,7 +227,7 @@ public class BpsTermResource extends BaseResource {
 		return feedModels;
 	}
 
-	private List<BpsTerm> getxBpsTermObject(
+	/*private List<BpsTerm> getxBpsTermObject(
 			java.util.List<th.co.vlink.hibernate.bean.BpsTerm> ntcCalendars) {
 		List<BpsTerm> xntcCalendars = new ArrayList<BpsTerm>(
 				ntcCalendars.size());
@@ -228,6 +239,99 @@ public class BpsTermResource extends BaseResource {
 			xntcCalendar.setBpsGroup(xbpsGroup);
 			xntcCalendars.add(xntcCalendar);
 		}
+		return xntcCalendars;
+	} */
+	private String getClobMessage(org.hibernate.lob.SerializableClob clob){
+		/*ntcCalendar[5]!=null?(String)ntcCalendar[5]:null
+				org.hibernate.lob.SerializableClob clob = webBoardTopicIntraDTO.getWbttraMessageClob();*/
+		String message=null; 
+		Reader bodyOut = null;
+		 if(clob!=null){
+		try {
+			bodyOut = clob.getCharacterStream();
+			 StringBuffer b  = new StringBuffer();
+			 char[] charbuf = new char[4096];
+			 try {
+				for (int k = bodyOut.read(charbuf); k > 0; k = bodyOut.read(charbuf))	{
+						b.append(charbuf, 0, k);
+				 }
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 message = b.toString();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}finally{
+			try {
+				bodyOut.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
+		
+		/*
+			 try {
+				 
+			 } catch (Throwable e) {
+				// TODO Auto-generated catch block
+				 e.printStackTrace();
+		 	}*/
+		
+			 //webBoardTopicInter.setWbtiMessage(b.toString());
+			 
+			 
+		 }
+	   return message;
+	}
+	private List<BpsTerm> getxBpsTermObject(
+			java.util.ArrayList<Object[]> ntcCalendars) {
+		List<BpsTerm> xntcCalendars = new ArrayList<BpsTerm>(
+				ntcCalendars.size());
+		//System.out.println("ntcCalendars.length"+ntcCalendars.size());
+	 
+		for (Object[] ntcCalendar : ntcCalendars) {
+			BpsTerm xntcCalendar = new BpsTerm();
+			xntcCalendar.setBptId(ntcCalendar[1]!=null?((BigInteger)ntcCalendar[1]).longValue():null);
+			if(ntcCalendar[2]!=null){
+				th.co.vlink.xstream.BpsGroup xbpsGroup = new th.co.vlink.xstream.BpsGroup();
+				xbpsGroup.setBpgId(ntcCalendar[2]!=null?((BigInteger)ntcCalendar[2]).longValue():null);
+				xbpsGroup.setBpgGroupName(ntcCalendar[15]!=null?((String)ntcCalendar[15]):null);
+				xntcCalendar.setBpsGroup(xbpsGroup);
+			} 
+			xntcCalendar.setBptCreateBy(ntcCalendar[3]!=null?(String)ntcCalendar[3]:null);
+			xntcCalendar.setBptCreateDate(ntcCalendar[4]!=null?(Timestamp)ntcCalendar[4]:null);
+			//
+			
+			 
+			 
+			xntcCalendar.setBptDefinition(ntcCalendar[5]!=null?getClobMessage((org.hibernate.lob.SerializableClob)(ntcCalendar[5])):null);
+			xntcCalendar.setBptDefinitionSearch(ntcCalendar[6]!=null?getClobMessage((org.hibernate.lob.SerializableClob)(ntcCalendar[6])):null);
+			xntcCalendar.setBptIndexChar(ntcCalendar[7]!=null?(String)ntcCalendar[7]:null);
+			xntcCalendar.setBptShortDesc(ntcCalendar[8]!=null?(String)ntcCalendar[8]:null);
+			xntcCalendar.setBptSource(ntcCalendar[9]!=null?(String)ntcCalendar[9]:null);
+			xntcCalendar.setBptSourceRef(ntcCalendar[10]!=null?(String)ntcCalendar[10]:null);
+			xntcCalendar.setBptTerm(ntcCalendar[11]!=null?(String)ntcCalendar[11]:null);
+			xntcCalendar.setBptUpdateBy(ntcCalendar[12]!=null?(String)ntcCalendar[12]:null);
+			xntcCalendar.setBptUpdateDate(ntcCalendar[13]!=null?(Timestamp)ntcCalendar[13]:null);
+			xntcCalendar.setBptVersionNumber(ntcCalendar[14]!=null?(Integer)ntcCalendar[14]:null);
+			//xntcCalendar.setBptId(ntcCalendar[1]!=null?(Long)ntcCalendar[1]:null);
+		//	BeanUtility.copyProperties(xntcCalendar, ntcCalendar); 			
+			
+			//BeanUtility.copyProperties(xbpsGroup, ntcCalendar.getBpsGroup()); 
+			//xntcCalendar.setBpsGroup(xbpsGroup);
+			xntcCalendars.add(xntcCalendar);
+		}
+		/*for (Object[] ntcCalendar : ntcCalendars) {
+			BpsTerm xntcCalendar = new BpsTerm();
+			BeanUtility.copyProperties(xntcCalendar, ntcCalendar); 			
+			th.co.vlink.xstream.BpsGroup xbpsGroup = new th.co.vlink.xstream.BpsGroup();
+			BeanUtility.copyProperties(xbpsGroup, ntcCalendar.getBpsGroup()); 
+			xntcCalendar.setBpsGroup(xbpsGroup);
+			xntcCalendars.add(xntcCalendar);
+		}*/
 		return xntcCalendars;
 	} 
 	private void returnUpdateRecord(Representation entity,th.co.vlink.xstream.BpsTerm xbpsTerm,int updateRecord){

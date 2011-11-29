@@ -47,7 +47,7 @@
 				<prop key="hibernate.connection.autocommit">false</prop>
 				<!-- 
 				<prop key="hibernate.hbm2ddl.auto">create</prop>
-				 -->
+				 --> 
 			</props>	
 		</property>
   		 <!-- 
@@ -59,10 +59,16 @@
    		 -->
    		 <property name="annotatedClasses">
      		<list>
+     		<!--  
+			 -->
 				<value>th.co.vlink.hibernate.bean.BpsGroup</value>
 				<value>th.co.vlink.hibernate.bean.BpsTerm</value>
-				<value>th.co.vlink.hibernate.bean.BpsTermVersion</value>
+				<value>th.co.vlink.hibernate.bean.BpsTermVersion</value>				
 				<value>th.co.vlink.hibernate.bean.BpsAttachFile</value>
+				<value>th.co.vlink.hibernate.bean.BpsTermLog</value>
+				
+				<value>th.co.vlink.hibernate.bean.CopWorkProcedureMailUser</value>
+				<!--  -->
 			</list>
    		</property>
    		<property name="eventListeners">
@@ -166,5 +172,10 @@
 	<bean id="bpsTermVersionService" class="th.co.vlink.hibernate.HibernateBpsTermVersion">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
-	  
+	<bean id="bpsTermLogService" class="th.co.vlink.hibernate.HibernateBpsTermLog">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="copWorkProcedureMailUserService" class="th.co.vlink.hibernate.HibernateCopWorkProcedureMailUser">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean> 
 </beans>
