@@ -28,7 +28,6 @@ public class DownloadServlet extends HttpServlet {
 	private static final String SCHEMA="DB2INST1";//"appdb"; // 
 	private static ResourceBundle bundle;
 	static{
-		  //bundle =  ResourceBundle.getBundle( "org/restlet/example/book/restlet/ch8/mailApplication" );
 		bundle =  ResourceBundle.getBundle( "config" );				
 	}
     /**
