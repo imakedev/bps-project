@@ -65,6 +65,10 @@
   border: none !important;
   border-bottom: 1px solid #FBCBBC !important;
 }
+#custom_file_uploadUploader {
+	width: 120px;
+	height: 30px;
+}
 #custom-demo .uploadifyQueueItem .cancel {
   float: right;
 }
@@ -101,7 +105,7 @@ $(document).ready(function() {
 	  $("a[id=manageBpsGroup]").button();
 	  $('select#bpgId').selectmenu({style:'dropdown'});
 });
-function initUploadImg(){
+function <portlet:namespace />initUploadImg(){
 	 $('#custom_file_upload').uploadify({
    	  'uploader'       : '${url}uploadify/uploadify.swf',
    	  'script'         : '${url}upload',
@@ -139,8 +143,9 @@ function initUploadImg(){
       	 ranges[0].deleteContents();
 			 ranges[0].insertNode(newElement);
 			 ranges[0].selectNodeContents( newElement ); 	
-			 $( "#dialog-upload" ).dialog("close");
-  			$( "#dialog-upload" ).dialog( "destroy" );
+			 CKEDITOR.dialog.getCurrent().hide();
+			// $( "#dialog-upload" ).dialog("close");
+  			//$( "#dialog-upload" ).dialog( "destroy" );
    	      },
    	    'onError'     : function (event,ID,fileObj,errorObj) {
    	    	imageIdG="";
@@ -229,7 +234,7 @@ function uploadImg(){
 		          }
 		      ]
 	}); 
-	initUploadImg();
+	//initUploadImg();
 }
 function clearFile(spanId){
 	//$("#"+elementId).val("");
@@ -339,6 +344,18 @@ function <portlet:namespace />doAction(_command,_mode){
 	//return agree;
 	//	return true;//false;
 	}
+function  <portlet:namespace />setupUploader() {
+	$('.cke_dialog_ui_vbox_child')
+			.html(
+					'<div id="status-message">Select some files to upload:</div><div id="custom-queue"></div><input id="custom_file_upload" type="file" name="Filedata" />');
+	<portlet:namespace />initUploadImg();
+
+	$('.cke_dialog_ui_hbox_first').children('a').attr("href", "#");
+
+}
+function  <portlet:namespace />callUploader() {
+	$('#custom_file_upload').uploadifyUpload();
+}
 </script>
 </head>
 <portlet:renderURL var="backURL">
@@ -500,7 +517,7 @@ table#box-table-a a:hover {
 							<script type="text/javascript">
 									//CKEDITOR.replace('bptDefinition');
 									var upload_Str=" Would you like to upload image file ? ";
-							      
+									upload_Str="";
 									 editor1=CKEDITOR.replace( 'bptDefinition',
 											{
 												// Defines a simpler toolbar to be used in this sample.
@@ -614,7 +631,8 @@ table#box-table-a a:hover {
 																			
 																		}
 																 */
-																		uploadImg();
+																 <portlet:namespace />callUploader();
+																	return false;
 																}
 															};
 															//initUploadImg();
@@ -639,6 +657,9 @@ table#box-table-a a:hover {
 									 editor1.on( 'dialogShow', function( evt ){	
 										 //alert("dialog Show")
 										// initUploadImg();
+										 if(CKEDITOR.dialog.getCurrent().getName()=='myDialog'){
+											 <portlet:namespace />setupUploader();
+											}
 									 });
 							</script> 
 							</td>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd" id="BPSPortlet.896783b762">
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd" version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd" id="BPSPortlet.896783b762">
 	<portlet>
 		<portlet-name>BPS Admin</portlet-name>
 		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
@@ -31,5 +31,54 @@
          <title>BPS User</title>
       </portlet-info>
 	</portlet>
-	
+	<portlet>
+		<portlet-name>BPS Admin Log</portlet-name>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+      <init-param>
+         <name>contextConfigLocation</name>
+         <value>/WEB-INF/context/bps-admin-log-portlet.xml</value>
+      </init-param>
+      <supports>
+         <mime-type>text/html</mime-type>
+         <portlet-mode>view</portlet-mode>
+      </supports>
+      <portlet-info>
+         <title>BPS Admin Log</title>
+      </portlet-info>  
+	</portlet>
+	<portlet>
+		<portlet-name>BPS Admin From Mail</portlet-name>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+      <init-param>
+         <name>contextConfigLocation</name>
+         <value>/WEB-INF/context/bps-admin-frommail-portlet.xml</value>
+      </init-param>
+      <supports>
+         <mime-type>text/html</mime-type>
+         <portlet-mode>view</portlet-mode>
+      </supports>
+      <portlet-info>
+         <title>BPS Admin From Mail</title>
+      </portlet-info>  
+	</portlet>
+	<!--  
+	<portlet-app xmlns=\"http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd\"
+ xsi=\"http://www.w3.org/2001/XMLSchema-instance\" 
+ schemalocation=\"http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd
+ http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd\">
+   <portlet>
+       <portlet-name>HelloWorldPortlet</portlet-name>
+           <portlet-class>com.portalzone.example1.HelloWorldPortlet</portlet-class>
+           <supports>
+           <mime-type>text/html</mime-type>
+           <portlet-mode>view</portlet-mode>
+           <portlet-mode>edit</portlet-mode>
+           <portlet-mode>help</portlet-mode>
+           </supports>
+           <portlet-info>
+               <title>Hello World Portlet</title>               
+           </portlet-info>
+       </portlet>
+</portlet-app>
+ -->
 </portlet-app>
