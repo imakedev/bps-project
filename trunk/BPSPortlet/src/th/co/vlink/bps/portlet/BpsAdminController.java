@@ -13,6 +13,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,26 +59,18 @@ public class BpsAdminController {
 	public void initBinder(PortletRequestDataBinder binder,
 			PortletPreferences preferences) {
 		binder.registerCustomEditor(byte[].class,
-				new ByteArrayMultipartFileEditor());
-		//String[] field = { "mode", "bpsGroup.bpgId", "bpsGroup.bpgGroupName"};
-		//binder.setAllowedFields(field);
+				new ByteArrayMultipartFileEditor()); 
 	}
-	
-	@RequestMapping
-	public String list(Model model) {
-		return "index";
-	}
+	 
 	private List listBpsGroup(){
 		VResultMessage resultList = bpsAdminService.searchBpsGroup(new BpsGroup()); 
-		return resultList.getResultListObj();
-		//return bpsAdminService.searchBpsGroup(bpsGroup);
+		return resultList.getResultListObj(); 
 	} 
 	@RequestMapping(params="action=manageBpsGroup")
 	public String manageBpsGroup(Model model,@RequestParam(value="pageNo",required = false) String pageNoStr
 			,@RequestParam(value="bpgGroupName",required = false) String bpgGroupName
 			,@RequestParam(value="orderBy",required = false) String orderBy
 			,@RequestParam(value="orderColumn",required = false) String orderColumn)  {
-		System.out.println("bpgGroupName bpgGroupName==>"+bpgGroupName);
 		BpsAdminForm bpsAdminForm=null;
 		bpgGroupName=(bpgGroupName!=null&&bpgGroupName.trim().length()>0)?bpgGroupName.trim():"";
 		orderBy=(orderBy!=null&&orderBy.trim().length()>0)?orderBy.trim():"";
@@ -94,8 +87,7 @@ public class BpsAdminController {
 		}else {
 			Map map  = model.asMap();
 			bpsAdminForm = (BpsAdminForm)map.get("bpsAdminForm");			 
-		} 
-		//bpsAdminForm.getBpsGroup().setBpgGroupName(bpgGroupName);
+		}  
 		BpsGroup bpsGroup =bpsAdminForm.getBpsGroup();
 		bpsGroup.setPagging(page);
 		bpsGroup.setBpgGroupName(bpgGroupName);
@@ -113,7 +105,6 @@ public class BpsAdminController {
 	public String addOrEditBpsGroup(Model model,
 			@RequestParam("bpgId") String bpgId,
 			@RequestParam(value="mode") String mode) {
-		System.out.println("into addOrEditBpsGroup bpgId="+bpgId+",mode="+mode);
 	try{
 		BpsAdminForm bpsAdminForm=null; 
 		if(!model.containsAttribute("bpsAdminForm")){
@@ -144,7 +135,6 @@ public class BpsAdminController {
 	public void saveBpsGroup(ActionRequest request, ActionResponse response,
 			@ModelAttribute("bpsAdminForm")
 			BpsAdminForm bpsAdminForm, BindingResult result, Model model) {
-		System.out.println("saveBpsGroup="+bpsAdminForm.getMode());
 		BpsGroup bpsGroup = bpsAdminForm.getBpsGroup();
 		int recordUpdate=0;
 		if (bpsAdminForm.getMode().equals("add")) {
@@ -152,7 +142,6 @@ public class BpsAdminController {
 		} else {
 			recordUpdate=bpsAdminService.updateBpsGroup(bpsGroup);
 		}
-		System.out.println("recordUpdate=="+recordUpdate);
 		response.setRenderParameter("action", "manageBpsGroup");
 	}
 	
@@ -164,16 +153,22 @@ public class BpsAdminController {
 	}
 	
 	// BPS Term
-	@RequestMapping(params="action=manageBpsTerm")
-	public String manageBpsTerm(Model model,@RequestParam(value="pageNo",required = false) String pageNoStr
+	@RequestMapping // (params="action=manageBpsTerm")
+	public String manageBpsTerm(RenderRequest request,Model model,@RequestParam(value="pageNo",required = false) String pageNoStr
 			,@RequestParam(value="bptTerm",required = false) String bptTerm
 			,@RequestParam(value="bpgId",required = false) String bpgId
 			,@RequestParam(value="searchBy",required = false) String searchBy
 			,@RequestParam(value="orderBy",required = false) String orderBy
 			,@RequestParam(value="orderColumn",required = false) String orderColumn
 			,@RequestParam(value="indexChar",required = false) String indexChar)  {
-		System.out.println(" into manageBpsTerm bptTerm="+bptTerm+",bpgId="+bpgId+",searchBy="+searchBy+",orderBy="+orderBy+",orderColumn="+orderColumn+",indexChar="+indexChar);
+	/*	com.ibm.portal.puma.User portalUser = (com.ibm.portal.puma.User) request
+	               .getAttribute("com.ibm.portal.puma.request-user");
+		Enumeration aoe= portalUser.getAttributeNames();
+		while (aoe.hasMoreElements()) {
+			Object object = (Object) aoe.nextElement();
+		}*/
 		BpsAdminForm bpsAdminForm=null;
+		
 		bptTerm=(bptTerm!=null&&bptTerm.trim().length()>0)?bptTerm.trim():"";
 		bpgId=(bpgId!=null&&bpgId.trim().length()>0)?bpgId.trim():"0";
 		searchBy=(searchBy!=null&&searchBy.trim().length()>0)?searchBy.trim():"0";
@@ -190,12 +185,7 @@ public class BpsAdminController {
 		Pagging page   = new Pagging();
 		page.setPageNo(pageNo);
 		page.setPageSize(10);
-		/*if(!model.containsAttribute("bpsAdminForm")){
-			bpsAdminForm= new BpsAdminForm();
-		}else {
-			Map map  = model.asMap();
-			bpsAdminForm = (BpsAdminForm)map.get("bpsAdminForm");			 
-		} */
+		 
 		bpsAdminForm= new BpsAdminForm();
 		BpsTerm bpsTerm =bpsAdminForm.getBpsTerm();
 		bpsAdminForm.setOrderColumn(orderColumn);
@@ -228,11 +218,10 @@ public class BpsAdminController {
 		bpsAdminForm.setBpgId(bpgId); 
 		bpsAdminForm.setSearchBy(searchBy);
 		bpsAdminForm.setBptTerm(bptTerm);
-		VResultMessage resultList = bpsAdminService.searchBpsTerm(bpsTerm);
-		System.out.println("resultList == "+resultList.getResultListObj());
-		page.setTotalRecord(Integer.parseInt(resultList.getMaxRow()));
+		//VResultMessage resultList = bpsAdminService.searchBpsTerm(bpsTerm);
+	//	page.setTotalRecord(Integer.parseInt(resultList.getMaxRow()));
 		model.addAttribute("pageObj", 	page);
-		model.addAttribute("bpsTerms", resultList);
+		//model.addAttribute("bpsTerms", resultList);
 		model.addAttribute("listCates", listBpsGroup());
 		model.addAttribute("bpsAdminForm", bpsAdminForm);
 		return "manageBpsTerm";
@@ -291,7 +280,6 @@ public class BpsAdminController {
 	public void saveBpsTerm(ActionRequest request, ActionResponse response,
 			@ModelAttribute("bpsAdminForm")
 			BpsAdminForm bpsAdminForm, BindingResult result, Model model) {
-		System.out.println("saveBpsTerm="+bpsAdminForm.getMode());
 	try{
 		BpsTerm bpsTerm = bpsAdminForm.getBpsTerm();
 		String user=request.getUserPrincipal().getName();
@@ -324,7 +312,6 @@ public class BpsAdminController {
 
 					try {
 						byte []filesize = multipart.getBytes(); 
-						System.out.println(" debug filesize="+filesize.length);
 						if(filesize.length>0){									
 							long current = System.currentTimeMillis();
 						org.joda.time.DateTime    dt1  = new org.joda.time.DateTime (new Date().getTime()); 
@@ -379,7 +366,6 @@ public class BpsAdminController {
 			*/
 		  }
 		
-		System.out.println("recordUpdate=="+recordUpdate);
 		response.setRenderParameter("action", "manageBpsTerm");
 		response.setRenderParameter("bptTerm", "");
 		response.setRenderParameter("bpgId", "");
@@ -397,6 +383,19 @@ public class BpsAdminController {
 		bpsAdminService.deleteBpsTerm(bptId); 
 		response.setRenderParameter("action", "manageBpsTerm"); 
 	}
+	@RequestMapping(params = "action=doSubmit")
+	public void doSubmit(ActionRequest request, ActionResponse response,
+			@ModelAttribute("bpsAdminForm")	BpsAdminForm bpsAdminForm,
+			BindingResult result, Model model) {
+		String command=bpsAdminForm.getCommand();
+		if(command.equals("edit")){
+			response.setRenderParameter("action", "addOrEditBpsTerm");
+		}else if(command.equals("view")){
+			response.setRenderParameter("action", "viewBpsTerm");
+		}
+		response.setRenderParameter("bptId", bpsAdminForm.getBptId() + ""); 
+		response.setRenderParameter("mode", command); 
+	}
 	 private void createDirectoryIfNeeded(String directoryName)
 	 {
 	   File theDir = new File(directoryName);
@@ -405,7 +404,6 @@ public class BpsAdminController {
 	   if (!theDir.exists())
 	   {
 		   boolean cancreate = theDir.mkdir();
-	     System.out.println("cancreate dir ="+cancreate);
 	   }
 	  
 	 }

@@ -1,5 +1,6 @@
 package th.co.vlink.bps.portlet;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
@@ -10,7 +11,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -77,23 +80,24 @@ public class BpsUserController {
 		Pagging page = new Pagging();
 		page.setPageNo(pageNo);
 		page.setPageSize(20);
-		if (!model.containsAttribute("bpsUserForm")) {
+		/*if (!model.containsAttribute("bpsUserForm")) {
 			bpsUserForm = new BpsUserForm();
 		} else {
 			Map map = model.asMap();
 			bpsUserForm = (BpsUserForm) map.get("bpsUserForm");
-		}
-
+		}*/
+		bpsUserForm = new BpsUserForm();
 		BpsTerm bpsTerm = bpsUserForm.getBpsTerm();
 		bpsTerm.setPagging(page);
 		bpsTerm.setBptTerm(bptTerm);
 		bpsTerm.setBptIndexChar(bptIndexChar);
-		bpsTerm.setBptStatus("1");
+	//	bpsTerm.setBptStatus("1");
 		bpsTerm.getVcriteria().setValue(bptTerm);
 		bpsTerm.getVcriteria().setOrderBy(orderBy);
 		bpsTerm.getVcriteria().setOrderColumn(orderColumn);
 		bpsTerm.getVcriteria().setIndexChar(bptIndexChar);
-		bpsTerm.getVcriteria().setKey(searchBy);
+		bpsTerm.getVcriteria().setKey(searchBy); 
+	 
 		if (!bpgId.equals("0")) {
 			BpsGroup group = new BpsGroup();
 			group.setBpgId(Long.parseLong(bpgId));
@@ -116,7 +120,7 @@ public class BpsUserController {
 		bpsUserForm.setBpgId(bpgId);
 //		bpsUserForm.setSearchBy(searchBy);
 		bpsUserForm.setBpsTerm(bpsTerm);
-		VResultMessage resultList = bpsUserService.searchBpsTerm(bpsTerm);
+	//	VResultMessage resultList = bpsUserService.searchBpsTerm(bpsTerm);
 		BpsGroup bpsGroup2 = new BpsGroup();
 		Pagging pagging = new Pagging();
 		pagging.setPageSize(Integer.MAX_VALUE);
@@ -125,9 +129,10 @@ public class BpsUserController {
 		bpsGroup2.setPagging(pagging);
 		VResultMessage resultListGroup = bpsUserService
 				.searchBpsGroup(bpsGroup2);
-		model.addAttribute("resultList", resultList);
+	//	model.addAttribute("resultList", resultList);
 		model.addAttribute("resultListGroup", resultListGroup);
 		model.addAttribute("bpsUserForm", bpsUserForm);
+		model.addAttribute("listCates", listBpsGroup());
 		return "index";
 	}
 
@@ -182,9 +187,7 @@ public class BpsUserController {
 		String searchBy = request.getParameter("select");
 		String pageNoStr = request.getParameter("pageNo");
 		String orderBy = request.getParameter("sortOrder");
-//		System.out.println("Order By : "+orderBy);
 		String orderColumn = request.getParameter("sortBy");
-//		System.out.println("Order Column : "+orderColumn);
 		String bptIndexChar = request.getParameter("indexChar");
 		bptTerm = (bptTerm != null && bptTerm.trim().length() > 0) ? bptTerm
 				.trim() : "";
@@ -204,7 +207,7 @@ public class BpsUserController {
 		bpsTerm.setPagging(page);
 		bpsTerm.setBptTerm(bptTerm);
 		bpsTerm.setBptIndexChar(bptIndexChar);
-		bpsTerm.setBptStatus("1");
+	//	bpsTerm.setBptStatus("1");
 		bpsTerm.getVcriteria().setValue(bptTerm);
 		bpsTerm.getVcriteria().setOrderBy(orderBy);
 		bpsTerm.getVcriteria().setOrderColumn(orderColumn);
@@ -235,9 +238,24 @@ public class BpsUserController {
 		model.addAttribute("resultListGroup", resultListGroup);
 		response.setRenderParameter("action", "viewSearchResult");
 	}
-	
+	@RequestMapping(params = "action=doSubmit")
+	public void doSubmit(ActionRequest request, ActionResponse response,
+			@ModelAttribute("bpsUserForm")	BpsUserForm bpsUserForm,
+			BindingResult result, Model model) {
+		String command=bpsUserForm.getCommand();
+		if(command.equals("view")){
+			response.setRenderParameter("action", "viewBpsTerm");
+		}
+		response.setRenderParameter("bptId", bpsUserForm.getBptId() + ""); 
+		response.setRenderParameter("mode", command); 
+	}
 	@RequestMapping(params = "action=viewSearchResult")
 	public String viewSearchResult(Model models) {
 		return "index";
 	}
+	private List listBpsGroup(){
+		VResultMessage resultList = bpsUserService.searchBpsGroup(new BpsGroup()); 
+		return resultList.getResultListObj();
+		//return bpsAdminService.searchBpsGroup(bpsGroup);
+	} 
 }
